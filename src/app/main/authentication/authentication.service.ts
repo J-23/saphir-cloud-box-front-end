@@ -7,10 +7,11 @@ import { AppUser } from '../models/app-user.model';
 import { AppConfig } from 'app/app.config';
 
 export const ANONYMOUS_USER: AppUser = {
-    firstName: undefined,
-    lastName: undefined,
+    id: undefined,
+    userName: undefined,
     email: undefined,
-    phoneNumber: undefined
+    client: undefined,
+    department: undefined
   }
 
 @Injectable()
@@ -18,7 +19,7 @@ export class AuthenticationService {
 
     private userSubject = new BehaviorSubject<AppUser>(undefined);
     user$: Observable<AppUser> = this.userSubject.asObservable().pipe(filter(user => !!user));
-    isLoggedIn$: Observable<boolean> = this.user$.pipe(map(user => !!user.firstName));
+    isLoggedIn$: Observable<boolean> = this.user$.pipe(map(user => !!user.id));
 
     userEmail = new BehaviorSubject<string>(undefined);
 
@@ -26,7 +27,7 @@ export class AuthenticationService {
 
     constructor(private _httpClient: HttpClient,
         private appConfig: AppConfig) { 
-
+            
         this.baseURL = this.appConfig['config']['URL'];
 
         this.getUser();
@@ -117,15 +118,10 @@ export class AuthenticationService {
     getUser(): Promise<any> {
 
         return new Promise((resolve, reject) => {
-            this._httpClient.get(this.baseURL + '/api/account/user-info')
+            this._httpClient.get(this.baseURL + '/api/account/user')
                 .subscribe(response => {
                     if (response) {
-                        var user: AppUser = {
-                            firstName: response['firstName'],
-                            lastName: response['lastName'],
-                            email: response['email'],
-                            phoneNumber: response['mobile']
-                        };
+                        var user = new AppUser(response);
 
                         this.userSubject.next(user);
                         resolve(user);

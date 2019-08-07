@@ -2,15 +2,9 @@ export const locale = {
     lang: 'en',
     data: {
         'NAV': {
-            'APPLICATIONS': 'Applications',
-            'CARS': 'Cars',
-            'CARGROUPS': 'Car Groups',
-            'CARSUBGROUPS': 'Car Subgroups',
-            'MANUFACTURERS': 'Manufacturers',
-            'TYPS': 'Typs',
-            'FUELS': 'Fuels',
-            'ENGINEOILS': 'Engine Oils',
-            'CARWHEELS': 'Car wheels',
+            'APPLICATIONS': 'Saphir Cloud Box',
+            'CLIENTS': 'Clients',
+            'DEPARTMENTS': 'Departments',
             'USERS': 'Users'
         },
         'PAGES': {

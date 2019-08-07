@@ -13,9 +13,34 @@ import { FuseWidgetModule } from '@fuse/components/widget/widget.module';
 import { FuseSidebarModule, FuseConfirmDialogModule } from '@fuse/components';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthorizedUserGuard } from '../guards/authorized-user.guard';
+import { ClientsComponent } from './clients/clients.component';
+import { DepartmentsComponent } from './departments/departments.component';
+import { UsersComponent } from './users/users.component';
+import { ClientsService } from './clients/clients.service';
+import { ConfirmFormComponent } from './confirm-form/confirm-form.component';
+import { ClientFormComponent } from './clients/client-form/client-form.component';
+
+const routes = [
+    {
+        path: 'clients',
+        component: ClientsComponent,
+        resolve  : {
+            data: ClientsService
+        }
+    },
+    {
+        path: 'departments',
+        component: DepartmentsComponent
+    },
+    {
+      path: 'users',
+      component: UsersComponent
+    },
+];
 
 @NgModule({
     imports     : [
+        RouterModule.forChild(routes),
         FuseSharedModule,
         MatButtonModule,
         MatChipsModule,
@@ -50,10 +75,18 @@ import { AuthorizedUserGuard } from '../guards/authorized-user.guard';
         TranslateModule
     ],
     declarations: [
+        ClientsComponent,
+        DepartmentsComponent,
+        UsersComponent,
+        ConfirmFormComponent,
+        ClientFormComponent
     ],
     providers: [
+        ClientsService
     ],
     entryComponents: [
+        ConfirmFormComponent,
+        ClientFormComponent
     ]
 })
 export class AppsModule

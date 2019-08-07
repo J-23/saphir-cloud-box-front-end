@@ -15,8 +15,8 @@ import { ResetPasswordGuard } from '../guards/reset-password.guard';
 
 const routes = [
   {
-    path: 'login',
-    component: LoginComponent
+      path: 'login',
+      component: LoginComponent
   },
   {
     path: 'register',

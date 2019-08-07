@@ -2,15 +2,9 @@
     lang: 'de',
     data: {
         'NAV': {
-            'APPLICATIONS': 'Fuhrpark',
-            'CARS': 'Autos',
-            'CARGROUPS': 'Kostenträger',
-            'CARSUBGROUPS': 'BAB Kostenstelle',
-            'MANUFACTURERS': 'Hersteller',
-            'TYPS': 'Typ',
-            'FUELS': 'Kraftstoff',
-            'ENGINEOILS': 'Motoröl',
-            'CARWHEELS': 'Reifengröße',
+            'APPLICATIONS': 'Saphir Cloud Box',
+            'CLIENTS': 'Clients',
+            'DEPARTMENTS': 'Departments',
             'USERS': 'Nutzer'
         },
         'PAGES': {

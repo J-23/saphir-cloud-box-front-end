@@ -34,8 +34,18 @@ const appRoutes: Routes = [
         loadChildren: './main/authentication/authentication.module#AuthenticationModule'
     },
     {
+        path: 'errors',
+        loadChildren: './main/errors/errors.module#ErrorsModule',
+        canActivate: [AuthorizedUserGuard]
+    },
+    {
+        path: 'apps',
+        loadChildren: './main/apps/apps.module#AppsModule',
+        //canActivate: [AuthorizedUserGuard]
+    },
+    {
         path      : '**',
-        redirectTo: 'apps/auth/login'
+        redirectTo: 'auth/login'
     }
 ];
 

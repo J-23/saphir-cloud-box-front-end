@@ -1,0 +1,33 @@
+@import "src/@fuse/scss/fuse";
+
+.form-dialog {
+
+    @include media-breakpoint('xs') {
+        width: 100%;
+    }
+
+    @include media-breakpoint('gt-xs') {
+        width: 400px;
+    }
+
+    
+
+    .dialog-content-wrapper {
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.mat-dialog-container {
+        padding: 0px !important;
+
+        .mat-toolbar {
+            flex: 1 0 auto;
+            min-height: initial;
+        }
+
+        .toolbar-bottom {
+            height: auto;
+        }
+    }

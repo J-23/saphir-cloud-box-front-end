@@ -28,7 +28,6 @@ export class LoginComponent implements OnInit
         private _matSnackBar: MatSnackBar,
         private translateService: TranslateService) {
 
-            console.log('test')
         this._fuseConfigService.config = {
             layout: {
                 navbar   : {

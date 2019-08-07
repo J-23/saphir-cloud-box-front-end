@@ -2,16 +2,10 @@ export const locale = {
     lang: 'ru',
     data: {
         'NAV': {
-            'APPLICATIONS': 'Приложение',
-            'CARS': 'Машины',
-            'CARGROUPS': 'Группы машин',
-            'CARSUBGROUPS': 'Подгруппы машин',
-            'MANUFACTURERS': 'Производители',
-            'TYPS': 'Типы',
-            'FUELS': 'Топлива',
-            'ENGINEOILS': 'Моторные масла',
-            'CARWHEELS': 'Колеса',
-            'USERS': 'Пользователи'
+            'APPLICATIONS': 'Saphir Cloud Box',
+            'CLIENTS': 'Клиенты',
+            'DEPARTMENTS': 'Отделы',
+            'USERS': 'Пользователя'
         },
         'PAGES': {
             'APPS': {

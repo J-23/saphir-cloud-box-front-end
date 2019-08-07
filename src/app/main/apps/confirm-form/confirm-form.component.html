@@ -1,0 +1,8 @@
+<div class="m-12">
+  <h1 matDialogTitle>{{ 'COMMONACTIONS.CONFIRM' | translate }}</h1>
+  <div mat-dialog-content>{{confirmMessage}}</div>
+  <div mat-dialog-actions class="pt-12">
+      <button mat-raised-button class="mat teal-300 mr-16" (click)="dialogRef.close(true)">{{ 'COMMONACTIONS.YES' | translate }}</button>
+      <button mat-button (click)="dialogRef.close(false)">{{ 'COMMONACTIONS.CANCEL' | translate }}</button>
+  </div>
+</div>
