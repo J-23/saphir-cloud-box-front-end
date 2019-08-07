@@ -1,0 +1,23 @@
+// Import Fuse core library
+@import "@fuse/scss/core";
+
+// Import app.theme.scss
+@import "app/app.theme";
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+    color: rgba($color: #000000, $alpha: 0.8) !important;
+}
+
+.mat-form-field-label {
+    color: black !important;
+    opacity: 0.9 !important;
+}
+
+.mat-form-field-underline{
+    background-color: rgba($color: #000000, $alpha: 0.5) !important;
+}
+
+.mat-form-field-underline, ::ng-deep .mat-form-field-ripple {
+    background-color: blue !important;
+  }
+  

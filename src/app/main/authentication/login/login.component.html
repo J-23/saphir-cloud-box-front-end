@@ -1,0 +1,60 @@
+<div *ngIf="!isLogin" class="content"></div>
+<div *ngIf="isLogin" id="login" fxLayout="column">
+
+    <div id="login-form-wrapper" fxLayout="column" fxLayoutAlign="center center">
+
+        <div id="login-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
+
+            <div class="logo">
+                <img src="assets/images/logos/logo.svg">
+            </div>
+
+            <div class="title">{{ 'PAGES.AUTH.LOGINTITLE' | translate }}</div>
+
+            <form name="loginForm" [formGroup]="loginForm" novalidate>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>{{ 'PAGES.AUTH.EMAIL' | translate }}</mat-label>
+                    <input matInput formControlName="email">
+                    <mat-icon matSuffix class="secondary-text">mail</mat-icon>
+                    <mat-error *ngIf="loginForm.get('email').hasError('required')">
+                        {{ 'PAGES.AUTH.EMPTYEMAIL' | translate }}
+                    </mat-error>
+                    <mat-error
+                        *ngIf="!loginForm.get('email').hasError('required') &&
+                                loginForm.get('email').hasError('email')">
+                        {{ 'PAGES.AUTH.INVALIDEMAIL' | translate }}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>{{ 'PAGES.AUTH.PASSWORD' | translate }}</mat-label>
+                    <input matInput type="password" formControlName="password">
+                    <mat-icon matSuffix class="secondary-text">vpn_key</mat-icon>
+                    <mat-error>
+                        {{ 'PAGES.AUTH.EMPTYPASSWORD' | translate }}
+                    </mat-error>
+                </mat-form-field>
+
+                <button mat-raised-button class="submit-button teal-300" aria-label="LOG IN"
+                        [disabled]="loginForm.invalid" (click)="login()">
+                    {{ 'PAGES.AUTH.LOGIN' | translate }}
+                </button>
+
+            </form>
+
+            <div class="register" fxLayout="column" fxLayoutAlign="center center">
+                <span class="text">{{ 'PAGES.AUTH.DONTHAVEACCOUNT' | translate }}</span>
+                <a class="link link-color" [routerLink]="'/auth/register'">{{ 'PAGES.AUTH.CREATEACCOUNT' | translate }}</a>
+            </div>
+
+            <div class="register" fxLayout="column" fxLayoutAlign="center center">
+                <span class="text">{{ 'PAGES.AUTH.FORGOTPASSQORDQUESTION' | translate }}</span>
+                <a class="link link-color" [routerLink]="'/auth/forgot-password'">{{ 'PAGES.AUTH.CREATENEWPASSOWRD' | translate }}</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
