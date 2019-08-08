@@ -1,0 +1,67 @@
+<div class="dialog-content-wrapper">
+  <mat-toolbar matDialogTitle class="mat teal-300 m-0">
+    <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+      <span class="title dialog-title">{{ dialogTitle | translate }}</span>
+      <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  
+  <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
+  
+    <form [formGroup]="form" novalidate>
+  
+      <div fxLayout="row" fxLayoutAlign="start start">
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>{{ 'PAGES.APPS.USERS.USERNAME' | translate }}</mat-label>
+          <input formControlName="userName" matInput required autocomplete="off">
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="start start">
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>{{ 'PAGES.APPS.USERS.EMAIL' | translate }}</mat-label>
+          <input formControlName="email" matInput required autocomplete="off">
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="start start">
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>{{ 'PAGES.APPS.USERS.CLIENT' | translate }}</mat-label>
+          <mat-select matNativeControl formControlName="client" [compareWith]="clientCompare" required (selectionChange)="getDepartmentsByClientId()">
+            <mat-option *ngFor="let client of clients" [value]="client">{{client.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="start start">
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>{{ 'PAGES.APPS.USERS.DEPARTMENT' | translate }}</mat-label>
+          <mat-select matNativeControl formControlName="department" [compareWith]="departmentCompare">
+            <mat-option *ngFor="let department of departments" [value]="department">{{department.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="start start">
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>{{ 'PAGES.APPS.USERS.ROLE' | translate }}</mat-label>
+          <mat-select matNativeControl formControlName="role" [compareWith]="roleCompare" required>
+            <mat-option *ngFor="let role of roles" [value]="role">{{role.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </form>
+  
+  </div>
+  
+  <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+  
+    <button mat-button (click)="matDialogRef.close(form)" [disabled]="form.invalid" aria-label="SAVE">
+      {{ 'COMMONACTIONS.SAVE' | translate }}
+    </button>
+  
+  </div>
+</div>
+  

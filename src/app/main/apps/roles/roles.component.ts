@@ -6,71 +6,67 @@ import { TranslateService } from '@ngx-translate/core';
 import { FormGroup } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { DataSource } from '@angular/cdk/collections';
-import { UsersService } from './users.service';
+import { RolesService } from './roles.service';
 import { ConfirmFormComponent } from '../confirm-form/confirm-form.component';
-import { UserFormComponent } from './user-form/user-form.component';
+import { RoleFormComponent } from './role-form/role-form.component';
 
 @Component({
-  selector: 'app-users',
-  templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss'],
+  selector: 'app-roles',
+  templateUrl: './roles.component.html',
+  styleUrls: ['./roles.component.scss'],
   animations   : fuseAnimations,
   encapsulation: ViewEncapsulation.None
 })
-export class UsersComponent implements OnInit {
+export class RolesComponent implements OnInit {
 
   dataSource: FilesDataSource | null;
-  displayedColumns = ['userName', 'email', 'client', 'department', 'role', 'createDate', 'updateDate', 'buttons'];
+  displayedColumns = ['name', 'buttons'];
 
-  userDialogRef: MatDialogRef<UserFormComponent>;
+  roleDialogRef: MatDialogRef<RoleFormComponent>;
   confirmDialogRef: MatDialogRef<ConfirmFormComponent>;
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   @ViewChild(MatSort) sort: MatSort;
   
-  constructor(private usersService: UsersService,
+  constructor(private rolesService: RolesService,
     private _matDialog: MatDialog,
     private _matSnackBar: MatSnackBar,
     private translateService: TranslateService) { }
 
   ngOnInit() {
-    this.dataSource = new FilesDataSource(this.usersService, this.paginator, this.sort);
+    this.dataSource = new FilesDataSource(this.rolesService, this.paginator, this.sort);
   }
 
-  addUser() {
+  addRole() {
 
-    this.userDialogRef = this._matDialog.open(UserFormComponent, {
+    this.roleDialogRef = this._matDialog.open(RoleFormComponent, {
       panelClass: 'form-dialog',
       data: {
-        dialogTitle: 'PAGES.APPS.USERS.ADD'
+        dialogTitle: 'PAGES.APPS.ROLES.ADD'
       }
     });
 
-    this.userDialogRef.afterClosed()
+    this.roleDialogRef.afterClosed()
       .subscribe((form: FormGroup) => {
         if (form && form.valid) {
 
-          var user = {
-            userName: form.controls['userName'].value,
-            email: form.controls['email'].value,
-            clientId: form.controls['client'].value.id,
-            departmentId: form.controls['department'].value ? form.controls['department'].value.id : null,
-            roleId: form.controls['role'].value.id
+          var role = {
+            name: form.controls['name'].value
           };
 
-          this.usersService.addUser(user)
+          this.rolesService.addRole(role)
             .then(() => {
-              this.dataSource = new FilesDataSource(this.usersService, this.paginator, this.sort);
+              this.dataSource = new FilesDataSource(this.rolesService, this.paginator, this.sort);
               
-              this.translateService.get('PAGES.APPS.USERS.ADDSUCCESS').subscribe(message => {
+              this.translateService.get('PAGES.APPS.ROLES.ADDSUCCESS').subscribe(message => {
                 this.createSnackBar(message);
               });
               
             })
             .catch(res => {
               if (res && res.status && res.status == 403) {
-                this.translateService.get('PAGES.APPS.USERS.' + res.error).subscribe(message => {
+                this.translateService.get('PAGES.APPS.ROLES.' + res.error).subscribe(message => {
                   this.createSnackBar(message);
                 });
               }
@@ -79,40 +75,36 @@ export class UsersComponent implements OnInit {
       });
   }
 
-  editUser(user) {
-    this.userDialogRef = this._matDialog.open(UserFormComponent, {
+  editRole(role) {
+    this.roleDialogRef = this._matDialog.open(RoleFormComponent, {
       panelClass: 'form-dialog',
       data: {
-        dialogTitle: 'PAGES.APPS.USERS.EDIT',
-        object: user
+        dialogTitle: 'PAGES.APPS.ROLES.EDIT',
+        object: role
       }
     });
 
-    this.userDialogRef.afterClosed()
+    this.roleDialogRef.afterClosed()
       .subscribe((form: FormGroup) => {
         
         if (form && form.valid && form.controls['id'].value) {
 
-          var user = {
+          var role = {
             id: form.controls['id'].value,
-            userName: form.controls['userName'].value,
-            email: form.controls['email'].value,
-            clientId: form.controls['client'].value.id,
-            departmentId: form.controls['department'].value ? form.controls['department'].value.id : null,
-            roleId: form.controls['role'].value.id
+            name: form.controls['name'].value
           };
 
-          this.usersService.updateUser(user)
+          this.rolesService.updateRole(role)
             .then(() => {
-              this.dataSource = new FilesDataSource(this.usersService, this.paginator, this.sort);
+              this.dataSource = new FilesDataSource(this.rolesService, this.paginator, this.sort);
 
-              this.translateService.get('PAGES.APPS.USERS.EDITSUCCESS').subscribe(message => {
+              this.translateService.get('PAGES.APPS.ROLES.EDITSUCCESS').subscribe(message => {
                 this.createSnackBar(message);
               });
             })
             .catch(res => {
               if (res && res.status && res.status == 403) {
-                this.translateService.get('PAGES.USERS.USERS.' + res.error).subscribe(message => {
+                this.translateService.get('PAGES.APPS.ROLES.' + res.error).subscribe(message => {
                   this.createSnackBar(message);
                 });
               }
@@ -121,9 +113,9 @@ export class UsersComponent implements OnInit {
       });
   }
 
-  deleteUser(userId) {
+  deleteRole(roleId) {
     
-    this.translateService.get('PAGES.APPS.USERS.REMOVEQUESTION').subscribe(message => {
+    this.translateService.get('PAGES.APPS.ROLES.REMOVEQUESTION').subscribe(message => {
       this.confirmDialogRef = this._matDialog.open(ConfirmFormComponent, {
         disableClose: false
       });
@@ -133,21 +125,21 @@ export class UsersComponent implements OnInit {
       this.confirmDialogRef.afterClosed().subscribe(result => {
         if (result) {
 
-          var user = {
-            id: userId
+          var role = {
+            id: roleId
           };
 
-          this.usersService.deleteUser(user)
+          this.rolesService.deleteRole(role)
             .then(() => {
-              this.dataSource = new FilesDataSource(this.usersService, this.paginator, this.sort);
+              this.dataSource = new FilesDataSource(this.rolesService, this.paginator, this.sort);
 
-              this.translateService.get('PAGES.APPS.USERS.REMOVESUCCESS').subscribe(message => {
+              this.translateService.get('PAGES.APPS.ROLES.REMOVESUCCESS').subscribe(message => {
                 this.createSnackBar(message);
               });
             })
             .catch(res => {
               if (res && res.status && res.status == 403) {
-                this.translateService.get('PAGES.APPS.USERS.' + res.error).subscribe(message => {
+                this.translateService.get('PAGES.APPS.ROLES.' + res.error).subscribe(message => {
                   this.createSnackBar(message);
                 });
               }
@@ -171,16 +163,16 @@ export class FilesDataSource extends DataSource<any> {
   private _filterChange = new BehaviorSubject('');
   private _filteredDataChange = new BehaviorSubject('');
 
-  constructor(private usersService: UsersService,
+  constructor(private rolesService: RolesService,
     private _matPaginator: MatPaginator,
     private _matSort: MatSort) {
     super();
-    this.filteredData = this.usersService.users;
+    this.filteredData = this.rolesService.roles;
   }
 
   connect(): Observable<any[]> {
     const displayDataChanges = [
-      this.usersService.onUsersChanged,
+      this.rolesService.onRolesChanged,
       this._matPaginator.page,
       this._filterChange,
       this._matSort.sortChange
@@ -188,7 +180,7 @@ export class FilesDataSource extends DataSource<any> {
 
     return merge(...displayDataChanges)
     .pipe(map(() => {
-      let data = this.usersService.users.slice();
+      let data = this.rolesService.roles.slice();
       data = this.filterData(data);
       this.filteredData = [...data];
       data = this.sortData(data);
@@ -229,26 +221,8 @@ export class FilesDataSource extends DataSource<any> {
       let propertyB: number | string = '';
 
       switch ( this._matSort.active ) {
-        case 'userName':
-          [propertyA, propertyB] = [a.userName, b.userName];
-          break;
-        case 'email':
-          [propertyA, propertyB] = [a.email, b.email];
-          break;
-        case 'client':
-          [propertyA, propertyB] = [a.client.name, b.client.name];
-          break;
-        case 'department':
-          [propertyA, propertyB] = [a.department.name, b.department.name];
-          break;
-        case 'role':
-          [propertyA, propertyB] = [a.role.name, b.role.name];
-          break;
-        case 'createDate':
-          [propertyA, propertyB] = [a.createDate, b.createDate];
-          break;
-        case 'updateDate':
-          [propertyA, propertyB] = [a.updateDate, b.updateDate];
+        case 'name':
+          [propertyA, propertyB] = [a.name, b.name];
           break;
       }
 

@@ -7,7 +7,7 @@ export class Client {
     constructor(client?) {
         var client = client || {};
 
-        this.id = client.id || 0;
+        this.id = client.id || null;
         this.name = client.name || null;
         this.createDate = client.createDate || new Date();
         this.updateDate = client.updateDate || null;

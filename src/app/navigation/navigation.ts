@@ -22,6 +22,13 @@ export const navigation: FuseNavigation[] = [
                 url      : '/apps/departments'
             },
             {
+                id       : 'roles',
+                title    : 'Roles',
+                translate: 'NAV.ROLES',
+                type     : 'item',
+                url      : '/apps/roles'
+            },
+            {
                 id       : 'users',
                 title    : 'Users',
                 translate: 'NAV.USERS',

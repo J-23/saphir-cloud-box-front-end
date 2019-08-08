@@ -19,6 +19,13 @@ import { UsersComponent } from './users/users.component';
 import { ClientsService } from './clients/clients.service';
 import { ConfirmFormComponent } from './confirm-form/confirm-form.component';
 import { ClientFormComponent } from './clients/client-form/client-form.component';
+import { DepartmentsService } from './departments/departments.service';
+import { DepartmentFormComponent } from './departments/department-form/department-form.component';
+import { RolesComponent } from './roles/roles.component';
+import { RolesService } from './roles/roles.service';
+import { RoleFormComponent } from './roles/role-form/role-form.component';
+import { UsersService } from './users/users.service';
+import { UserFormComponent } from './users/user-form/user-form.component';
 
 const routes = [
     {
@@ -30,11 +37,24 @@ const routes = [
     },
     {
         path: 'departments',
-        component: DepartmentsComponent
+        component: DepartmentsComponent,
+        resolve  : {
+            data: DepartmentsService
+        }
     },
     {
-      path: 'users',
-      component: UsersComponent
+        path: 'roles',
+        component: RolesComponent,
+        resolve  : {
+            data: RolesService
+        }
+    },
+    {
+        path: 'users',
+        component: UsersComponent,
+        resolve  : {
+            data: UsersService
+        }
     },
 ];
 
@@ -78,15 +98,25 @@ const routes = [
         ClientsComponent,
         DepartmentsComponent,
         UsersComponent,
+        ClientFormComponent,
         ConfirmFormComponent,
-        ClientFormComponent
+        DepartmentFormComponent,
+        RolesComponent,
+        RoleFormComponent,
+        UserFormComponent
     ],
     providers: [
-        ClientsService
+        ClientsService,
+        DepartmentsService,
+        RolesService,
+        UsersService
     ],
     entryComponents: [
+        ClientFormComponent,
         ConfirmFormComponent,
-        ClientFormComponent
+        DepartmentFormComponent,
+        RoleFormComponent,
+        UserFormComponent
     ]
 })
 export class AppsModule

@@ -22,14 +22,12 @@ export class ClientsComponent implements OnInit {
   dataSource: FilesDataSource | null;
   displayedColumns = ['name', 'createDate', 'updateDate', 'buttons'];
 
-  clientDialogRef: MatDialogRef<ClientFormComponent>;
+  clientDialogRef: any;
   confirmDialogRef: MatDialogRef<ConfirmFormComponent>;
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   @ViewChild(MatSort) sort: MatSort;
-
-  private _unsubscribeAll: Subject<any>;
   
   constructor(private clientsService: ClientsService,
     private _matDialog: MatDialog,
@@ -68,7 +66,9 @@ export class ClientsComponent implements OnInit {
             })
             .catch(res => {
               if (res && res.status && res.status == 403) {
-                this.createSnackBar(res.error);
+                this.translateService.get('PAGES.APPS.CLIENTS.' + res.error).subscribe(message => {
+                  this.createSnackBar(message);
+                });
               }
             });
         }
@@ -104,7 +104,9 @@ export class ClientsComponent implements OnInit {
             })
             .catch(res => {
               if (res && res.status && res.status == 403) {
-                this.createSnackBar(res.error);
+                this.translateService.get('PAGES.APPS.CLIENTS.' + res.error).subscribe(message => {
+                  this.createSnackBar(message);
+                });
               }
             });
         }
@@ -122,7 +124,12 @@ export class ClientsComponent implements OnInit {
 
       this.confirmDialogRef.afterClosed().subscribe(result => {
         if (result) {
-          this.clientsService.deleteClient(clientId)
+
+          var client = {
+            id: clientId
+          };
+
+          this.clientsService.deleteClient(client)
             .then(() => {
               this.dataSource = new FilesDataSource(this.clientsService, this.paginator, this.sort);
 
@@ -132,7 +139,9 @@ export class ClientsComponent implements OnInit {
             })
             .catch(res => {
               if (res && res.status && res.status == 403) {
-                this.createSnackBar(res.error);
+                this.translateService.get('PAGES.APPS.CLIENTS.' + res.error).subscribe(message => {
+                  this.createSnackBar(message);
+                });
               }
             });
         }

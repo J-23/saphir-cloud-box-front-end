@@ -9,6 +9,12 @@ export const locale = {
         },
         'PAGES': {
             'APPS': {
+                'CLIENTS': {
+                    'NAME': 'Name',
+                    'CREATEDATE': 'Create date',
+                    'UPDATEDATE': 'Update date',
+                    'ADD': 'Add client'
+                },
                 'CARS': {
                     'GENERAL': 'General',
                     'SPEC': 'Spec',

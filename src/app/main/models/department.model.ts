@@ -10,7 +10,7 @@ export class Department {
     constructor(department?) {
         var department = department || {};
 
-        this.id = department.id || 0;
+        this.id = department.id || null;
         this.name = department.name || null;
         this.createDate = department.createDate || new Date();
         this.updateDate = department.updateDate || null;

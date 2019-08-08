@@ -9,6 +9,12 @@
         },
         'PAGES': {
             'APPS': {
+                'CLIENTS': {
+                    'NAME': 'Name',
+                    'CREATEDATE': 'Erstellungsdatum',
+                    'UPDATEDATE': 'Änderungsdatum',
+                    'ADD': 'Добавить клиента'
+                },
                 'CARS': {
                     'GENERAL': 'Allgemein',
                     'SPEC': 'Technische Daten',
