@@ -41,11 +41,11 @@ const appRoutes: Routes = [
     {
         path: 'apps',
         loadChildren: './main/apps/apps.module#AppsModule',
-        //canActivate: [AuthorizedUserGuard]
+        canActivate: [AuthorizedUserGuard]
     },
     {
         path      : '**',
-        redirectTo: 'auth/login'
+        redirectTo: 'apps/clients'
     }
 ];
 

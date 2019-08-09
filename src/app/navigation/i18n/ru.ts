@@ -5,7 +5,7 @@ export const locale = {
             'APPLICATIONS': 'Saphir Cloud Box',
             'CLIENTS': 'Клиенты',
             'DEPARTMENTS': 'Отделы',
-            'USERS': 'Пользователя',
+            'USERS': 'Пользователи',
             'ROLES': 'Роли'
         },
         'PAGES': {
@@ -85,18 +85,13 @@ export const locale = {
                 'DONTHAVEACCOUNT': 'У Вас нет аккаунта?',
                 'CREATEACCOUNT': 'Создайте аккаунт',
                 'CREATEACCOUNTTITLE': 'РЕГИСТРАЦИЯ',
-                'FIRSTNAME': 'Имя',
-                'LASTNAME': 'Фамилия',
-                'PHONENUMBER': 'Номер телефона',
+                'USERNAME': 'Имя',
+                'CLIENT': 'Клиент',
+                'DEPARTMENT': 'Отдел',
                 'PASSWORDCONFIRM': 'Подтверждение пароля',
                 'HAVEACCOUNT': 'У Вас уже есть аккаунт?',
                 'TOLOGIN': 'Войдите',
                 'LOGOUT': 'Выход',
-                'INVALIDEMAILORPASSWORD': 'Неверный email или пароль',
-                'INVALIDREFRESHTOKEN': 'Неверный обновленный токен',
-                'SAMENAME': 'Пользователь с таким же email уже существует',
-                'NOTEXIST': "Пользователя с данным email не существует",
-                'INVALIDTOKEN': 'Неверный токен',
                 'OOPS': 'Упс! Что-то пошло не так. Пожалуйста, свяжитесь со службой поддержки, и мы постараемся исправить это в ближайшее время',
                 'RECOVERPASSWORD': 'ВОССТАНОВИТЕ СВОЙ ПАРОЛЬ',
                 'SENDRESETLINK': 'ОТПРАВИТЬ ПИСЬМО',
@@ -112,12 +107,10 @@ export const locale = {
                 'RESETPASSWORD': 'СБРОС ПАРОЛЯ',
                 'EMPTYPASSWORDCONFIRM': 'Подтверждение пароля обязательно',
                 'INVALIDPASSWORDCONFIRM': 'Пароли должны совпадать',
-                'EMPTYFIRSTNAME': 'Имя обязательно',
-                'EMPTYLASTNAME': 'Фамилия обязательна',
-                'INVALIDFORGOTPASSWORDTOKEN': 'Неверный токен'
-            },
-            'ERRORS': {
-
+                'EMPTYUSERNAME': 'Имя обязательно',
+                'NOT_FOUNT': 'Не найден пользователь',
+                'UNATHORIZED': 'Упс! Что-то пошло не так. Пожалуйста, свяжитесь со службой поддержки, и мы постараемся исправить это в ближайшее время',
+                'SAME_NAME': 'Пользователь с такой же почтой уже существует'
             }
         },
         'COMMONACTIONS': {

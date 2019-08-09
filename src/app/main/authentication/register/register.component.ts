@@ -9,6 +9,10 @@ import { AuthenticationService } from '../authentication.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
+import { ClientsService } from 'app/main/apps/clients/clients.service';
+import { DepartmentsService } from 'app/main/apps/departments/departments.service';
+import { Client } from 'app/main/models/client.model';
+import { Department } from 'app/main/models/department.model';
 
 @Component({
     selector     : 'register',
@@ -25,12 +29,17 @@ export class RegisterComponent implements OnInit, OnDestroy
 
     private _unsubscribeAll: Subject<any>;
 
+    clients: Client[] = [];
+    departments: Department[] = [];
+
     constructor(private _fuseConfigService: FuseConfigService,
         private _formBuilder: FormBuilder,
         private authenticationService: AuthenticationService,
         private router: Router,
         private _matSnackBar: MatSnackBar,
-        private translateService: TranslateService) {
+        private translateService: TranslateService,
+        private clientsService: ClientsService,
+        private departmentsService: DepartmentsService) {
 
         this._fuseConfigService.config = {
             layout: {
@@ -53,11 +62,14 @@ export class RegisterComponent implements OnInit, OnDestroy
     }
 
     ngOnInit(): void {
+
+        this.getClients();
+
         this.registerForm = this._formBuilder.group({
-            firstName: ['', Validators.required],
-            lastName: ['', Validators.required],
+            userName: ['', Validators.required],
             email: ['', [Validators.required, Validators.email]],
-            mobile: [''],
+            client: [null, Validators.required],
+            department: [null],
             password: ['', Validators.required],
             passwordConfirm: ['', [Validators.required, confirmPasswordValidator]]
         });
@@ -76,12 +88,12 @@ export class RegisterComponent implements OnInit, OnDestroy
 
     register(){
         if (this.registerForm.valid) {
-            this.authenticationService.register(this.registerForm.controls['firstName'].value,
-                this.registerForm.controls['lastName'].value,
+            this.authenticationService.register(this.registerForm.controls['userName'].value,
                 this.registerForm.controls['email'].value,
-                this.registerForm.controls['mobile'].value,
+                this.registerForm.controls['client'].value.id,
                 this.registerForm.controls['password'].value,
-                this.registerForm.controls['passwordConfirm'].value)
+                this.registerForm.controls['passwordConfirm'].value,
+                this.registerForm.controls['department'].value ? this.registerForm.controls['department'].value.id : null)
                 .then(() => {
                     this.isRegister = false;
                     this.router.navigate(['/apps/cars/list']);
@@ -107,6 +119,25 @@ export class RegisterComponent implements OnInit, OnDestroy
           duration: 5000
         });
     }
+
+    getClients(){
+        this.clientsService.getClients()
+        .then(clients => {
+            this.clients = clients;
+        })
+        .catch();
+    }
+
+    getDepartmentsByClientId() {
+        if (this.registerForm.controls['client'].valid && this.registerForm.controls['client'].value) {
+          this.departmentsService.getDepartmentsByClientId(this.registerForm.controls['client'].value.id)
+            .then(departments => {
+              this.departments = departments;
+            })
+            .catch();
+        }
+      }
+    
 }
 
 export const confirmPasswordValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {

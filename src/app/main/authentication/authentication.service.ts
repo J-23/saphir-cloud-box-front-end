@@ -11,7 +11,8 @@ export const ANONYMOUS_USER: AppUser = {
     userName: undefined,
     email: undefined,
     client: undefined,
-    department: undefined
+    department: undefined,
+    role: undefined
   }
 
 @Injectable()
@@ -57,16 +58,16 @@ export class AuthenticationService {
         });
     }
 
-    register(firstName: string, lastName: string, email: string, phoneNumber: string,
-        password: string, passwordConfirm: string): Promise<any> {
+    register(userName: string, email: string, clientId: number, password: string, passwordConfirm: string,
+        departmentId?: number): Promise<any> {
         
         var body = {
-            FirstName: firstName,
-            LastName: lastName,
+            UserName: userName,
             Email: email,
-            Mobile: phoneNumber,
             Password: password,
-            PasswordConfirm: passwordConfirm
+            PasswordConfirmed: passwordConfirm,
+            ClientId: clientId,
+            DepartmentId: departmentId
         };
 
         return new Promise((resolve, reject) => {

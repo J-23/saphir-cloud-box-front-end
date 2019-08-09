@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/740dec05-4a3d-43a8-8229-800a344c0448/resourceGroups/SaphirCloudBox/providers/Microsoft.Web/sites/saphir-cloud-box-ui",
+    "appService.deploySubpath": "dist"
+}

@@ -33,28 +33,32 @@ const routes = [
         component: ClientsComponent,
         resolve  : {
             data: ClientsService
-        }
+        },
+        canActivate: [AuthorizedUserGuard]
     },
     {
         path: 'departments',
         component: DepartmentsComponent,
         resolve  : {
             data: DepartmentsService
-        }
+        },
+        canActivate: [AuthorizedUserGuard]
     },
     {
         path: 'roles',
         component: RolesComponent,
         resolve  : {
             data: RolesService
-        }
+        },
+        canActivate: [AuthorizedUserGuard]
     },
     {
         path: 'users',
         component: UsersComponent,
         resolve  : {
             data: UsersService
-        }
+        },
+        canActivate: [AuthorizedUserGuard]
     },
 ];
 

@@ -14,20 +14,11 @@
             <form name="registerForm" [formGroup]="registerForm" novalidate>
 
                 <mat-form-field appearance="outline">
-                    <mat-label>{{ 'PAGES.AUTH.FIRSTNAME' | translate }}</mat-label>
-                    <input matInput formControlName="firstName">
+                    <mat-label>{{ 'PAGES.AUTH.USERNAME' | translate }}</mat-label>
+                    <input matInput formControlName="userName">
                     <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
                     <mat-error>
-                        {{ 'PAGES.AUTH.EMPTYFIRSTNAME' | translate }}
-                    </mat-error>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline">
-                    <mat-label>{{ 'PAGES.AUTH.LASTNAME' | translate }}</mat-label>
-                    <input matInput formControlName="lastName">
-                    <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
-                    <mat-error>
-                        {{ 'PAGES.AUTH.EMPTYLASTNAME' | translate }}
+                        {{ 'PAGES.AUTH.EMPTYUSERNAME' | translate }}
                     </mat-error>
                 </mat-form-field>
 
@@ -44,9 +35,17 @@
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
-                    <mat-label>{{ 'PAGES.AUTH.PHONENUMBER' | translate }}</mat-label>
-                    <input matInput formControlName="mobile">
-                    <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                    <mat-label>{{ 'PAGES.AUTH.CLIENT' | translate }}</mat-label>
+                    <mat-select matNativeControl formControlName="client" required (selectionChange)="getDepartmentsByClientId()">
+                        <mat-option *ngFor="let client of clients" [value]="client">{{client.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>{{ 'PAGES.AUTH.DEPARTMENT' | translate }}</mat-label>
+                    <mat-select matNativeControl formControlName="department">
+                        <mat-option *ngFor="let department of departments" [value]="department">{{department.name}}</mat-option>
+                    </mat-select>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">

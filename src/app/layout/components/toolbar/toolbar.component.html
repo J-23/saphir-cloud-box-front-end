@@ -24,7 +24,7 @@
                     class="user-button" *ngIf="user">
                 <div fxLayout="row" fxLayoutAlign="center center">
                     <span class="username mr-12"fxShow.gt-sm 
-                        *ngIf="user.firstName && user.lastName">{{user.firstName}} {{user.lastName}}</span>
+                        *ngIf="user.userName">{{user.userName}}</span>
                     <mat-icon class="s-16">keyboard_arrow_down</mat-icon>
                 </div>
             </button>

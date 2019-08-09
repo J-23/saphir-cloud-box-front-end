@@ -43,6 +43,11 @@ export class UserFormComponent implements OnInit {
     this.form = this.createForm();
 
     this.getClients();
+
+    if (this.object) {
+      this.getDepartmentsByClientId();
+    }
+    
     this.getRoles();
   }
 
@@ -82,7 +87,9 @@ export class UserFormComponent implements OnInit {
         client    : new FormControl(this.object.client, Validators.required),
         department: new FormControl(this.object.department),
         role      : new FormControl(this.object.role, Validators.required)
-      })
+      });
+
+      
     }
     
     return new FormGroup({

@@ -25,6 +25,7 @@
                         "assets": [
                             "src/favicon.ico",
                             "src/assets",
+                            "src/web.config",
                             "src/app/main/angular-material-elements"
                         ],
                         "styles": [
