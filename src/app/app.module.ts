@@ -23,10 +23,9 @@ import { HttpModule } from '@angular/http';
 import { AuthorizedUserGuard } from './main/guards/authorized-user.guard';
 import { AuthenticationService } from './main/authentication/authentication.service';
 import { HeaderInterceptor } from './main/interceptors/header.interceptor';
-import { AppsModule } from './main/apps/apps.module';
-import { AuthenticationModule } from './main/authentication/authentication.module';
 import { ConfirmMessageGuard } from './main/guards/confirm-message.guard';
 import { ResetPasswordGuard } from './main/guards/reset-password.guard';
+import { FolderNavigationService } from './navigation/folder-navigation.service';
 
 const appRoutes: Routes = [
     {
@@ -41,6 +40,11 @@ const appRoutes: Routes = [
     {
         path: 'apps',
         loadChildren: './main/apps/apps.module#AppsModule',
+        canActivate: [AuthorizedUserGuard]
+    },
+    {
+        path: 'file-manager',
+        loadChildren: './main/file-manager/file-manager.module#FileManagerModule',
         canActivate: [AuthorizedUserGuard]
     },
     {
@@ -78,9 +82,7 @@ const appRoutes: Routes = [
 
         // App modules
         LayoutModule,
-        AppStoreModule,
-        AppsModule,
-        AuthenticationModule
+        AppStoreModule
     ],
     providers: [
         AppConfig,
@@ -100,7 +102,8 @@ const appRoutes: Routes = [
           provide: HTTP_INTERCEPTORS,
           useClass: HeaderInterceptor,
           multi: true
-        }
+        },
+        FolderNavigationService
     ],
     bootstrap   : [
         AppComponent

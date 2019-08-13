@@ -1,0 +1,38 @@
+<div id="file-manager" class="page-layout simple right-sidebar inner-scroll">
+            
+    <div class="center" fxFlex>
+
+        <div class="header teal-300 p-24" fxLayout="column" fxLayoutAlign="space-between start">
+
+            <div class="breadcrumb text-truncate h1 pl-10" fxLayout="row" fxLayoutAlign="start center" [@animate]="{value:'*',params:{x:'50px'}}">
+                <div *ngFor="let path of pathArr; last  as isLast" fxLayout="row" fxLayoutAlign="start center">
+                    <span>{{path}}</span>
+                    <mat-icon *ngIf="!isLast" class="separator">chevron_right</mat-icon>
+                </div>
+            </div>
+
+            <div>
+                <button mat-raised-button class="fuse-white mt-24 mt-md-0" (click)="addFolder()" 
+                    [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}">
+                    <span>Add folder</span>
+                </button>
+                <button mat-raised-button class="fuse-white mt-24 mt-md-0 ml-24" (click)="addFile()" 
+                    [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}">
+                    <span>Add file</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="content" fusePerfectScrollbar>
+            <file-list></file-list>
+        </div>
+
+    </div>
+
+    <div *ngIf="selected">
+        <fuse-sidebar class="sidebar details-sidebar" name="file-manager-details-sidebar" position="right" lockedOpen="gt-md" style="right: 0 !important">
+            <file-manager-details-sidebar></file-manager-details-sidebar>
+        </fuse-sidebar>
+    </div>
+
+</div>

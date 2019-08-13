@@ -15,6 +15,8 @@ import { navigation } from 'app/navigation/navigation';
 import { locale as english } from 'app/navigation/i18n/en';
 import { locale as german } from 'app/navigation/i18n/de';
 import { locale as russian } from 'app/navigation/i18n/ru';
+import { FileManagerService } from './main/file-manager/file-manager.service';
+import { FolderNavigationService } from './navigation/folder-navigation.service';
 
 @Component({
     selector   : 'app',
@@ -49,17 +51,20 @@ export class AppComponent implements OnInit, OnDestroy
         private _fuseSplashScreenService: FuseSplashScreenService,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private _translateService: TranslateService,
-        private _platform: Platform
+        private _platform: Platform,
+        private folderNavigationService: FolderNavigationService
     )
     {
+        this.SetNavigation();
+
         // Get default navigation
-        this.navigation = navigation;
+        //this.navigation = navigation;
 
         // Register the navigation to the service
-        this._fuseNavigationService.register('main', this.navigation);
+        //this._fuseNavigationService.register('main', this.navigation);
 
         // Set the main navigation as our current navigation
-        this._fuseNavigationService.setCurrentNavigation('main');
+        //this._fuseNavigationService.setCurrentNavigation('main');
 
         // Add languages
         this._translateService.addLangs(['en', 'de', 'ru']);
@@ -116,6 +121,36 @@ export class AppComponent implements OnInit, OnDestroy
         this._unsubscribeAll = new Subject();
     }
 
+    SetNavigation() {
+        this.folderNavigationService.getFolder(1)
+            .then(folder => {
+
+                var child = folder.map(folder => {
+                    if (folder.isDirectory) {
+                        return { 
+                            id: folder.id,
+                            title: folder.name,
+                            type: 'item',
+                            url: `/file-manager/${folder.name}/${folder.id}/${folder.accessType}`
+                        }
+                    }
+                });
+                
+                navigation.push({
+                    id: 'file-manager',
+                    title: 'File Manager',
+                    type: 'group',
+                    children: child
+                });
+
+                this.navigation = navigation;
+
+                this._fuseNavigationService.register('main', this.navigation);
+
+                this._fuseNavigationService.setCurrentNavigation('main');
+            })
+            .catch();
+    }
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
     // -----------------------------------------------------------------------------------------------------

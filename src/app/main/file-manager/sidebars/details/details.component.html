@@ -1,0 +1,79 @@
+<div class="header teal-300 p-24" fxLayout="column" fxLayoutAlign="space-between">
+
+    <div class="toolbar" fxLayout="row" fxLayoutAlign="end center">
+
+        <button mat-icon-button matTooltip="Delete">
+            <mat-icon>delete</mat-icon>
+        </button>
+
+        <button *ngIf="!selected.isDirectory" mat-icon-button matTooltip="Download">
+            <mat-icon>cloud_download</mat-icon>
+        </button>
+
+        <button mat-icon-button matTooltip="More">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+    </div>
+
+    <div>
+        <div class="title mb-8">{{selected.name}}</div>
+        <div class="subtitle secondary-text">
+            <span>Edited</span>
+            <span *ngIf="selected.updateBy">: {{selected.updateBy.userName}}</span>
+            <span *ngIf="!selected.updateBy">: {{selected.createBy.userName}}</span>
+        </div>
+    </div>
+</div>
+
+<div class="content p-24" fusePerfectScrollbar>
+
+    <div class="file-details" [@animate]="{value:'*',params:{delay:'200ms'}}">
+
+        <div class="preview file-icon" fxLayout="row" fxLayoutAlign="center center">
+            <mat-icon *ngIf="selected.isDirectory" class="type-icon s-48">folder</mat-icon>
+            <mat-icon *ngIf="!selected.isDirectory" class="type-icon s-48">insert_drive_file</mat-icon>
+        </div>
+
+        <div class="title">Info</div>
+
+        <table>
+
+            <tr>
+                <th>Type</th>
+                <td *ngIf="selected.isDirectory">folder</td>
+                <td *ngIf="!selected.isDirectory">file</td>
+            </tr>
+
+            <tr class="modified">
+                <th>Location</th>
+                <td></td>
+            </tr>
+
+            <tr class="owner">
+                <th>Owner</th>
+                <td>{{selected.createBy.userName}}</td>
+            </tr>
+
+            <tr class="modified">
+                <th>Modified by</th>
+                <td *ngIf="selected.updateBy">{{selected.updateBy.userName}}</td>
+            </tr>
+
+            <tr class="modified">
+                <th>Modified by</th>
+                <td *ngIf="selected.updateDate">{{selected.updateDate | date: 'dd/MM/yyyy hh:mm'}}</td>
+            </tr>
+
+            <tr class="created">
+                <th>Created by</th>
+                <td>{{selected.createBy.userName}}</td>
+            </tr>
+
+            <tr class="created">
+                <th>Created by</th>
+                <td>{{selected.createDate | date: 'dd/MM/yyyy hh:mm'}}</td>
+            </tr>
+        </table>
+    </div>
+
+</div>

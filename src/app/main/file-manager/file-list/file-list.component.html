@@ -1,0 +1,67 @@
+<mat-table #table [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
+
+    <!-- Type Column -->
+    <ng-container matColumnDef="icon">
+        <mat-header-cell *matHeaderCellDef fxFlex="64px"></mat-header-cell>
+        <mat-cell *matCellDef="let row" fxFlex="64px">
+            <mat-icon *ngIf="row.isDirectory" class="type-icon">folder</mat-icon>
+            <mat-icon *ngIf="!row.isDirectory" class="type-icon">insert_drive_file</mat-icon>
+        </mat-cell>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.name}}</mat-cell>
+    </ng-container>
+
+    <!-- Modified Column -->
+    <ng-container matColumnDef="modified">
+        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>Modified</mat-header-cell>
+        <mat-cell *matCellDef="let row" fxHide fxShow.gt-md>
+            <div *ngIf="row.updateDate">
+                {{row.updateDate | date: 'dd/MM/yyyy hh:mm'}}
+            </div>
+            <div *ngIf="!row.updateDate">
+                {{row.createDate | date: 'dd/MM/yyyy hh:mm'}}
+            </div>
+        </mat-cell>
+    </ng-container>
+
+    <!-- Size Column -->
+    <ng-container matColumnDef="access">
+        <mat-header-cell *matHeaderCellDef fxHide.xs>Право просмотра</mat-header-cell>
+        <mat-cell *matCellDef="let row" fxHide.xs></mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="button">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let row">
+            <div fxLayoutAlign="end center">
+      
+                <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More" (click)="$event.stopPropagation();">
+                    <mat-icon class="secondary-text">more_vert</mat-icon>
+                </button>
+      
+                <mat-menu #moreMenu="matMenu">
+                    <button mat-menu-item aria-label="edit">
+                        <mat-icon>cloud_download</mat-icon>
+                        <span>Download</span>
+                    </button>
+                    <button mat-menu-item aria-label="remove">
+                        <mat-icon>delete</mat-icon>
+                        <span>{{ 'COMMONACTIONS.REMOVE' | translate }}</span>
+                    </button>
+                </mat-menu>
+            </div>
+      
+        </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"
+             (click)="onSelect(row)"
+             [ngClass]="{'selected' : row == selected}"
+             matRipple [@animate]="{value:'*',params:{y:'100%'}}">
+    </mat-row>
+</mat-table>

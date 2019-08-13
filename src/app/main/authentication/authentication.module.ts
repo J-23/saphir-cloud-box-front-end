@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSelectModule } from '@angular/material';
+import { MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSelectModule, MatSnackBarModule } from '@angular/material';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { RouterModule } from '@angular/router';
 import { AuthenticationService } from './authentication.service';
@@ -48,6 +48,7 @@ const routes = [
     MatIconModule,
     MatInputModule,
     MatSelectModule,
+    MatSnackBarModule,
     
     FuseSharedModule,
 
