@@ -19,6 +19,11 @@ export interface FuseNavigationItem
         fg?: string;
     };
     children?: FuseNavigationItem[];
+    button?: {
+        id: string;
+        title: string;
+        icon?: string;
+    }
 }
 
 export interface FuseNavigation extends FuseNavigationItem

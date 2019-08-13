@@ -4,7 +4,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
-import { MatButtonModule, MatIconModule } from '@angular/material';
+import { MatButtonModule, MatIconModule, MatDialogModule, MatToolbarModule, MatInputModule } from '@angular/material';
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { TranslateModule } from '@ngx-translate/core';
 import 'hammerjs';
@@ -26,6 +26,8 @@ import { HeaderInterceptor } from './main/interceptors/header.interceptor';
 import { ConfirmMessageGuard } from './main/guards/confirm-message.guard';
 import { ResetPasswordGuard } from './main/guards/reset-password.guard';
 import { FolderNavigationService } from './navigation/folder-navigation.service';
+import { FileManagerService } from './main/file-manager/file-manager.service';
+import { FolderFormComponent } from './main/file-manager/folder-form/folder-form.component';
 
 const appRoutes: Routes = [
     {
@@ -55,7 +57,8 @@ const appRoutes: Routes = [
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
+        FolderFormComponent
     ],
     imports     : [
         BrowserModule,
@@ -72,6 +75,9 @@ const appRoutes: Routes = [
         // Material
         MatButtonModule,
         MatIconModule,
+        MatDialogModule,
+        MatToolbarModule,
+        MatInputModule,
 
         // Fuse modules
         FuseModule.forRoot(fuseConfig),
@@ -103,10 +109,14 @@ const appRoutes: Routes = [
           useClass: HeaderInterceptor,
           multi: true
         },
-        FolderNavigationService
+        FolderNavigationService,
+        FileManagerService
     ],
     bootstrap   : [
         AppComponent
+    ],
+    entryComponents: [
+        FolderFormComponent
     ]
 })
 export class AppModule

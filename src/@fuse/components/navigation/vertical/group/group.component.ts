@@ -71,4 +71,7 @@ export class FuseNavVerticalGroupComponent implements OnInit, OnDestroy
         this._unsubscribeAll.complete();
     }
 
+    addFolder() {
+        this._fuseNavigationService.onButtonAddFolder.next(true);
+    }
 }

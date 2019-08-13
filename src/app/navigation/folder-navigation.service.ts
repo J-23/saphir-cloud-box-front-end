@@ -15,6 +15,7 @@ export class FolderNavigationService {
   }
 
   getFolder(parentId: number): Promise<any> {
+    
     return new Promise((resolve, reject) => {
       this._httpClient.get(this.baseURL + `/api/file-storage/${parentId}`)
         .subscribe((response: any) => {

@@ -10,6 +10,8 @@ export class FileManagerService implements Resolve<any> {
     onRouteParamsChanged: BehaviorSubject<any>;
 
     onFilesChanged: BehaviorSubject<any>;
+    onOwnerChanged: BehaviorSubject<any>;
+    onClientChanged: BehaviorSubject<any>;
     onFileSelected: BehaviorSubject<any>;
 
     private baseURL: string;
@@ -21,6 +23,8 @@ export class FileManagerService implements Resolve<any> {
         this.onFileSelected = new BehaviorSubject({});
         this.onRouteParamsChanged = new BehaviorSubject({});
 
+        this.onClientChanged = new BehaviorSubject(null);
+        this.onOwnerChanged = new BehaviorSubject(null);
         this.baseURL = this.appConfig['config']['URL'];
     }
 
@@ -48,10 +52,13 @@ export class FileManagerService implements Resolve<any> {
             this.onRouteParamsChanged.subscribe(routeParams => {
                 if (routeParams && routeParams.parentId) {
                     this._httpClient.get(this.baseURL + `/api/file-storage/${routeParams.parentId}`)
-                    .subscribe((response: any) => {
-                        this.onFilesChanged.next(response);
-                        this.onFileSelected.next(response[0]);
-                        resolve(response);
+                    .subscribe((folder: any) => {
+                        this.onFilesChanged.next(folder.files);
+                        this.onOwnerChanged.next(folder.ownerId);
+                        this.onClientChanged.next(folder.clientId);
+                        this.onFileSelected.next(folder.files[0]);
+
+                        resolve(folder.files);
                     }, reject);
                 }
                 else {

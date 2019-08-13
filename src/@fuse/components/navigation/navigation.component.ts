@@ -55,7 +55,6 @@ export class FuseNavigationComponent implements OnInit
 
                 // Load the navigation
                 this.navigation = this._fuseNavigationService.getCurrentNavigation();
-
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });

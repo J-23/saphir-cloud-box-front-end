@@ -2,6 +2,9 @@
 
     <div class="group-title" [ngClass]="item.classes">
         <span class="hint-text" [translate]="item.translate">{{ item.title }}</span>
+        <button mat-mini-fab *ngIf="item.button" class="teal-300 button-add-folder" (click)="addFolder()">
+            <span class="fa fa-plus" aria-hidden="true"></span>
+        </button>
     </div>
 
     <div class="group-items">

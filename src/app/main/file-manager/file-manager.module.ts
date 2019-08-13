@@ -15,7 +15,7 @@ import { FileFormComponent } from './file-form/file-form.component';
 
 const routes: Routes = [
     {
-        path     : ':parentName/:parentId/:parentType',
+        path     : ':parentName/:parentId',
         component: FileManagerComponent,
         resolve  : {
             files: FileManagerService
@@ -28,7 +28,6 @@ const routes: Routes = [
         FileManagerComponent,
         FileManagerFileListComponent,
         FileManagerDetailsSidebarComponent,
-        FolderFormComponent,
         FileFormComponent
     ],
     imports     : [
@@ -54,7 +53,6 @@ const routes: Routes = [
         FileManagerService
     ],
     entryComponents: [
-        FolderFormComponent,
         FileFormComponent
     ]
 })

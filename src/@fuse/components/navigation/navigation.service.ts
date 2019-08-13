@@ -23,6 +23,8 @@ export class FuseNavigationService
     private _currentNavigationKey: string;
     private _registry: { [key: string]: any } = {};
 
+    onButtonAddFolder: BehaviorSubject<boolean>;
+
     /**
      * Constructor
      */
@@ -40,6 +42,8 @@ export class FuseNavigationService
         this._onNavigationItemAdded = new BehaviorSubject(null);
         this._onNavigationItemUpdated = new BehaviorSubject(null);
         this._onNavigationItemRemoved = new BehaviorSubject(null);
+
+        this.onButtonAddFolder = new BehaviorSubject(false);
     }
 
     // -----------------------------------------------------------------------------------------------------

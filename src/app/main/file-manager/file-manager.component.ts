@@ -11,6 +11,8 @@ import { FolderFormComponent } from './folder-form/folder-form.component';
 import { FormGroup } from '@angular/forms';
 import { FileFormComponent } from './file-form/file-form.component';
 
+import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
+
 @Component({
     selector     : 'file-manager',
     templateUrl  : './file-manager.component.html',
@@ -58,7 +60,6 @@ export class FileManagerComponent implements OnInit, OnDestroy {
                     this.parentId = routeParams.parentId;
                 }
             });
-        
     }
 
     addFolder() {

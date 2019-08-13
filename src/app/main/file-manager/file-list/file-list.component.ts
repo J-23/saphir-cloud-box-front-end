@@ -39,6 +39,7 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
         this._fileManagerService.onFilesChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(files => {
+                console.log(files)
                 this.files = files;
             });
 
@@ -52,16 +53,16 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
     }
 
     SetDisplayedColumns() {
-        this._fileManagerService.onRouteParamsChanged
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(routeParams => {
-                if (routeParams && routeParams.parentType) {
-                    if (routeParams.parentType == 0) {
-                        this.displayedColumns = this.commonColumns;
-                    }
-                    else if (routeParams.parentType == 1 || routeParams.parentType == 2) {
-                        this.displayedColumns = this.userColumns;
-                    }
+
+        this._fileManagerService.onOwnerChanged
+            .subscribe(ownerId => {
+
+                console.log(ownerId)
+                if (!ownerId) {
+                    this.displayedColumns = this.commonColumns;
+                }
+                else {
+                    this.displayedColumns = this.userColumns;
                 }
             });
     }

@@ -17,6 +17,9 @@ import { locale as german } from 'app/navigation/i18n/de';
 import { locale as russian } from 'app/navigation/i18n/ru';
 import { FileManagerService } from './main/file-manager/file-manager.service';
 import { FolderNavigationService } from './navigation/folder-navigation.service';
+import { MatDialog } from '@angular/material';
+import { FolderFormComponent } from './main/file-manager/folder-form/folder-form.component';
+import { FormGroup } from '@angular/forms';
 
 @Component({
     selector   : 'app',
@@ -52,7 +55,9 @@ export class AppComponent implements OnInit, OnDestroy
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private _translateService: TranslateService,
         private _platform: Platform,
-        private folderNavigationService: FolderNavigationService
+        private folderNavigationService: FolderNavigationService,
+        private _matDialog: MatDialog,
+        private _fileManagerService: FileManagerService
     )
     {
         this.SetNavigation();
@@ -119,27 +124,70 @@ export class AppComponent implements OnInit, OnDestroy
 
         // Set the private defaults
         this._unsubscribeAll = new Subject();
+
+        this._fuseNavigationService.onButtonAddFolder
+            .subscribe(isAddFolder => {
+                if (isAddFolder) {
+                    this.addFolder(1);
+                }
+            });
+    }
+
+    addFolder(parentId: number) {
+        var folderDialogRef = this._matDialog.open(FolderFormComponent, {
+            panelClass: 'form-dialog',
+            data: {
+                parentId: parentId
+            }
+        });
+
+        folderDialogRef.afterClosed()
+            .subscribe((form: FormGroup) => {
+            
+            if (form && form.valid) {
+    
+              var folder = {
+                parentId: form.controls['parentId'].value,
+                name: form.controls['name'].value
+              };
+    
+              this._fileManagerService.addFolder(folder)
+                .then(() => { this.SetNavigation()})
+                .catch(res => { });
+            }
+          });
     }
 
     SetNavigation() {
         this.folderNavigationService.getFolder(1)
             .then(folder => {
 
-                var child = folder.map(folder => {
+                var child = folder.files.map(folder => {
                     if (folder.isDirectory) {
                         return { 
                             id: folder.id,
                             title: folder.name,
                             type: 'item',
-                            url: `/file-manager/${folder.name}/${folder.id}/${folder.accessType}`
+                            url: `/file-manager/${folder.name}/${folder.id}`
                         }
                     }
                 });
                 
+                var nav = navigation.pop();
+
+                if (nav.id === 'applications') {
+                    navigation.push(nav);
+                }
+
                 navigation.push({
                     id: 'file-manager',
                     title: 'File Manager',
                     type: 'group',
+                    button: {
+                        id: 'add-folder',
+                        title: 'Add Folder',
+                        icon: 'add'
+                    },
                     children: child
                 });
 
@@ -149,7 +197,13 @@ export class AppComponent implements OnInit, OnDestroy
 
                 this._fuseNavigationService.setCurrentNavigation('main');
             })
-            .catch();
+            .catch(() => {
+                this.navigation = navigation;
+
+                this._fuseNavigationService.register('main', this.navigation);
+
+                this._fuseNavigationService.setCurrentNavigation('main');
+            });
     }
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
