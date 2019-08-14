@@ -5,6 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 
 import { FileManagerService } from 'app/main/file-manager/file-manager.service';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
 @Component({
     selector   : 'file-manager-details-sidebar',
@@ -17,20 +18,24 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
 
     private _unsubscribeAll: Subject<any>;
 
-    constructor (private _fileManagerService: FileManagerService) {
+    constructor (private _fileManagerService: FileManagerService,
+        private _fuseSidebarService: FuseSidebarService) {
         
         this._unsubscribeAll = new Subject();
     }
 
     ngOnInit(): void {
 
-        this._fileManagerService.onFileSelected
+        this._fileManagerService.onStorageSelected
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(selected => {
                 this.selected = selected;
             });
     }
 
+    close() {
+        var test= this._fuseSidebarService.getSidebar('file-manager-details-sidebar');
+    }
     ngOnDestroy(): void {
         
         this._unsubscribeAll.next();

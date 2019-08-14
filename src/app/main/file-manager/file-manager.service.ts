@@ -7,35 +7,29 @@ import { AppConfig } from 'app/app.config';
 @Injectable()
 export class FileManagerService implements Resolve<any> {
     
-    onRouteParamsChanged: BehaviorSubject<any>;
-
-    onFilesChanged: BehaviorSubject<any>;
-    onOwnerChanged: BehaviorSubject<any>;
-    onClientChanged: BehaviorSubject<any>;
-    onFileSelected: BehaviorSubject<any>;
+    onFileStorageChanged: BehaviorSubject<any>;
+    onStorageSelected: BehaviorSubject<any>;
 
     private baseURL: string;
 
     constructor (private _httpClient: HttpClient,
         private appConfig: AppConfig) {
         
-        this.onFilesChanged = new BehaviorSubject({});
-        this.onFileSelected = new BehaviorSubject({});
-        this.onRouteParamsChanged = new BehaviorSubject({});
+        this.onFileStorageChanged = new BehaviorSubject({});
+        this.onStorageSelected = new BehaviorSubject(null);
 
-        this.onClientChanged = new BehaviorSubject(null);
-        this.onOwnerChanged = new BehaviorSubject(null);
         this.baseURL = this.appConfig['config']['URL'];
     }
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
 
-        this.onRouteParamsChanged.next(route.params);
-
         return new Promise((resolve, reject) => {
 
+            if (route.params && route.params.id) {
+
+            }
             Promise.all([
-                this.getFiles()
+                this.getFileStorage(route.params.id)
             ]).then(
                 ([files]) => {
                     resolve();
@@ -45,27 +39,16 @@ export class FileManagerService implements Resolve<any> {
         });
     }
 
-    getFiles(): Promise<any> {
+    getFileStorage(id): Promise<any> {
 
         return new Promise((resolve, reject) => {
 
-            this.onRouteParamsChanged.subscribe(routeParams => {
-                if (routeParams && routeParams.parentId) {
-                    this._httpClient.get(this.baseURL + `/api/file-storage/${routeParams.parentId}`)
-                    .subscribe((folder: any) => {
-                        this.onFilesChanged.next(folder.files);
-                        this.onOwnerChanged.next(folder.ownerId);
-                        this.onClientChanged.next(folder.clientId);
-                        this.onFileSelected.next(folder.files[0]);
+            this._httpClient.get(this.baseURL + `/api/file-storage/${id}`)
+                .subscribe((fileStorage: any) => {
+                    this.onFileStorageChanged.next(fileStorage);
 
-                        resolve(folder.files);
-                    }, reject);
-                }
-                else {
-                    reject;
-                }
-            }, reject);
-            
+                    resolve(fileStorage);
+                }, reject);
         });
     }
 
@@ -75,7 +58,7 @@ export class FileManagerService implements Resolve<any> {
             this._httpClient.post(this.baseURL + '/api/file-storage/add/folder', folder)
                 .subscribe((response:any) => {
 
-                    this.getFiles();
+                    this.getFileStorage(folder.parentId);
                     resolve(response);
                 }, reject);
         });
@@ -87,7 +70,7 @@ export class FileManagerService implements Resolve<any> {
             this._httpClient.post(this.baseURL + '/api/file-storage/add/file', file)
                 .subscribe((response:any) => {
 
-                    this.getFiles();
+                    this.getFileStorage(file.parentId);
                     resolve(response);
                 }, reject);
         })

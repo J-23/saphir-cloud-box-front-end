@@ -1,4 +1,4 @@
-<mat-table #table [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
+<mat-table #table [dataSource]="storages" [@animateStagger]="{value:'50'}">
 
     <!-- Type Column -->
     <ng-container matColumnDef="icon">
@@ -44,11 +44,19 @@
                 </button>
       
                 <mat-menu #moreMenu="matMenu">
-                    <button mat-menu-item aria-label="edit">
+                    <button mat-menu-item aria-label="info" (click)="onSelect(row)">
+                        <mat-icon>info</mat-icon>
+                        <span>Info</span>
+                    </button>
+                    <button mat-menu-item aria-label="donload">
                         <mat-icon>cloud_download</mat-icon>
                         <span>Download</span>
                     </button>
-                    <button mat-menu-item aria-label="remove">
+                    <button *ngIf="buttonUpdateIsAvailable" mat-menu-item aria-label="edit">
+                        <mat-icon>edit</mat-icon>
+                        <span>{{ 'COMMONACTIONS.EDIT' | translate }}</span>
+                    </button>
+                    <button *ngIf="buttonRemoveIsAvailable" mat-menu-item aria-label="remove">
                         <mat-icon>delete</mat-icon>
                         <span>{{ 'COMMONACTIONS.REMOVE' | translate }}</span>
                     </button>
@@ -60,7 +68,7 @@
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"
-             (click)="onSelect(row)"
+             (click)="getChildStorages(row)"
              [ngClass]="{'selected' : row == selected}"
              matRipple [@animate]="{value:'*',params:{y:'100%'}}">
     </mat-row>

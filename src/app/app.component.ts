@@ -20,6 +20,7 @@ import { FolderNavigationService } from './navigation/folder-navigation.service'
 import { MatDialog } from '@angular/material';
 import { FolderFormComponent } from './main/file-manager/folder-form/folder-form.component';
 import { FormGroup } from '@angular/forms';
+import { AuthenticationService } from './main/authentication/authentication.service';
 
 @Component({
     selector   : 'app',
@@ -57,7 +58,8 @@ export class AppComponent implements OnInit, OnDestroy
         private _platform: Platform,
         private folderNavigationService: FolderNavigationService,
         private _matDialog: MatDialog,
-        private _fileManagerService: FileManagerService
+        private _fileManagerService: FileManagerService,
+        private authenticationService: AuthenticationService
     )
     {
         this.SetNavigation();
@@ -159,51 +161,62 @@ export class AppComponent implements OnInit, OnDestroy
     }
 
     SetNavigation() {
-        this.folderNavigationService.getFolder(1)
-            .then(folder => {
 
-                var child = folder.files.map(folder => {
-                    if (folder.isDirectory) {
-                        return { 
-                            id: folder.id,
-                            title: folder.name,
-                            type: 'item',
-                            url: `/file-manager/${folder.name}/${folder.id}`
+        this.authenticationService.user$
+            .subscribe(() => {
+                this.folderNavigationService.getFolder(1)
+                    .then(fileStorage => {
+
+                        var child = fileStorage.storages.map(folder => {
+                            if (folder.isDirectory) {
+                                return { 
+                                    id: folder.id,
+                                    title: folder.name,
+                                    type: 'item',
+                                    url: `/file-manager/${folder.id}`
+                                }
+                            }
+                        });
+                        
+                        var nav = navigation.pop();
+
+                        if (nav.id === 'applications') {
+                            navigation.push(nav);
                         }
-                    }
-                });
-                
-                var nav = navigation.pop();
 
-                if (nav.id === 'applications') {
-                    navigation.push(nav);
-                }
+                        navigation.push({
+                            id: 'file-manager',
+                            title: 'File Manager',
+                            type: 'group',
+                            button: {
+                                id: 'add-folder',
+                                title: 'Add Folder',
+                                icon: 'add'
+                            },
+                            children: child
+                        });
 
-                navigation.push({
-                    id: 'file-manager',
-                    title: 'File Manager',
-                    type: 'group',
-                    button: {
-                        id: 'add-folder',
-                        title: 'Add Folder',
-                        icon: 'add'
-                    },
-                    children: child
-                });
+                        this.navigation = navigation;
 
+                        this._fuseNavigationService.register('main', this.navigation);
+
+                        this._fuseNavigationService.setCurrentNavigation('main');
+                    })
+                    .catch(() => {
+                        this.navigation = navigation;
+
+                        this._fuseNavigationService.register('main', this.navigation);
+
+                        this._fuseNavigationService.setCurrentNavigation('main');
+                    });
+            }, () => {
                 this.navigation = navigation;
 
                 this._fuseNavigationService.register('main', this.navigation);
 
                 this._fuseNavigationService.setCurrentNavigation('main');
             })
-            .catch(() => {
-                this.navigation = navigation;
-
-                this._fuseNavigationService.register('main', this.navigation);
-
-                this._fuseNavigationService.setCurrentNavigation('main');
-            });
+        
     }
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks

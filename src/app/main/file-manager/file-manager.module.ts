@@ -12,14 +12,16 @@ import { FileManagerFileListComponent } from 'app/main/file-manager/file-list/fi
 import { FolderFormComponent } from './folder-form/folder-form.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { FileFormComponent } from './file-form/file-form.component';
+import { AuthorizedUserGuard } from '../guards/authorized-user.guard';
 
 const routes: Routes = [
     {
-        path     : ':parentName/:parentId',
+        path     : ':id',
         component: FileManagerComponent,
         resolve  : {
             files: FileManagerService
-        }
+        },
+        canActivate: [AuthorizedUserGuard]
     }
 ];
 

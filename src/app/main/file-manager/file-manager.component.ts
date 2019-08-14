@@ -6,12 +6,12 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
 import { FileManagerService } from 'app/main/file-manager/file-manager.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog, _MatChipListMixinBase } from '@angular/material';
 import { FolderFormComponent } from './folder-form/folder-form.component';
 import { FormGroup } from '@angular/forms';
 import { FileFormComponent } from './file-form/file-form.component';
-
-import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
+import { AuthenticationService } from '../authentication/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector     : 'file-manager',
@@ -22,43 +22,63 @@ import { FuseNavigationService } from '@fuse/components/navigation/navigation.se
 })
 export class FileManagerComponent implements OnInit, OnDestroy {
     selected: any;
-    pathArr: string[];
 
     folderDialogRef: any;
     fileDialogRef: any;
 
-    private location: string;
-    private parentId: number;
-    
+    location: string;
+    storage: any;
+
     private _unsubscribeAll: Subject<any>;
     
+    buttonAddIsAvailable: boolean = false;
+
+    isRootFolder: boolean = false;
+
     constructor (private _fileManagerService: FileManagerService,
         private _fuseSidebarService: FuseSidebarService,
-        private _matDialog: MatDialog) {
+        private _matDialog: MatDialog,
+        private authenticationService: AuthenticationService,
+        private router: Router) {
             
         this._unsubscribeAll = new Subject();
     }
 
     ngOnInit(): void {
 
-        this._fileManagerService.onFileSelected
+        this._fileManagerService.onStorageSelected
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(selected => {
             this.selected = selected;
             
         });
         
-        this._fileManagerService.onRouteParamsChanged
+        this._fileManagerService.onFileStorageChanged
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(routeParams => {
-                if (routeParams && routeParams.parentName) {
-                    this.location = routeParams.parentName;
-                    this.pathArr = this.location.split('>');
+            .subscribe(storage => {
+
+                this.storage = storage;
+
+                if (this.storage.parentStorageId == 1) {
+                    this.isRootFolder = true;
+                }
+                else {
+                    this.isRootFolder = false;
                 }
 
-                if (routeParams && routeParams.parentId) {
-                    this.parentId = routeParams.parentId;
-                }
+                console.log(this.storage,this.isRootFolder)
+                this.authenticationService.user$
+                    .subscribe(user => {
+
+                        if ((!storage.client && !storage.owner && (user.role.name == 'SUPER ADMIN'))
+                            || (storage.client && !storage.owner && user.role.name == 'CLIENT ADMIN')
+                            || (!storage.client && storage.owner && (user.role.name == 'DEPARTMENT HEAD' || user.role.name == 'EMPLOYEE' || user.id == storage.owner.id))) {
+                            this.buttonAddIsAvailable = true;
+                        }
+                        else {
+                            this.buttonAddIsAvailable = false;
+                        }
+                    })
             });
     }
 
@@ -66,7 +86,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
         this.folderDialogRef = this._matDialog.open(FolderFormComponent, {
             panelClass: 'form-dialog',
             data: {
-                parentId: this.parentId
+                parentId: this.storage.parentStorageId
             }
         });
 
@@ -91,7 +111,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
         this.fileDialogRef = this._matDialog.open(FileFormComponent, {
             panelClass: 'form-dialog',
             data: {
-                parentId: this.parentId
+                parentId: this.storage.parentStorageId
             }
         });
 
@@ -117,6 +137,10 @@ export class FileManagerComponent implements OnInit, OnDestroy {
                 };
             }
           });
+    }
+
+    goBack() {
+        this.router.navigate([`/file-manager/${this.storage.parentStorageId}`]);
     }
 
     ngOnDestroy(): void {
