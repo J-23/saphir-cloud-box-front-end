@@ -3,19 +3,20 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { AppConfig } from 'app/app.config';
+import { FileStorage, Storage } from '../models/file-storage.model';
 
 @Injectable()
 export class FileManagerService implements Resolve<any> {
     
-    onFileStorageChanged: BehaviorSubject<any>;
-    onStorageSelected: BehaviorSubject<any>;
+    onFileStorageChanged: BehaviorSubject<FileStorage>;
+    onStorageSelected: BehaviorSubject<Storage>;
 
     private baseURL: string;
 
     constructor (private _httpClient: HttpClient,
         private appConfig: AppConfig) {
         
-        this.onFileStorageChanged = new BehaviorSubject({});
+        this.onFileStorageChanged = new BehaviorSubject(null);
         this.onStorageSelected = new BehaviorSubject(null);
 
         this.baseURL = this.appConfig['config']['URL'];
@@ -39,7 +40,7 @@ export class FileManagerService implements Resolve<any> {
         });
     }
 
-    getFileStorage(id): Promise<any> {
+    getFileStorage(id): Promise<FileStorage> {
 
         return new Promise((resolve, reject) => {
 

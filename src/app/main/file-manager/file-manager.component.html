@@ -4,25 +4,25 @@
 
         <div class="header teal-300 p-24" fxLayout="column" fxLayoutAlign="space-between start">
 
-            <div fxLayout="row" fxLayoutAlign="start center">
-                <button *ngIf="!isRootFolder" mat-icon-button class="mr-0 mr-sm-16" (click)="goBack()">
+            <div fxLayout="row" fxLayoutAlign="start center" >
+                <button *ngIf="!isRootFolder" mat-icon-button class="mr-0 mr-sm-16" (click)="goBack()" [@animate]="{value:'*',params:{x:'50px'}}">
                     <mat-icon>arrow_back</mat-icon>
                 </button>
-                <div *ngIf="storage" class="breadcrumb text-truncate h1 pl-10" fxLayout="row" fxLayoutAlign="start center" [@animate]="{value:'*',params:{x:'50px'}}">
-                    <span>{{storage.name}}</span>
+                <div *ngIf="fileStorage" class="breadcrumb text-truncate h1 pl-10" fxLayout="row" fxLayoutAlign="start center" [@animate]="{value:'*',params:{x:'50px'}}">
+                    <span>{{fileStorage.name}}</span>
                 </div>
             </div>
                 
 
-            <div>
-                <button *ngIf="buttonAddIsAvailable" mat-raised-button class="fuse-white mt-24 mt-md-0" (click)="addFolder()" 
+            <div *ngIf="buttonAddIsAvailable">
+                <button mat-raised-button class="fuse-white mt-24 mt-md-0" (click)="addFolder()" 
                     [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}">
                     <span>{{ 'PAGES.APPS.FILEMANAGER.ADDFOLDER' | translate }}</span>
                 </button>
-                <!-- <button mat-raised-button class="fuse-white mt-24 mt-md-0 ml-24" (click)="addFile()" 
+                <button mat-raised-button class="fuse-white mt-24 mt-md-0 ml-24" (click)="addFile()" 
                     [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}">
                     <span>Add file</span>
-                </button>-->
+                </button>
             </div>
         </div>
 

@@ -14,6 +14,7 @@ import { FolderFormComponent } from '../folder-form/folder-form.component';
 import { FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { ConfirmFormComponent } from 'app/main/confirm-form/confirm-form.component';
+import { Storage } from 'app/main/models/file-storage.model';
 
 @Component({
     selector     : 'file-list',
@@ -23,23 +24,23 @@ import { ConfirmFormComponent } from 'app/main/confirm-form/confirm-form.compone
     animations   : fuseAnimations
 })
 export class FileManagerFileListComponent implements OnInit, OnDestroy {
-    storages: any;
+    
+    storages: Storage[] = [];
+    selected: Storage;
 
-    private storageId: number;
+    private fileStorageId: number;
 
     private commonColumns = ['icon', 'name', 'modified', 'button'];
     private userColumns = ['icon', 'name', 'modified', 'access', 'button'];
-
     displayedColumns;
-    selected: any;
-
+    
     buttonRemoveIsAvailable: boolean = false;
     buttonUpdateIsAvailable: boolean = false;
 
     folderDialogRef: any;
+    confirmDialogRef: MatDialogRef<ConfirmFormComponent>;
 
     private _unsubscribeAll: Subject<any>;
-    confirmDialogRef: MatDialogRef<ConfirmFormComponent>;
     
     constructor (private _fileManagerService: FileManagerService,
         private _fuseSidebarService: FuseSidebarService,
@@ -57,7 +58,7 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
         this._fileManagerService.onFileStorageChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(fileStorage => {
-                this.storageId = fileStorage.id;
+                this.fileStorageId = fileStorage.id;
                 this.storages = fileStorage.storages;
 
                 if (!fileStorage.client && !fileStorage.owner || (fileStorage.client && !fileStorage.owner)) {
@@ -74,7 +75,8 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
                     .subscribe(user => {
                         if ((!fileStorage.client && !fileStorage.owner && user.role.name == 'SUPER ADMIN')
                             || (fileStorage.client && !fileStorage.owner && user.role.name == 'CLIENT ADMIN')
-                            || (!fileStorage.client && fileStorage.owner && (user.role.name == 'DEPARTMENT HEAD' || user.role.name == 'EMPLOYEE' || user.id == fileStorage.owner.id))) {
+                            || (!fileStorage.client && fileStorage.owner && (user.role.name == 'DEPARTMENT HEAD' || user.role.name == 'EMPLOYEE' 
+                            || user.id == fileStorage.owner.id))) {
                             this.buttonRemoveIsAvailable = true;
                             this.buttonUpdateIsAvailable = true;
                         }
@@ -118,7 +120,7 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
         this.folderDialogRef = this._matDialog.open(FolderFormComponent, {
             panelClass: 'form-dialog',
             data: {
-                parentId: this.storageId,
+                parentId: this.fileStorageId,
                 name: folder.name
             }
         });
@@ -133,7 +135,7 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
                     name: form.controls['name'].value
                 };
         
-                this._fileManagerService.updateFolder(folder, this.storageId)
+                this._fileManagerService.updateFolder(folder, this.fileStorageId)
                     .then(() => { })
                     .catch(res => { 
                         if (res && res.status && res.status == 403) {
@@ -163,7 +165,7 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
                   id: folderId
                 };
       
-                this._fileManagerService.removeFolder(folder, this.storageId)
+                this._fileManagerService.removeFolder(folder, this.fileStorageId)
                   .then(() => {
                     this.translateService.get('PAGES.APPS.FILEMANAGER.FOLDERREMOVESUCCESS').subscribe(message => {
                       this.createSnackBar(message);

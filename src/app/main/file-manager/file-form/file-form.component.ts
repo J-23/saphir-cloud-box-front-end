@@ -27,7 +27,8 @@ export class FileFormComponent implements OnInit {
 
     return new FormGroup({
       parentId: new FormControl(this.parentId, Validators.required),
-      content: new FormControl({value: null, disabled: true}, Validators.required)
+      content: new FormControl({value: null, disabled: true}, Validators.required),
+      size: new FormControl({value: null, disabled: true}, Validators.required)
     })
   }
 
@@ -35,7 +36,8 @@ export class FileFormComponent implements OnInit {
     var selectedFile = event.target.files[0];
     
     this.form.patchValue({
-      content: selectedFile
+      content: selectedFile,
+      size: selectedFile.size
     });
   }
 }

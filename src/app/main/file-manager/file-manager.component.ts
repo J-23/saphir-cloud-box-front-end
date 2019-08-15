@@ -13,6 +13,7 @@ import { FileFormComponent } from './file-form/file-form.component';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { Storage, FileStorage } from '../models/file-storage.model';
 
 @Component({
     selector     : 'file-manager',
@@ -22,13 +23,13 @@ import { TranslateService } from '@ngx-translate/core';
     animations   : fuseAnimations
 })
 export class FileManagerComponent implements OnInit, OnDestroy {
-    selected: any;
+    selected: Storage;
 
     folderDialogRef: any;
     fileDialogRef: any;
 
     location: string;
-    storage: any;
+    fileStorage: FileStorage;
 
     private _unsubscribeAll: Subject<any>;
     
@@ -58,11 +59,11 @@ export class FileManagerComponent implements OnInit, OnDestroy {
         
         this._fileManagerService.onFileStorageChanged
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(storage => {
+            .subscribe(fileStorage => {
 
-                this.storage = storage;
+                this.fileStorage = fileStorage;
 
-                if (this.storage.parentStorageId == 1) {
+                if (this.fileStorage.parentStorageId == 1) {
                     this.isRootFolder = true;
                 }
                 else {
@@ -72,9 +73,10 @@ export class FileManagerComponent implements OnInit, OnDestroy {
                 this.authenticationService.user$
                     .subscribe(user => {
 
-                        if ((!storage.client && !storage.owner && (user.role.name == 'SUPER ADMIN'))
-                            || (storage.client && !storage.owner && user.role.name == 'CLIENT ADMIN')
-                            || (!storage.client && storage.owner && (user.role.name == 'DEPARTMENT HEAD' || user.role.name == 'EMPLOYEE' || user.id == storage.owner.id))) {
+                        if ((!this.fileStorage.client && !this.fileStorage.owner && (user.role.name == 'SUPER ADMIN'))
+                            || (this.fileStorage.client && !this.fileStorage.owner && user.role.name == 'CLIENT ADMIN')
+                            || (!this.fileStorage.client && this.fileStorage.owner && (user.role.name == 'DEPARTMENT HEAD' || user.role.name == 'EMPLOYEE' 
+                            || user.id == this.fileStorage.owner.id))) {
                             this.buttonAddIsAvailable = true;
                         }
                         else {
@@ -88,7 +90,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
         this.folderDialogRef = this._matDialog.open(FolderFormComponent, {
             panelClass: 'form-dialog',
             data: {
-                parentId: this.storage.id
+                parentId: this.fileStorage.id
             }
         });
 
@@ -119,7 +121,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
         this.fileDialogRef = this._matDialog.open(FileFormComponent, {
             panelClass: 'form-dialog',
             data: {
-                parentId: this.storage.parentStorageId
+                parentId: this.fileStorage.id
             }
         });
 
@@ -136,7 +138,8 @@ export class FileManagerComponent implements OnInit, OnDestroy {
                     var file = {
                         parentId: form.controls['parentId'].value,
                         name: form.controls['content'].value.name,
-                        content: base64
+                        content: base64,
+                        size: form.controls['size'].value
                     };
 
                     this._fileManagerService.addFile(file)
@@ -154,7 +157,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     }
 
     goBack() {
-        this.router.navigate([`/file-manager/${this.storage.parentStorageId}`]);
+        this.router.navigate([`/file-manager/${this.fileStorage.parentStorageId}`]);
     }
 
     ngOnDestroy(): void {
