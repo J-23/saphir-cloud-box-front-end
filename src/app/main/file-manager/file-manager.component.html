@@ -17,7 +17,7 @@
             <div>
                 <button *ngIf="buttonAddIsAvailable" mat-raised-button class="fuse-white mt-24 mt-md-0" (click)="addFolder()" 
                     [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}">
-                    <span>Add folder</span>
+                    <span>{{ 'PAGES.APPS.FILEMANAGER.ADDFOLDER' | translate }}</span>
                 </button>
                 <!-- <button mat-raised-button class="fuse-white mt-24 mt-md-0 ml-24" (click)="addFile()" 
                     [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}">

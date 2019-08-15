@@ -17,7 +17,6 @@ import { ClientsComponent } from './clients/clients.component';
 import { DepartmentsComponent } from './departments/departments.component';
 import { UsersComponent } from './users/users.component';
 import { ClientsService } from './clients/clients.service';
-import { ConfirmFormComponent } from './confirm-form/confirm-form.component';
 import { ClientFormComponent } from './clients/client-form/client-form.component';
 import { DepartmentsService } from './departments/departments.service';
 import { DepartmentFormComponent } from './departments/department-form/department-form.component';
@@ -103,7 +102,6 @@ const routes = [
         DepartmentsComponent,
         UsersComponent,
         ClientFormComponent,
-        ConfirmFormComponent,
         DepartmentFormComponent,
         RolesComponent,
         RoleFormComponent,
@@ -117,7 +115,6 @@ const routes = [
     ],
     entryComponents: [
         ClientFormComponent,
-        ConfirmFormComponent,
         DepartmentFormComponent,
         RoleFormComponent,
         UserFormComponent

@@ -10,6 +10,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 export class FolderFormComponent implements OnInit {
 
   private parentId: number;
+  private name: string;
 
   form: FormGroup;
 
@@ -17,6 +18,7 @@ export class FolderFormComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) private _data: any,
     private _formBuilder: FormBuilder) { 
       this.parentId = this._data.parentId;
+      this.name = this._data.name;
     }
 
   ngOnInit() {
@@ -27,7 +29,7 @@ export class FolderFormComponent implements OnInit {
 
     return this._formBuilder.group({
       parentId: [this.parentId, Validators.required],
-      name    : [null, Validators.required]
+      name    : [this.name, Validators.required]
     });
   }
 }

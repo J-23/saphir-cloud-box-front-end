@@ -28,6 +28,7 @@ import { ResetPasswordGuard } from './main/guards/reset-password.guard';
 import { FolderNavigationService } from './navigation/folder-navigation.service';
 import { FileManagerService } from './main/file-manager/file-manager.service';
 import { FolderFormComponent } from './main/file-manager/folder-form/folder-form.component';
+import { ConfirmFormComponent } from './main/confirm-form/confirm-form.component';
 
 const appRoutes: Routes = [
     {
@@ -58,7 +59,8 @@ const appRoutes: Routes = [
 @NgModule({
     declarations: [
         AppComponent,
-        FolderFormComponent
+        FolderFormComponent,
+        ConfirmFormComponent
     ],
     imports     : [
         BrowserModule,
@@ -116,7 +118,8 @@ const appRoutes: Routes = [
         AppComponent
     ],
     entryComponents: [
-        FolderFormComponent
+        FolderFormComponent,
+        ConfirmFormComponent
     ]
 })
 export class AppModule

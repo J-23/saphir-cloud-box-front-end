@@ -11,13 +11,13 @@
 
     <!-- Name Column -->
     <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>{{ 'PAGES.APPS.FILEMANAGER.NAME' | translate }}</mat-header-cell>
         <mat-cell *matCellDef="let row"> {{row.name}}</mat-cell>
     </ng-container>
 
     <!-- Modified Column -->
     <ng-container matColumnDef="modified">
-        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>Modified</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>{{ 'PAGES.APPS.FILEMANAGER.MODIFIEDDATE' | translate }}</mat-header-cell>
         <mat-cell *matCellDef="let row" fxHide fxShow.gt-md>
             <div *ngIf="row.updateDate">
                 {{row.updateDate | date: 'dd/MM/yyyy hh:mm'}}
@@ -30,7 +30,7 @@
 
     <!-- Size Column -->
     <ng-container matColumnDef="access">
-        <mat-header-cell *matHeaderCellDef fxHide.xs>Право просмотра</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef fxHide.xs>{{ 'PAGES.APPS.FILEMANAGER.VIEWRIGHT' | translate }}</mat-header-cell>
         <mat-cell *matCellDef="let row" fxHide.xs></mat-cell>
     </ng-container>
 
@@ -46,17 +46,17 @@
                 <mat-menu #moreMenu="matMenu">
                     <button mat-menu-item aria-label="info" (click)="onSelect(row)">
                         <mat-icon>info</mat-icon>
-                        <span>Info</span>
+                        <span>{{ 'COMMONACTIONS.INFO' | translate }}</span>
                     </button>
-                    <button mat-menu-item aria-label="donload">
+                    <button *ngIf="!row.isDirectory" mat-menu-item aria-label="donload">
                         <mat-icon>cloud_download</mat-icon>
-                        <span>Download</span>
+                        <span>{{ 'COMMONACTIONS.DOWNLOAD' | translate }}</span>
                     </button>
-                    <button *ngIf="buttonUpdateIsAvailable" mat-menu-item aria-label="edit">
+                    <button *ngIf="buttonUpdateIsAvailable" mat-menu-item aria-label="edit" (click)="updateFolder(row)">
                         <mat-icon>edit</mat-icon>
                         <span>{{ 'COMMONACTIONS.EDIT' | translate }}</span>
                     </button>
-                    <button *ngIf="buttonRemoveIsAvailable" mat-menu-item aria-label="remove">
+                    <button *ngIf="buttonRemoveIsAvailable" mat-menu-item aria-label="remove" (click)="removeFolder(row)">
                         <mat-icon>delete</mat-icon>
                         <span>{{ 'COMMONACTIONS.REMOVE' | translate }}</span>
                     </button>

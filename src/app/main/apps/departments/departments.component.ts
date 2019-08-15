@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { FormGroup } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { DataSource } from '@angular/cdk/collections';
-import { ConfirmFormComponent } from '../confirm-form/confirm-form.component';
+import { ConfirmFormComponent } from '../../confirm-form/confirm-form.component';
 import { DepartmentsService } from './departments.service';
 import { DepartmentFormComponent } from './department-form/department-form.component';
 

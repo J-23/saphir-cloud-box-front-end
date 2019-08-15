@@ -6,12 +6,13 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
 import { FileManagerService } from 'app/main/file-manager/file-manager.service';
-import { MatDialog, _MatChipListMixinBase } from '@angular/material';
+import { MatDialog, _MatChipListMixinBase, MatSnackBar } from '@angular/material';
 import { FolderFormComponent } from './folder-form/folder-form.component';
 import { FormGroup } from '@angular/forms';
 import { FileFormComponent } from './file-form/file-form.component';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector     : 'file-manager',
@@ -39,7 +40,9 @@ export class FileManagerComponent implements OnInit, OnDestroy {
         private _fuseSidebarService: FuseSidebarService,
         private _matDialog: MatDialog,
         private authenticationService: AuthenticationService,
-        private router: Router) {
+        private router: Router,
+        private _matSnackBar: MatSnackBar,
+        private translateService: TranslateService) {
             
         this._unsubscribeAll = new Subject();
     }
@@ -66,7 +69,6 @@ export class FileManagerComponent implements OnInit, OnDestroy {
                     this.isRootFolder = false;
                 }
 
-                console.log(this.storage,this.isRootFolder)
                 this.authenticationService.user$
                     .subscribe(user => {
 
@@ -86,7 +88,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
         this.folderDialogRef = this._matDialog.open(FolderFormComponent, {
             panelClass: 'form-dialog',
             data: {
-                parentId: this.storage.parentStorageId
+                parentId: this.storage.id
             }
         });
 
@@ -102,7 +104,13 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     
               this._fileManagerService.addFolder(folder)
                 .then(() => { })
-                .catch(res => { });
+                .catch(res => { 
+                    if (res && res.status && res.status == 403) {
+                        this.translateService.get('PAGES.APPS.FILEMANAGER.FOLDER' + res.error).subscribe(message => {
+                          this.createSnackBar(message);
+                        });
+                    }
+                });
             }
           });
     }
@@ -133,7 +141,13 @@ export class FileManagerComponent implements OnInit, OnDestroy {
 
                     this._fileManagerService.addFile(file)
                         .then(() => { })
-                        .catch(res => { });
+                        .catch(res => { 
+                            if (res && res.status && res.status == 403) {
+                                this.translateService.get('PAGES.APPS.FILEMANAGER.' + res.error).subscribe(message => {
+                                  this.createSnackBar(message);
+                                });
+                            }
+                        });
                 };
             }
           });
@@ -152,4 +166,11 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     toggleSidebar(name): void {
         this._fuseSidebarService.getSidebar(name).toggleOpen();
     }
+
+    createSnackBar(message: string) {
+        this._matSnackBar.open(message, 'OK', {
+          verticalPosition: 'top',
+          duration: 2000
+        });
+      }
 }

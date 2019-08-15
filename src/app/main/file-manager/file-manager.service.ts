@@ -46,7 +46,7 @@ export class FileManagerService implements Resolve<any> {
             this._httpClient.get(this.baseURL + `/api/file-storage/${id}`)
                 .subscribe((fileStorage: any) => {
                     this.onFileStorageChanged.next(fileStorage);
-
+                    this.onStorageSelected.next(null);
                     resolve(fileStorage);
                 }, reject);
         });
@@ -59,6 +59,28 @@ export class FileManagerService implements Resolve<any> {
                 .subscribe((response:any) => {
 
                     this.getFileStorage(folder.parentId);
+                    resolve(response);
+                }, reject);
+        });
+    }
+
+    updateFolder(folder, parentId): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this._httpClient.post(this.baseURL + '/api/file-storage/update/folder', folder)
+                .subscribe((response:any) => {
+
+                    this.getFileStorage(parentId);
+                    resolve(response);
+                }, reject);
+        });
+    }
+
+    removeFolder(folder, parentId): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this._httpClient.post(this.baseURL + '/api/file-storage/remove/folder', folder)
+                .subscribe((response:any) => {
+
+                    this.getFileStorage(parentId);
                     resolve(response);
                 }, reject);
         });

@@ -22,7 +22,7 @@
     <div>
         <div class="title mb-8">{{selected.name}}</div>
         <div class="subtitle secondary-text">
-            <span>Edited</span>
+            <span>{{ 'PAGES.APPS.FILEMANAGER.EDITED' | translate }}</span>
             <span *ngIf="selected.updateBy">: {{selected.updateBy.userName}}</span>
             <span *ngIf="!selected.updateBy">: {{selected.createBy.userName}}</span>
         </div>
@@ -38,43 +38,38 @@
             <mat-icon *ngIf="!selected.isDirectory" class="type-icon s-48">insert_drive_file</mat-icon>
         </div>
 
-        <div class="title">Info</div>
+        <div class="title">{{ 'PAGES.APPS.FILEMANAGER.INFO' | translate }}</div>
 
         <table>
 
             <tr>
-                <th>Type</th>
+                <th>{{ 'PAGES.APPS.FILEMANAGER.TYPE' | translate }}</th>
                 <td *ngIf="selected.isDirectory">folder</td>
                 <td *ngIf="!selected.isDirectory">file</td>
             </tr>
 
-            <tr class="modified">
-                <th>Location</th>
-                <td></td>
-            </tr>
-
             <tr class="owner">
-                <th>Owner</th>
+                <th>{{ 'PAGES.APPS.FILEMANAGER.OWNER' | translate }}</th>
                 <td>{{selected.createBy.userName}}</td>
             </tr>
 
             <tr class="modified">
-                <th>Modified by</th>
+                <th>{{ 'PAGES.APPS.FILEMANAGER.MODIFIEDBY' | translate }}</th>
                 <td *ngIf="selected.updateBy">{{selected.updateBy.userName}}</td>
             </tr>
 
             <tr class="modified">
-                <th>Modified by</th>
+                <th>{{ 'PAGES.APPS.FILEMANAGER.MODIFIEDDATE' | translate }}</th>
                 <td *ngIf="selected.updateDate">{{selected.updateDate | date: 'dd/MM/yyyy hh:mm'}}</td>
             </tr>
 
             <tr class="created">
-                <th>Created by</th>
+                <th>{{ 'PAGES.APPS.FILEMANAGER.CREATEBY' | translate }}</th>
                 <td>{{selected.createBy.userName}}</td>
             </tr>
 
             <tr class="created">
-                <th>Created by</th>
+                <th>{{ 'PAGES.APPS.FILEMANAGER.CREATEDATE' | translate }}</th>
                 <td>{{selected.createDate | date: 'dd/MM/yyyy hh:mm'}}</td>
             </tr>
         </table>

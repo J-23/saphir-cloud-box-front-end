@@ -75,6 +75,24 @@
                     'ADD_ERROR': 'Error adding user. Please contact support, and we will try to fix it soon',
                     'UPDATE_ERROR': 'Error updating user. Please contact support, and we will try to fix it soon',
                     'REMOVE_ERROR': 'Error removing user. Please contact support, and we will try to fix it soon'
+                },
+                'FILEMANAGER': {
+                    'ADDFOLDER': 'Add folder',
+                    'EDITED': 'Edited',
+                    'INFO': 'Info',
+                    'TYPE': 'Type',
+                    'OWNER': 'Owner',
+                    'MODIFIEDBY': 'Modified by',
+                    'MODIFIEDDATE': 'Modified date',
+                    'CREATEBY': 'Create by',
+                    'CREATEDATE': 'Create date',
+                    'NAME': 'Name',
+                    'VIEWRIGHT': 'View right',
+                    'FOLDERREMOVEQUESTION': 'Are you sure you want to delete this folder?',
+                    'FOLDERREMOVESUCCESS': 'Folder removed',
+                    'FOLDERNOT_FOUNT': 'Folder not found',
+                    'FOLDERSERVER_ERROR': 'Oops! Something went wrong. Please contact support, and we will try to fix it soon',
+                    'FOLDERSAME_NAME': 'Folder with the same name already exists'
                 }
             },
             'AUTH': {
@@ -123,7 +141,9 @@
             'BOTH': 'Alle',
             'CONFIRM': 'Bestätigung',
             'CANCEL': 'Abbruch',
-            'ALL': 'Аlles'
+            'ALL': 'Аlles',
+            'INFO': 'Info',
+            'DOWNLOAD': 'Download'
         }
     }
 };

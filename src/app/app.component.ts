@@ -21,6 +21,8 @@ import { MatDialog } from '@angular/material';
 import { FolderFormComponent } from './main/file-manager/folder-form/folder-form.component';
 import { FormGroup } from '@angular/forms';
 import { AuthenticationService } from './main/authentication/authentication.service';
+import { userInfo } from 'os';
+import { FuseNavigationItem, FuseNavigation } from '@fuse/types';
 
 @Component({
     selector   : 'app',
@@ -163,7 +165,7 @@ export class AppComponent implements OnInit, OnDestroy
     SetNavigation() {
 
         this.authenticationService.user$
-            .subscribe(() => {
+            .subscribe(user => {
                 this.folderNavigationService.getFolder(1)
                     .then(fileStorage => {
 
@@ -184,17 +186,21 @@ export class AppComponent implements OnInit, OnDestroy
                             navigation.push(nav);
                         }
 
-                        navigation.push({
+                        var fileManagerNavigation: FuseNavigation = {
                             id: 'file-manager',
                             title: 'File Manager',
                             type: 'group',
-                            button: {
+                            children: child
+                        };
+
+                        if (user && user.role && user.role.name == 'SUPER ADMIN') {
+                            fileManagerNavigation['button'] = {
                                 id: 'add-folder',
                                 title: 'Add Folder',
                                 icon: 'add'
-                            },
-                            children: child
-                        });
+                            }
+                        }
+                        navigation.push(fileManagerNavigation);
 
                         this.navigation = navigation;
 

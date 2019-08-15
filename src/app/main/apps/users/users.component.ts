@@ -7,7 +7,7 @@ import { FormGroup } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { DataSource } from '@angular/cdk/collections';
 import { UsersService } from './users.service';
-import { ConfirmFormComponent } from '../confirm-form/confirm-form.component';
+import { ConfirmFormComponent } from '../../confirm-form/confirm-form.component';
 import { UserFormComponent } from './user-form/user-form.component';
 
 @Component({
