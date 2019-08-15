@@ -86,6 +86,7 @@ export const locale = {
                     'MODIFIEDDATE': 'Modified date',
                     'CREATEBY': 'Create by',
                     'CREATEDATE': 'Create date',
+                    'SIZE': 'Size',
                     'NAME': 'Name',
                     'VIEWRIGHT': 'View right',
                     'FOLDERREMOVEQUESTION': 'Are you sure you want to delete this folder?',

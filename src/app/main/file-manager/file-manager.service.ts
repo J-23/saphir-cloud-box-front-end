@@ -26,9 +26,6 @@ export class FileManagerService implements Resolve<any> {
 
         return new Promise((resolve, reject) => {
 
-            if (route.params && route.params.id) {
-
-            }
             Promise.all([
                 this.getFileStorage(route.params.id)
             ]).then(
@@ -96,6 +93,13 @@ export class FileManagerService implements Resolve<any> {
                     this.getFileStorage(file.parentId);
                     resolve(response);
                 }, reject);
-        })
+        });
+    }
+
+    downloadFile(fileId, owner, client) {
+        var ownerId = owner ? owner.id : 0;
+        var clientId = client ? client.id : 0;
+
+        window.location.href = this.baseURL + `/api/file-storage/download/file/${fileId}/${ownerId}/${clientId}`;
     }
 }

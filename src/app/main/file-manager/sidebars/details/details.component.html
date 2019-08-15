@@ -2,17 +2,24 @@
 
     <div class="toolbar" fxLayout="row" fxLayoutAlign="end center">
 
-        <button mat-icon-button matTooltip="Delete">
-            <mat-icon>delete</mat-icon>
-        </button>
-
-        <button *ngIf="!selected.isDirectory" mat-icon-button matTooltip="Download">
-            <mat-icon>cloud_download</mat-icon>
-        </button>
-
-        <button mat-icon-button matTooltip="More">
+        <button mat-icon-button matTooltip="More" [matMenuTriggerFor]="moreMenu">
             <mat-icon>more_vert</mat-icon>
         </button>
+
+        <mat-menu #moreMenu="matMenu">
+            <button *ngIf="!selected.isDirectory" mat-menu-item aria-label="download" (click)="downloadFile(row)">
+                <mat-icon>cloud_download</mat-icon>
+                <span>{{ 'COMMONACTIONS.DOWNLOAD' | translate }}</span>
+            </button>
+            <button *ngIf="buttonUpdateIsAvailable" mat-menu-item aria-label="edit" (click)="updateFolder(row)">
+                <mat-icon>edit</mat-icon>
+                <span>{{ 'COMMONACTIONS.EDIT' | translate }}</span>
+            </button>
+            <button *ngIf="buttonRemoveIsAvailable" mat-menu-item aria-label="remove" (click)="removeFolder(row)">
+                <mat-icon>delete</mat-icon>
+                <span>{{ 'COMMONACTIONS.REMOVE' | translate }}</span>
+            </button>
+        </mat-menu>
 
         <button mat-icon-button matTooltip="Close" (click)="close()">
             <mat-icon>close</mat-icon>
@@ -34,8 +41,7 @@
     <div class="file-details" [@animate]="{value:'*',params:{delay:'200ms'}}">
 
         <div class="preview file-icon" fxLayout="row" fxLayoutAlign="center center">
-            <mat-icon *ngIf="selected.isDirectory" class="type-icon s-48">folder</mat-icon>
-            <mat-icon *ngIf="!selected.isDirectory" class="type-icon s-48">insert_drive_file</mat-icon>
+            <mat-icon class="type-icon s-48">{{selected.storageType}}</mat-icon>
         </div>
 
         <div class="title">{{ 'PAGES.APPS.FILEMANAGER.INFO' | translate }}</div>
@@ -45,7 +51,12 @@
             <tr>
                 <th>{{ 'PAGES.APPS.FILEMANAGER.TYPE' | translate }}</th>
                 <td *ngIf="selected.isDirectory">folder</td>
-                <td *ngIf="!selected.isDirectory">file</td>
+                <td *ngIf="!selected.isDirectory && selected.file"> {{selected.file.extension}}</td>
+            </tr>
+
+            <tr *ngIf="!selected.isDirectory && selected.file">
+                <th>{{ 'PAGES.APPS.FILEMANAGER.SIZE' | translate }}</th>
+                <td>{{selected.file.size}} {{selected.file.sizeType}}</td>
             </tr>
 
             <tr class="owner">

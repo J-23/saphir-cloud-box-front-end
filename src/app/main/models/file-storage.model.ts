@@ -33,12 +33,14 @@ export class Storage {
     updateBy: AppUser;
     updateDate: Date;
     owner: AppUser;
+    client: Client;
     storageType: string;
+    file: File;
 
     constructor(storage?) {
-
         var storage = storage || {};
 
+        
         this.id = storage.id || null;
         this.name = storage.name || null;
         this.isDirectory = storage.isDirectory || false;
@@ -47,6 +49,26 @@ export class Storage {
         this.updateBy = storage.updateBy ? new AppUser(storage.updateBy) : null;
         this.updateDate = storage.updateDate || null;
         this.owner = storage.owner ? new AppUser(storage.owner) : null;
+        this.client = storage.client ? new Client(storage.client) : null;
         this.storageType = storage.storageType || null;
+
+        this.file = storage.file ? new File(storage.file) : null;
+    }
+}
+
+export class File {
+    id: number;
+    extension: string;
+    size: number;
+    sizeType: string;
+
+    constructor(file?) {
+
+        var file = file || {};
+
+        this.id = file.id || null;
+        this.extension = file.extension || null;
+        this.size = file.size || null;
+        this.sizeType = file.sizeType || null;
     }
 }

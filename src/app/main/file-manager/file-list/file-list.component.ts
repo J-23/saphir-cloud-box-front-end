@@ -14,7 +14,7 @@ import { FolderFormComponent } from '../folder-form/folder-form.component';
 import { FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { ConfirmFormComponent } from 'app/main/confirm-form/confirm-form.component';
-import { Storage } from 'app/main/models/file-storage.model';
+import { Storage, FileStorage } from 'app/main/models/file-storage.model';
 
 @Component({
     selector     : 'file-list',
@@ -28,7 +28,7 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
     storages: Storage[] = [];
     selected: Storage;
 
-    private fileStorageId: number;
+    private fileStorage: FileStorage;
 
     private commonColumns = ['icon', 'name', 'modified', 'button'];
     private userColumns = ['icon', 'name', 'modified', 'access', 'button'];
@@ -58,7 +58,7 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
         this._fileManagerService.onFileStorageChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(fileStorage => {
-                this.fileStorageId = fileStorage.id;
+                this.fileStorage = fileStorage;
                 this.storages = fileStorage.storages;
 
                 if (!fileStorage.client && !fileStorage.owner || (fileStorage.client && !fileStorage.owner)) {
@@ -96,7 +96,10 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
     }
 
     getChildStorages(storage){
-        this.router.navigate([`/file-manager/${storage.id}`]);
+
+        if (storage.isDirectory) {
+            this.router.navigate([`/file-manager/${storage.id}`]);
+        }
     }
 
     ngOnDestroy(): void {
@@ -120,7 +123,7 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
         this.folderDialogRef = this._matDialog.open(FolderFormComponent, {
             panelClass: 'form-dialog',
             data: {
-                parentId: this.fileStorageId,
+                parentId: this.fileStorage.id,
                 name: folder.name
             }
         });
@@ -135,7 +138,7 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
                     name: form.controls['name'].value
                 };
         
-                this._fileManagerService.updateFolder(folder, this.fileStorageId)
+                this._fileManagerService.updateFolder(folder, this.fileStorage.id)
                     .then(() => { })
                     .catch(res => { 
                         if (res && res.status && res.status == 403) {
@@ -165,7 +168,7 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
                   id: folderId
                 };
       
-                this._fileManagerService.removeFolder(folder, this.fileStorageId)
+                this._fileManagerService.removeFolder(folder, this.fileStorage.id)
                   .then(() => {
                     this.translateService.get('PAGES.APPS.FILEMANAGER.FOLDERREMOVESUCCESS').subscribe(message => {
                       this.createSnackBar(message);
@@ -182,6 +185,10 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
               this.confirmDialogRef = null;
             });
           });
+    }
+
+    downloadFile(file) {
+        this._fileManagerService.downloadFile(file.id, file.owner, file.client);
     }
 
     createSnackBar(message: string) {

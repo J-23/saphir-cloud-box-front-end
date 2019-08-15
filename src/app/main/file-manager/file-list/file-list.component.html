@@ -43,7 +43,7 @@
                         <mat-icon>info</mat-icon>
                         <span>{{ 'COMMONACTIONS.INFO' | translate }}</span>
                     </button>
-                    <button *ngIf="!row.isDirectory" mat-menu-item aria-label="donload">
+                    <button *ngIf="!row.isDirectory" mat-menu-item aria-label="download" (click)="downloadFile(row)">
                         <mat-icon>cloud_download</mat-icon>
                         <span>{{ 'COMMONACTIONS.DOWNLOAD' | translate }}</span>
                     </button>

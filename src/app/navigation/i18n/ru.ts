@@ -87,6 +87,7 @@ export const locale = {
                     'MODIFIEDDATE': 'Дата изменения',
                     'CREATEBY': 'Создан',
                     'CREATEDATE': 'Дата создания',
+                    'SIZE': 'Размер',
                     'NAME': 'Название',
                     'VIEWRIGHT': 'Право просмотра',
                     'FOLDERREMOVEQUESTION': 'Вы уверены, что хотите удалить данную папку?',
