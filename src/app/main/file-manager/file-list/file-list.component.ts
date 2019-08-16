@@ -151,39 +151,63 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
           });
     }
 
-    removeFolder(folder) {
-        var folderId = folder.id;
+    remove(fileStorage) {
+        var fileStorageId = fileStorage.id;
 
-        this.translateService.get('PAGES.APPS.FILEMANAGER.FOLDERREMOVEQUESTION').subscribe(message => {
-            this.confirmDialogRef = this._matDialog.open(ConfirmFormComponent, {
-              disableClose: false
-            });
-      
-            this.confirmDialogRef.componentInstance.confirmMessage = message;
-      
-            this.confirmDialogRef.afterClosed().subscribe(result => {
-              if (result) {
-      
-                var folder = {
-                  id: folderId
-                };
-      
-                this._fileManagerService.removeFolder(folder, this.fileStorage.id)
-                  .then(() => {
-                    this.translateService.get('PAGES.APPS.FILEMANAGER.FOLDERREMOVESUCCESS').subscribe(message => {
-                      this.createSnackBar(message);
-                    });
-                  })
-                  .catch(res => {
-                    if (res && res.status && res.status == 403) {
-                      this.translateService.get('PAGES.APPS.FILEMANAGER.FOLDER' + res.error).subscribe(message => {
-                        this.createSnackBar(message);
-                      });
-                    }
-                  });
-              }
-              this.confirmDialogRef = null;
-            });
+        this.translateService.get(fileStorage.isDirectory ? 'PAGES.APPS.FILEMANAGER.FOLDERREMOVEQUESTION' : 'PAGES.APPS.FILEMANAGER.FILEREMOVEQUESTION')
+            .subscribe(message => {
+                
+                this.confirmDialogRef = this._matDialog.open(ConfirmFormComponent, {
+                    disableClose: false
+                });
+        
+                this.confirmDialogRef.componentInstance.confirmMessage = message;
+        
+                this.confirmDialogRef.afterClosed()
+                    .subscribe(result => {
+                        
+                        if (result) {
+                
+                            var data = {
+                                id: fileStorageId
+                            }
+
+                            if (fileStorage.isDirectory) {
+                                
+                                this._fileManagerService.removeFolder(data, this.fileStorage.id)
+                                    .then(() => {
+                                        this.translateService.get('PAGES.APPS.FILEMANAGER.FOLDERREMOVESUCCESS').subscribe(message => {
+                                        this.createSnackBar(message);
+                                        });
+                                    })
+                                    .catch(res => {
+                                        if (res && res.status && res.status == 403) {
+                                        this.translateService.get('PAGES.APPS.FILEMANAGER.FOLDER' + res.error).subscribe(message => {
+                                            this.createSnackBar(message);
+                                        });
+                                        }
+                                    });
+                            }
+                            else {
+                                this._fileManagerService.removeFile(data, this.fileStorage.id)
+                                    .then(() => {
+                                        this.translateService.get('PAGES.APPS.FILEMANAGER.FILEREMOVESUCCESS').subscribe(message => {
+                                        this.createSnackBar(message);
+                                        });
+                                    })
+                                    .catch(res => {
+                                        if (res && res.status && res.status == 403) {
+                                        this.translateService.get('PAGES.APPS.FILEMANAGER.FILE' + res.error).subscribe(message => {
+                                            this.createSnackBar(message);
+                                        });
+                                        }
+                                    });
+                            }
+                
+                            
+                        }
+                    this.confirmDialogRef = null;
+                });
           });
     }
 

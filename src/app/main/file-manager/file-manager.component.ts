@@ -137,7 +137,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
 
                     var file = {
                         parentId: form.controls['parentId'].value,
-                        name: form.controls['content'].value.name,
+                        name: form.controls['name'].value,
                         content: base64,
                         size: form.controls['size'].value
                     };

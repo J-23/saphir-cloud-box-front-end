@@ -99,7 +99,18 @@ export class FileManagerService implements Resolve<any> {
     downloadFile(fileId, owner, client) {
         var ownerId = owner ? owner.id : 0;
         var clientId = client ? client.id : 0;
+        
+        window.open(this.baseURL + `/api/file-storage/download/file/${fileId}/${ownerId}/${clientId}`);
+    }
 
-        window.location.href = this.baseURL + `/api/file-storage/download/file/${fileId}/${ownerId}/${clientId}`;
+    removeFile(file, parentId): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this._httpClient.post(this.baseURL + '/api/file-storage/remove/file', file)
+                .subscribe((response:any) => {
+
+                    this.getFileStorage(parentId);
+                    resolve(response);
+                }, reject);
+        });
     }
 }

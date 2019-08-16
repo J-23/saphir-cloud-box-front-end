@@ -51,7 +51,7 @@
                         <mat-icon>edit</mat-icon>
                         <span>{{ 'COMMONACTIONS.EDIT' | translate }}</span>
                     </button>
-                    <button *ngIf="buttonRemoveIsAvailable" mat-menu-item aria-label="remove" (click)="removeFolder(row)">
+                    <button *ngIf="buttonRemoveIsAvailable" mat-menu-item aria-label="remove" (click)="remove(row)">
                         <mat-icon>delete</mat-icon>
                         <span>{{ 'COMMONACTIONS.REMOVE' | translate }}</span>
                     </button>

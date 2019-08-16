@@ -15,7 +15,7 @@
             <div fxLayout="row" fxLayoutAlign="start start">
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>File</mat-label>
-                    <input matInput required autocomplete="off" [value]="form.controls['content'].value ? form.controls['content'].value.name : ''">
+                    <input matInput required autocomplete="off" formControlName="name">
                 </mat-form-field>
                 <input hidden type="file" #fileInput (change)="onFileChange($event)"/>
                 <button class="add-file-button" mat-raised-button (click)="fileInput.click()">Add file</button>
