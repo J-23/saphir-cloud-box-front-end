@@ -19,7 +19,8 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
 
     private _unsubscribeAll: Subject<any>;
 
-    constructor (private _fileManagerService: FileManagerService) {
+    constructor (private _fileManagerService: FileManagerService,
+        private _fuseSidebarService: FuseSidebarService) {
         
         this._unsubscribeAll = new Subject();
     }
@@ -31,6 +32,10 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
             .subscribe(selected => {
                 this.selected = selected;
             });
+    }
+
+    close() {
+        this._fuseSidebarService.getSidebar('file-manager-details-sidebar').toggleOpen();
     }
 
     ngOnDestroy(): void {

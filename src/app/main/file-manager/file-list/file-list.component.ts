@@ -110,6 +110,7 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
 
     onSelect(selected): void {
         this._fileManagerService.onStorageSelected.next(selected);
+        this._fuseSidebarService.getSidebar('file-manager-details-sidebar').toggleOpen();
     }
 
     toggleSidebar(name): void {

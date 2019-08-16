@@ -7,7 +7,7 @@
         </button>
 
         <mat-menu #moreMenu="matMenu">
-            <button *ngIf="!selected.isDirectory" mat-menu-item aria-label="download" (click)="downloadFile(row)">
+            <button *ngIf="selected && !selected.isDirectory" mat-menu-item aria-label="download" (click)="downloadFile(row)">
                 <mat-icon>cloud_download</mat-icon>
                 <span>{{ 'COMMONACTIONS.DOWNLOAD' | translate }}</span>
             </button>
@@ -21,17 +21,17 @@
             </button>
         </mat-menu>
 
-        <button mat-icon-button matTooltip="Close" (click)="close()">
+        <button mat-icon-button (click)="close()">
             <mat-icon>close</mat-icon>
         </button>
     </div>
 
     <div>
-        <div class="title mb-8">{{selected.name}}</div>
+        <div *ngIf="selected" class="title mb-8">{{selected.name}}</div>
         <div class="subtitle secondary-text">
             <span>{{ 'PAGES.APPS.FILEMANAGER.EDITED' | translate }}</span>
-            <span *ngIf="selected.updateBy">: {{selected.updateBy.userName}}</span>
-            <span *ngIf="!selected.updateBy">: {{selected.createBy.userName}}</span>
+            <span *ngIf="selected && selected.updateBy">: {{selected.updateBy.userName}}</span>
+            <span *ngIf="selected && !selected.updateBy">: {{selected.createBy.userName}}</span>
         </div>
     </div>
 </div>
@@ -40,7 +40,7 @@
 
     <div class="file-details" [@animate]="{value:'*',params:{delay:'200ms'}}">
 
-        <div class="preview file-icon" fxLayout="row" fxLayoutAlign="center center">
+        <div *ngIf="selected" class="preview file-icon" fxLayout="row" fxLayoutAlign="center center">
             <mat-icon class="type-icon s-48">{{selected.storageType}}</mat-icon>
         </div>
 
@@ -50,38 +50,38 @@
 
             <tr>
                 <th>{{ 'PAGES.APPS.FILEMANAGER.TYPE' | translate }}</th>
-                <td *ngIf="selected.isDirectory">folder</td>
-                <td *ngIf="!selected.isDirectory && selected.file"> {{selected.file.extension}}</td>
+                <td *ngIf="selected && selected.isDirectory">folder</td>
+                <td *ngIf="selected && !selected.isDirectory && selected.file"> {{selected.file.extension}}</td>
             </tr>
 
-            <tr *ngIf="!selected.isDirectory && selected.file">
+            <tr *ngIf="selected && !selected.isDirectory && selected.file">
                 <th>{{ 'PAGES.APPS.FILEMANAGER.SIZE' | translate }}</th>
                 <td>{{selected.file.size}} {{selected.file.sizeType}}</td>
             </tr>
 
             <tr class="owner">
                 <th>{{ 'PAGES.APPS.FILEMANAGER.OWNER' | translate }}</th>
-                <td>{{selected.createBy.userName}}</td>
+                <td *ngIf="selected && selected.createBy">{{selected.createBy.userName}}</td>
             </tr>
 
             <tr class="modified">
                 <th>{{ 'PAGES.APPS.FILEMANAGER.MODIFIEDBY' | translate }}</th>
-                <td *ngIf="selected.updateBy">{{selected.updateBy.userName}}</td>
+                <td *ngIf="selected && selected.updateBy">{{selected.updateBy.userName}}</td>
             </tr>
 
             <tr class="modified">
                 <th>{{ 'PAGES.APPS.FILEMANAGER.MODIFIEDDATE' | translate }}</th>
-                <td *ngIf="selected.updateDate">{{selected.updateDate | date: 'dd/MM/yyyy hh:mm'}}</td>
+                <td *ngIf="selected && selected.updateDate">{{selected.updateDate | date: 'dd/MM/yyyy hh:mm'}}</td>
             </tr>
 
             <tr class="created">
                 <th>{{ 'PAGES.APPS.FILEMANAGER.CREATEBY' | translate }}</th>
-                <td>{{selected.createBy.userName}}</td>
+                <td *ngIf="selected && selected.createBy">{{selected.createBy.userName}}</td>
             </tr>
 
             <tr class="created">
                 <th>{{ 'PAGES.APPS.FILEMANAGER.CREATEDATE' | translate }}</th>
-                <td>{{selected.createDate | date: 'dd/MM/yyyy hh:mm'}}</td>
+                <td *ngIf="selected && selected.createDate">{{selected.createDate | date: 'dd/MM/yyyy hh:mm'}}</td>
             </tr>
         </table>
     </div>

@@ -15,11 +15,11 @@
                 
 
             <div *ngIf="buttonAddIsAvailable">
-                <button mat-raised-button class="fuse-white mt-24 mt-md-0" (click)="addFolder()" 
+                <button mat-raised-button class="fuse-white mt-12 mt-md-0" (click)="addFolder()" 
                     [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}">
                     <span>{{ 'PAGES.APPS.FILEMANAGER.ADDFOLDER' | translate }}</span>
                 </button>
-                <button mat-raised-button class="fuse-white mt-24 mt-md-0 ml-24" (click)="addFile()" 
+                <button mat-raised-button class="fuse-white mt-12 mt-md-0 ml-24" (click)="addFile()" 
                     [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}">
                     <span>Add file</span>
                 </button>
@@ -32,10 +32,8 @@
 
     </div>
 
-    <div *ngIf="selected">
-        <fuse-sidebar class="sidebar details-sidebar" name="file-manager-details-sidebar" position="right" lockedOpen="gt-md">
+    <fuse-sidebar class="sidebar details-sidebar" name="file-manager-details-sidebar" position="right">
             <file-manager-details-sidebar></file-manager-details-sidebar>
-        </fuse-sidebar>
-    </div>
+    </fuse-sidebar>
 
 </div>
