@@ -10,6 +10,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 export class FileFormComponent implements OnInit {
 
   private parentId: number;
+  private title: string;
+  private fileName: string;
 
   form: FormGroup;
 
@@ -17,6 +19,8 @@ export class FileFormComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) private _data: any,
     private _formBuilder: FormBuilder) { 
     this.parentId = this._data.parentId;
+    this.title = this._data.title;
+    this.fileName = this._data.name;
   }
 
   ngOnInit() {
@@ -25,21 +29,35 @@ export class FileFormComponent implements OnInit {
 
   createForm(): FormGroup {
 
+    if (this.fileName) {
+      return new FormGroup({
+        parentId: new FormControl(this.parentId, Validators.required),
+        content: new FormControl({value: null, disabled: true}),
+        size: new FormControl({value: null, disabled: true}),
+        name: new FormControl(this.fileName, Validators.required)
+      });
+    }
+    
     return new FormGroup({
       parentId: new FormControl(this.parentId, Validators.required),
       content: new FormControl({value: null, disabled: true}, Validators.required),
       size: new FormControl({value: null, disabled: true}, Validators.required),
-      name: new FormControl(null, Validators.required)
-    })
+      name: new FormControl(this.fileName, Validators.required)
+    });
   }
 
   onFileChange(event) {
     var selectedFile = event.target.files[0];
     
-    this.form.patchValue({
-      content: selectedFile,
-      size: selectedFile.size,
-      name: selectedFile.name
-    });
+    const reader = new FileReader();
+    reader.readAsDataURL(selectedFile);
+    reader.onload = () => {
+      const base64 = reader.result.toString().split(',')[1];
+      this.form.patchValue({
+        content: base64,
+        size: selectedFile.size,
+        name: selectedFile.name
+      });
+    };
   }
 }

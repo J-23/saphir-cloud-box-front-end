@@ -11,6 +11,7 @@ export class FolderFormComponent implements OnInit {
 
   private parentId: number;
   private name: string;
+  private title: string;
 
   form: FormGroup;
 
@@ -19,6 +20,8 @@ export class FolderFormComponent implements OnInit {
     private _formBuilder: FormBuilder) { 
       this.parentId = this._data.parentId;
       this.name = this._data.name;
+
+      this.title = this._data.title;
     }
 
   ngOnInit() {

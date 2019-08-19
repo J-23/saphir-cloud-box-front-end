@@ -15,6 +15,7 @@ import { FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { ConfirmFormComponent } from 'app/main/confirm-form/confirm-form.component';
 import { Storage, FileStorage } from 'app/main/models/file-storage.model';
+import { FileFormComponent } from '../file-form/file-form.component';
 
 @Component({
     selector     : 'file-list',
@@ -38,6 +39,7 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
     buttonUpdateIsAvailable: boolean = false;
 
     folderDialogRef: any;
+    fileDialogRef: any;
     confirmDialogRef: MatDialogRef<ConfirmFormComponent>;
 
     private _unsubscribeAll: Subject<any>;
@@ -117,39 +119,98 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
         this._fuseSidebarService.getSidebar(name).toggleOpen();
     }
 
-    updateFolder(folder) {
+    update(fileStorage) {
 
+        if (fileStorage.isDirectory) {
+            this.updateFolder(fileStorage);
+        }
+        else {
+            this.updateFile(fileStorage);
+        }
+    }
+
+    private updateFolder(folder) {
         var folderId = folder.id;
-
-        this.folderDialogRef = this._matDialog.open(FolderFormComponent, {
-            panelClass: 'form-dialog',
-            data: {
-                parentId: this.fileStorage.id,
-                name: folder.name
-            }
-        });
-
-        this.folderDialogRef.afterClosed()
-            .subscribe((form: FormGroup) => {
-            
-            if (form && form.valid) {
-    
-                var folder = {
-                    id: folderId,
-                    name: form.controls['name'].value
-                };
         
-                this._fileManagerService.updateFolder(folder, this.fileStorage.id)
-                    .then(() => { })
-                    .catch(res => { 
-                        if (res && res.status && res.status == 403) {
-                            this.translateService.get('PAGES.APPS.FILEMANAGER.FOLDER' + res.error).subscribe(message => {
-                              this.createSnackBar(message);
+        this.translateService.get('PAGES.APPS.FILEMANAGER.UPDATEFOLDER')
+            .subscribe(message => {
+
+                this.folderDialogRef = this._matDialog.open(FolderFormComponent, {
+                    panelClass: 'form-dialog',
+                    data: {
+                        parentId: this.fileStorage.id,
+                        name: folder.name,
+                        title: message
+                    }
+                });
+
+                this.folderDialogRef.afterClosed()
+                    .subscribe((form: FormGroup) => {
+                    
+                    if (form && form.valid) {
+            
+                        var folder = {
+                            id: folderId,
+                            name: form.controls['name'].value
+                        };
+                
+                        this._fileManagerService.updateFolder(folder, this.fileStorage.id)
+                            .then(() => { })
+                            .catch(res => { 
+                                if (res && res.status && res.status == 403) {
+                                    this.translateService.get('PAGES.APPS.FILEMANAGER.FOLDER' + res.error).subscribe(message => {
+                                    this.createSnackBar(message);
+                                    });
+                                }
                             });
+                    }
+                });
+            });
+        
+    }
+
+    private updateFile(file) {
+
+        var fileId = file.id;
+        
+        this.translateService.get('PAGES.APPS.FILEMANAGER.UPDATEFILE')
+            .subscribe(message => {
+
+                this.fileDialogRef = this._matDialog.open(FileFormComponent, {
+                    panelClass: 'form-dialog',
+                    data: {
+                        parentId: this.fileStorage.id,
+                        name: file.name + file.file.extension,
+                        title: message
+                    }
+                });
+
+                this.fileDialogRef.afterClosed()
+                    .subscribe((form: FormGroup) => {
+                    
+                    if (form && form.valid) {
+            
+                        var body = {
+                            id: fileId,
+                            name: form.controls['name'].value
+                        };
+
+                        if (form.controls['content'].value) {
+                            body['content'] = form.controls['content'].value;
+                            body['size'] = form.controls['size'].value;
                         }
-                    });
-            }
-          });
+                        
+                        this._fileManagerService.updateFile(body, this.fileStorage.id)
+                            .then()
+                            .catch(res => {
+                                if (res && res.status && res.status == 403) {
+                                    this.translateService.get('PAGES.APPS.FILEMANAGER.FILE' + res.error).subscribe(message => {
+                                    this.createSnackBar(message);
+                                    });
+                                }});
+                    }
+                });
+            });
     }
 
     remove(fileStorage) {
@@ -204,9 +265,8 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
                                         }
                                     });
                             }
-                
-                            
                         }
+                        
                     this.confirmDialogRef = null;
                 });
           });

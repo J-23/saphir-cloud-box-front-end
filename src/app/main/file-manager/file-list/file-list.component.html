@@ -47,7 +47,7 @@
                         <mat-icon>cloud_download</mat-icon>
                         <span>{{ 'COMMONACTIONS.DOWNLOAD' | translate }}</span>
                     </button>
-                    <button *ngIf="buttonUpdateIsAvailable" mat-menu-item aria-label="edit" (click)="updateFolder(row)">
+                    <button *ngIf="buttonUpdateIsAvailable" mat-menu-item aria-label="edit" (click)="update(row)">
                         <mat-icon>edit</mat-icon>
                         <span>{{ 'COMMONACTIONS.EDIT' | translate }}</span>
                     </button>

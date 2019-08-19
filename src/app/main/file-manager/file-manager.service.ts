@@ -103,6 +103,17 @@ export class FileManagerService implements Resolve<any> {
         window.open(this.baseURL + `/api/file-storage/download/file/${fileId}/${ownerId}/${clientId}`);
     }
 
+    updateFile(file, parentId): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this._httpClient.post(this.baseURL + '/api/file-storage/update/file', file)
+                .subscribe((response:any) => {
+
+                    this.getFileStorage(parentId);
+                    resolve(response);
+                }, reject);
+        });
+    }
+
     removeFile(file, parentId): Promise<any> {
         return new Promise((resolve, reject) => {
             this._httpClient.post(this.baseURL + '/api/file-storage/remove/file', file)

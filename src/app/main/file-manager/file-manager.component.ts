@@ -87,73 +87,76 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     }
 
     addFolder() {
-        this.folderDialogRef = this._matDialog.open(FolderFormComponent, {
-            panelClass: 'form-dialog',
-            data: {
-                parentId: this.fileStorage.id
-            }
-        });
-
-        this.folderDialogRef.afterClosed()
-            .subscribe((form: FormGroup) => {
-            
-            if (form && form.valid) {
-    
-              var folder = {
-                parentId: form.controls['parentId'].value,
-                name: form.controls['name'].value
-              };
-    
-              this._fileManagerService.addFolder(folder)
-                .then(() => { })
-                .catch(res => { 
-                    if (res && res.status && res.status == 403) {
-                        this.translateService.get('PAGES.APPS.FILEMANAGER.FOLDER' + res.error).subscribe(message => {
-                          this.createSnackBar(message);
-                        });
+        this.translateService.get('PAGES.APPS.FILEMANAGER.ADDFOLDER')
+            .subscribe(message => {
+                this.folderDialogRef = this._matDialog.open(FolderFormComponent, {
+                    panelClass: 'form-dialog',
+                    data: {
+                        parentId: this.fileStorage.id,
+                        title: message
                     }
                 });
-            }
-          });
-    }
 
-    addFile() {
-        this.fileDialogRef = this._matDialog.open(FileFormComponent, {
-            panelClass: 'form-dialog',
-            data: {
-                parentId: this.fileStorage.id
-            }
-        });
-
-        this.fileDialogRef.afterClosed()
-            .subscribe((form: FormGroup) => {
+                this.folderDialogRef.afterClosed()
+                    .subscribe((form: FormGroup) => {
+                    
+                    if (form && form.valid) {
             
-            if (form && form.valid) {
-    
-                const reader = new FileReader();
-                reader.readAsDataURL(form.controls['content'].value);
-                reader.onload = () => {
-                    const base64 = reader.result.toString().split(',')[1];
-
-                    var file = {
+                    var folder = {
                         parentId: form.controls['parentId'].value,
-                        name: form.controls['name'].value,
-                        content: base64,
-                        size: form.controls['size'].value
+                        name: form.controls['name'].value
                     };
-
-                    this._fileManagerService.addFile(file)
+            
+                    this._fileManagerService.addFolder(folder)
                         .then(() => { })
                         .catch(res => { 
                             if (res && res.status && res.status == 403) {
-                                this.translateService.get('PAGES.APPS.FILEMANAGER.' + res.error).subscribe(message => {
-                                  this.createSnackBar(message);
+                                this.translateService.get('PAGES.APPS.FILEMANAGER.FOLDER' + res.error).subscribe(message => {
+                                this.createSnackBar(message);
                                 });
                             }
                         });
-                };
-            }
-          });
+                    }
+                });
+            });
+        
+    }
+
+    addFile() {
+        this.translateService.get('PAGES.APPS.FILEMANAGER.ADDFILE')
+            .subscribe(message => { 
+                this.fileDialogRef = this._matDialog.open(FileFormComponent, {
+                    panelClass: 'form-dialog',
+                    data: {
+                        parentId: this.fileStorage.id,
+                        title: message
+                    }
+                });
+
+                this.fileDialogRef.afterClosed()
+                    .subscribe((form: FormGroup) => {
+                    
+                    if (form && form.valid) {
+            
+                        var file = {
+                            parentId: form.controls['parentId'].value,
+                            name: form.controls['name'].value,
+                            content: form.controls['content'].value,
+                            size: form.controls['size'].value
+                        };
+
+                        this._fileManagerService.addFile(file)
+                            .then(() => { })
+                            .catch(res => { 
+                                if (res && res.status && res.status == 403) {
+                                    this.translateService.get('PAGES.APPS.FILEMANAGER.' + res.error).subscribe(message => {
+                                    this.createSnackBar(message);
+                                    });
+                                }
+                            });
+                    }
+                });
+            });
     }
 
     goBack() {

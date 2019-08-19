@@ -93,7 +93,16 @@ export const locale = {
                     'FOLDERREMOVESUCCESS': 'Folder removed',
                     'FOLDERNOT_FOUNT': 'Folder not found',
                     'FOLDERSERVER_ERROR': 'Oops! Something went wrong. Please contact support, and we will try to fix it soon',
-                    'FOLDERSAME_NAME': 'Folder with the same name already exists'
+                    'FOLDERSAME_NAME': 'Folder with the same name already exists',
+                    'UPDATEFOLDER': 'Update folder',
+                    'ADDFILE': 'Add file',
+                    'UPDATEFILE': 'Update file',
+                    'FILENOT_FOUNT': 'File not found',
+                    'FILESAME_NAME': 'File with the same name already exists',
+                    'FILESERVER_ERROR': 'Oops! Something went wrong. Please contact support, and we will try to fix it soon',
+                    'FILE': 'File',
+                    'FILEREMOVEQUESTION': 'Are you sure you want to delete this file?',
+                    'FILEREMOVESUCCESS': 'File removed'
                 }
             },
             'AUTH': {
