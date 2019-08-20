@@ -44,7 +44,7 @@ export class FileManagerService implements Resolve<any> {
             this._httpClient.get(this.baseURL + `/api/file-storage/${id}`)
                 .subscribe((fileStorage: any) => {
                     this.onFileStorageChanged.next(fileStorage);
-                    this.onStorageSelected.next(null);
+                    this.onStorageSelected.next(fileStorage.storages[0]);
                     resolve(fileStorage);
                 }, reject);
         });
