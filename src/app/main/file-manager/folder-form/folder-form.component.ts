@@ -11,7 +11,7 @@ export class FolderFormComponent implements OnInit {
 
   private parentId: number;
   private name: string;
-  private title: string;
+  title: string;
 
   form: FormGroup;
 

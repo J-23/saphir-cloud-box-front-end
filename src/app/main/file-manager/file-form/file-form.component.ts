@@ -10,7 +10,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 export class FileFormComponent implements OnInit {
 
   private parentId: number;
-  private title: string;
+  title: string;
   private fileName: string;
 
   form: FormGroup;
