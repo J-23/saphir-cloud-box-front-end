@@ -2,27 +2,35 @@
             
     <div class="center" fxFlex>
 
-        <div class="header teal-300 p-24" fxLayout="column" fxLayoutAlign="space-between start">
-
+        <div class="header teal-300 p-24" fxLayout="row" fxLayoutAlign="space-between center">
             <div fxLayout="row" fxLayoutAlign="start center" >
                 <button *ngIf="!isRootFolder" mat-icon-button class="mr-0 mr-sm-16" (click)="goBack()" [@animate]="{value:'*',params:{x:'50px'}}">
                     <mat-icon>arrow_back</mat-icon>
                 </button>
-                <div *ngIf="fileStorage" class="breadcrumb text-truncate h1 pl-10" fxLayout="row" fxLayoutAlign="start center" [@animate]="{value:'*',params:{x:'50px'}}">
+                <div *ngIf="fileStorage" class="breadcrumb text-truncate h1 pl-10" [@animate]="{value:'*',params:{x:'50px'}}">
                     <span>{{fileStorage.name}}</span>
                 </div>
             </div>
-                
 
-            <div *ngIf="buttonAddIsAvailable">
-                <button mat-raised-button class="fuse-white mt-12 mt-md-0" (click)="addFolder()" 
-                    [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}">
-                    <span>{{ 'PAGES.APPS.FILEMANAGER.ADDFOLDER' | translate }}</span>
+            <div>
+                <button *ngIf="buttonAddIsAvailable || buttonRemoveIsAvailable" mat-icon-button matTooltip="More" [matMenuTriggerFor]="moreMenu">
+                    <mat-icon>more_vert</mat-icon>
                 </button>
-                <button mat-raised-button class="fuse-white mt-12 mt-md-0 ml-24" (click)="addFile()" 
-                    [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}">
-                    <span>{{ 'PAGES.APPS.FILEMANAGER.ADDFILE' | translate }}</span>
-                </button>
+                
+                <mat-menu #moreMenu="matMenu">
+                    <button *ngIf="buttonAddIsAvailable" mat-menu-item aria-label="download" (click)="addFolder()">
+                        <mat-icon>add</mat-icon>
+                        <span>{{ 'PAGES.APPS.FILEMANAGER.ADDFOLDER' | translate }}</span>
+                    </button>
+                    <button *ngIf="buttonAddIsAvailable" mat-menu-item aria-label="edit" (click)="addFile()">
+                        <mat-icon>add</mat-icon>
+                        <span>{{ 'PAGES.APPS.FILEMANAGER.ADDFILE' | translate }}</span>
+                    </button>
+                    <button *ngIf="buttonRemoveIsAvailable" mat-menu-item aria-label="remove" (click)="removeFolder()">
+                        <mat-icon>delete</mat-icon>
+                        <span>{{ 'PAGES.APPS.FILEMANAGER.REMOVECURRENTFOLDER' | translate }}</span>
+                    </button>
+                </mat-menu>
             </div>
         </div>
 

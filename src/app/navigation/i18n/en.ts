@@ -102,7 +102,8 @@ export const locale = {
                     'FILESERVER_ERROR': 'Oops! Something went wrong. Please contact support, and we will try to fix it soon',
                     'FILE': 'File',
                     'FILEREMOVEQUESTION': 'Are you sure you want to delete this file?',
-                    'FILEREMOVESUCCESS': 'File removed'
+                    'FILEREMOVESUCCESS': 'File removed',
+                    'REMOVECURRENTFOLDER': 'Remove current folder'
                 }
             },
             'AUTH': {

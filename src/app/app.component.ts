@@ -23,6 +23,7 @@ import { FormGroup } from '@angular/forms';
 import { AuthenticationService } from './main/authentication/authentication.service';
 import { userInfo } from 'os';
 import { FuseNavigationItem, FuseNavigation } from '@fuse/types';
+import { RoleType } from './main/models/role.model';
 
 @Component({
     selector   : 'app',
@@ -156,7 +157,12 @@ export class AppComponent implements OnInit, OnDestroy
               };
     
               this._fileManagerService.addFolder(folder)
-                .then(() => { this.SetNavigation()})
+                .then(() => { 
+                    
+                    this.folderNavigationService.getFolder(1)
+                        .then()
+                        .catch();
+                })
                 .catch(res => { });
             }
           });
@@ -166,49 +172,58 @@ export class AppComponent implements OnInit, OnDestroy
 
         this.authenticationService.user$
             .subscribe(user => {
-                this.folderNavigationService.getFolder(1)
-                    .then(fileStorage => {
 
-                        var child = fileStorage.storages.map(folder => {
-                            if (folder.isDirectory) {
-                                return { 
-                                    id: folder.id,
-                                    title: folder.name,
-                                    type: 'item',
-                                    url: `/file-manager/${folder.id}`
-                                }
-                            }
-                        });
-                        
+                this.folderNavigationService.onNavigationChanged
+                    .subscribe(fileStorage => {
+
                         var nav = navigation.pop();
 
-                        if (nav.id === 'applications') {
+                        if (user.role.type == RoleType.SuperAdmin && nav.id === 'applications') {
                             navigation.push(nav);
                         }
 
-                        var fileManagerNavigation: FuseNavigation = {
-                            id: 'file-manager',
-                            title: 'File Manager',
-                            type: 'group',
-                            children: child
-                        };
+                        if (fileStorage) {
+                            var children: FuseNavigationItem[] = fileStorage.storages.map(folder => {
+                                if (folder.isDirectory) {
+                                    var child: FuseNavigationItem = { 
+                                        id: folder.id.toString(),
+                                        title: folder.name,
+                                        type: 'item',
+                                        url: `/file-manager/${folder.id}`
+                                    };
 
-                        if (user && user.role && user.role.name == 'SUPER ADMIN') {
-                            fileManagerNavigation['button'] = {
-                                id: 'add-folder',
-                                title: 'Add Folder',
-                                icon: 'add'
+                                    return child;
+                                }
+                            });   
+                            
+                            var fileManagerNavigation: FuseNavigation = {
+                                id: 'file-manager',
+                                title: 'File Manager',
+                                type: 'group',
+                                children: children
+                            };
+
+                            if (user && user.role && (user.role.type == RoleType.SuperAdmin || user.role.type == RoleType.ClientAdmin)) {
+                                fileManagerNavigation['button'] = {
+                                    id: 'add-folder',
+                                    title: 'Add Folder',
+                                    icon: 'add'
+                                }
                             }
+                            navigation.push(fileManagerNavigation);
                         }
-                        navigation.push(fileManagerNavigation);
-
+                        else {
+                            this.getFolder();
+                        }
+                        
                         this.navigation = navigation;
 
+                        this._fuseNavigationService.unregister('main');
+                        
                         this._fuseNavigationService.register('main', this.navigation);
 
                         this._fuseNavigationService.setCurrentNavigation('main');
-                    })
-                    .catch(() => {
+                    }, () => {
                         this.navigation = navigation;
 
                         this._fuseNavigationService.register('main', this.navigation);
@@ -223,6 +238,12 @@ export class AppComponent implements OnInit, OnDestroy
                 this._fuseNavigationService.setCurrentNavigation('main');
             })
         
+    }
+
+    getFolder() {
+        this.folderNavigationService.getFolder(1)
+            .then()
+            .catch();
     }
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks

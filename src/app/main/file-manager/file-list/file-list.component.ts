@@ -16,6 +16,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ConfirmFormComponent } from 'app/main/confirm-form/confirm-form.component';
 import { Storage, FileStorage } from 'app/main/models/file-storage.model';
 import { FileFormComponent } from '../file-form/file-form.component';
+import { RoleType } from 'app/main/models/role.model';
 
 @Component({
     selector     : 'file-list',
@@ -75,9 +76,9 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
 
                 this.authenticationService.user$
                     .subscribe(user => {
-                        if ((!fileStorage.client && !fileStorage.owner && user.role.name == 'SUPER ADMIN')
-                            || (fileStorage.client && !fileStorage.owner && user.role.name == 'CLIENT ADMIN')
-                            || (!fileStorage.client && fileStorage.owner && (user.role.name == 'DEPARTMENT HEAD' || user.role.name == 'EMPLOYEE' 
+                        if ((!fileStorage.client && !fileStorage.owner && user.role.type == RoleType.SuperAdmin)
+                            || (fileStorage.client && !fileStorage.owner && user.role.type == RoleType.ClientAdmin)
+                            || (!fileStorage.client && fileStorage.owner && (user.role.type == RoleType.DepartmentHead || user.role.type == RoleType.Employee
                             || user.id == fileStorage.owner.id))) {
                             this.buttonRemoveIsAvailable = true;
                             this.buttonUpdateIsAvailable = true;

@@ -6,7 +6,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
 import { FileManagerService } from 'app/main/file-manager/file-manager.service';
-import { MatDialog, _MatChipListMixinBase, MatSnackBar } from '@angular/material';
+import { MatDialog, _MatChipListMixinBase, MatSnackBar, MatDialogRef } from '@angular/material';
 import { FolderFormComponent } from './folder-form/folder-form.component';
 import { FormGroup } from '@angular/forms';
 import { FileFormComponent } from './file-form/file-form.component';
@@ -14,6 +14,9 @@ import { AuthenticationService } from '../authentication/authentication.service'
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Storage, FileStorage } from '../models/file-storage.model';
+import { RoleType } from '../models/role.model';
+import { ConfirmFormComponent } from '../confirm-form/confirm-form.component';
+import { FolderNavigationService } from 'app/navigation/folder-navigation.service';
 
 @Component({
     selector     : 'file-manager',
@@ -34,7 +37,10 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     private _unsubscribeAll: Subject<any>;
     
     buttonAddIsAvailable: boolean = false;
+    buttonRemoveIsAvailable: boolean = false;
 
+    confirmDialogRef: MatDialogRef<ConfirmFormComponent>;
+    
     isRootFolder: boolean = false;
 
     constructor (private _fileManagerService: FileManagerService,
@@ -43,7 +49,8 @@ export class FileManagerComponent implements OnInit, OnDestroy {
         private authenticationService: AuthenticationService,
         private router: Router,
         private _matSnackBar: MatSnackBar,
-        private translateService: TranslateService) {
+        private translateService: TranslateService,
+        private folderNavigationService: FolderNavigationService) {
             
         this._unsubscribeAll = new Subject();
     }
@@ -73,14 +80,17 @@ export class FileManagerComponent implements OnInit, OnDestroy {
                 this.authenticationService.user$
                     .subscribe(user => {
 
-                        if ((!this.fileStorage.client && !this.fileStorage.owner && (user.role.name == 'SUPER ADMIN'))
-                            || (this.fileStorage.client && !this.fileStorage.owner && user.role.name == 'CLIENT ADMIN')
-                            || (!this.fileStorage.client && this.fileStorage.owner && (user.role.name == 'DEPARTMENT HEAD' || user.role.name == 'EMPLOYEE' 
+                        if ((!this.fileStorage.client && !this.fileStorage.owner && (user.role.type == RoleType.SuperAdmin))
+                            || (this.fileStorage.client && !this.fileStorage.owner && user.role.type == RoleType.ClientAdmin)
+                            || (!this.fileStorage.client && this.fileStorage.owner && (user.role.type == RoleType.SuperAdmin || user.role.type == RoleType.Employee
                             || user.id == this.fileStorage.owner.id))) {
+
                             this.buttonAddIsAvailable = true;
+                            this.buttonRemoveIsAvailable = true;
                         }
                         else {
                             this.buttonAddIsAvailable = false;
+                            this.buttonRemoveIsAvailable = false;
                         }
                     })
             });
@@ -157,6 +167,60 @@ export class FileManagerComponent implements OnInit, OnDestroy {
                     }
                 });
             });
+    }
+
+    removeFolder() {
+
+        this.translateService.get('PAGES.APPS.FILEMANAGER.FOLDERREMOVEQUESTION')
+            .subscribe(message => {
+                
+                this.confirmDialogRef = this._matDialog.open(ConfirmFormComponent, {
+                    disableClose: false
+                });
+        
+                this.confirmDialogRef.componentInstance.confirmMessage = message;
+        
+                this.confirmDialogRef.afterClosed()
+                    .subscribe(result => {
+                        
+                        if (result) {
+                
+                            var data = {
+                                id: this.fileStorage.id
+                            }
+
+                            this._fileManagerService.removeFolder(data, this.fileStorage.parentStorageId)
+                                .then(() => {
+                                    if (!this.fileStorage.parentStorageId || this.fileStorage.parentStorageId == 1) {
+                                        
+                                        if (this.fileStorage.parentStorageId == 1) {
+                                            this.folderNavigationService.getFolder(1)
+                                                .then()
+                                                .catch();
+                                        }
+
+                                        this.router.navigate(['/apps/clients']);
+                                    }
+                                    else {
+                                        this.router.navigate([`/file-manager/${this.fileStorage.parentStorageId}`]);
+                                    }
+
+                                    this.translateService.get('PAGES.APPS.FILEMANAGER.FOLDERREMOVESUCCESS').subscribe(message => {
+                                        this.createSnackBar(message);
+                                    });
+                                })
+                                .catch(res => {
+                                    if (res && res.status && res.status == 403) {
+                                        this.translateService.get('PAGES.APPS.FILEMANAGER.FOLDER' + res.error).subscribe(message => {
+                                            this.createSnackBar(message);
+                                        });
+                                    }
+                                });
+                        }
+                        
+                    this.confirmDialogRef = null;
+                });
+          });
     }
 
     goBack() {

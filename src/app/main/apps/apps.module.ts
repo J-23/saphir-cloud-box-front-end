@@ -25,6 +25,7 @@ import { RolesService } from './roles/roles.service';
 import { RoleFormComponent } from './roles/role-form/role-form.component';
 import { UsersService } from './users/users.service';
 import { UserFormComponent } from './users/user-form/user-form.component';
+import { AuthorizedAndAdminUserGuard } from '../guards/authorized-and-admin-user.guard';
 
 const routes = [
     {
@@ -33,7 +34,7 @@ const routes = [
         resolve  : {
             data: ClientsService
         },
-        canActivate: [AuthorizedUserGuard]
+        canActivate: [AuthorizedAndAdminUserGuard]
     },
     {
         path: 'departments',
@@ -41,7 +42,7 @@ const routes = [
         resolve  : {
             data: DepartmentsService
         },
-        canActivate: [AuthorizedUserGuard]
+        canActivate: [AuthorizedAndAdminUserGuard]
     },
     {
         path: 'roles',
@@ -49,7 +50,7 @@ const routes = [
         resolve  : {
             data: RolesService
         },
-        canActivate: [AuthorizedUserGuard]
+        canActivate: [AuthorizedAndAdminUserGuard]
     },
     {
         path: 'users',
@@ -57,7 +58,7 @@ const routes = [
         resolve  : {
             data: UsersService
         },
-        canActivate: [AuthorizedUserGuard]
+        canActivate: [AuthorizedAndAdminUserGuard]
     },
 ];
 

@@ -96,7 +96,7 @@ export class RegisterComponent implements OnInit, OnDestroy
                 this.registerForm.controls['department'].value ? this.registerForm.controls['department'].value.id : null)
                 .then(() => {
                     this.isRegister = false;
-                    this.router.navigate(['/apps/cars/list']);
+                    this.router.navigate(['/apps/clients']);
                 })
                 .catch(res => {
                     if (res && res.status && res.status == 401) {

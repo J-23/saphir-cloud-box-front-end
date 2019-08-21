@@ -9,28 +9,28 @@ export const navigation: FuseNavigation[] = [
         children : [
             {
                 id       : 'clients',
-                title    : 'Clients',
+                title    : 'Kunden',
                 translate: 'NAV.CLIENTS',
                 type     : 'item',
                 url      : '/apps/clients'
             },
             {
                 id       : 'departments',
-                title    : 'Departments',
+                title    : 'Objekte',
                 translate: 'NAV.DEPARTMENTS',
                 type     : 'item',
                 url      : '/apps/departments'
             },
             {
                 id       : 'roles',
-                title    : 'Roles',
+                title    : 'Rollen',
                 translate: 'NAV.ROLES',
                 type     : 'item',
                 url      : '/apps/roles'
             },
             {
                 id       : 'users',
-                title    : 'Users',
+                title    : 'Benutzern',
                 translate: 'NAV.USERS',
                 type     : 'item',
                 url      : '/apps/users'

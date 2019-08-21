@@ -29,6 +29,7 @@ import { FolderNavigationService } from './navigation/folder-navigation.service'
 import { FileManagerService } from './main/file-manager/file-manager.service';
 import { FolderFormComponent } from './main/file-manager/folder-form/folder-form.component';
 import { ConfirmFormComponent } from './main/confirm-form/confirm-form.component';
+import { AuthorizedAndAdminUserGuard } from './main/guards/authorized-and-admin-user.guard';
 
 const appRoutes: Routes = [
     {
@@ -43,7 +44,7 @@ const appRoutes: Routes = [
     {
         path: 'apps',
         loadChildren: './main/apps/apps.module#AppsModule',
-        canActivate: [AuthorizedUserGuard]
+        canActivate: [AuthorizedAndAdminUserGuard]
     },
     {
         path: 'file-manager',
@@ -104,6 +105,7 @@ const appRoutes: Routes = [
         },
         AuthenticationService,
         AuthorizedUserGuard,
+        AuthorizedAndAdminUserGuard,
         ConfirmMessageGuard,
         ResetPasswordGuard,
         {

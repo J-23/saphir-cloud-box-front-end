@@ -7,6 +7,7 @@ import { AuthenticationService } from '../authentication.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
+import { FolderNavigationService } from '../../../navigation/folder-navigation.service';
 
 @Component({
     selector     : 'login',
@@ -26,7 +27,8 @@ export class LoginComponent implements OnInit
         private authenticationService: AuthenticationService,
         private router: Router,
         private _matSnackBar: MatSnackBar,
-        private translateService: TranslateService) {
+        private translateService: TranslateService,
+        private folderNavigationService: FolderNavigationService) {
 
         this._fuseConfigService.config = {
             layout: {
@@ -52,6 +54,11 @@ export class LoginComponent implements OnInit
                 this.loginForm.controls['password'].value)
                 .then(() => {
                     this.isLogin = false;
+
+                    this.folderNavigationService.getFolder(1)
+                        .then()
+                        .catch();
+                        
                     this.router.navigate(['/']);
                 })
                 .catch(res => {

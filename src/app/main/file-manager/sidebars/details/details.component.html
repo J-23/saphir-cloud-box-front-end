@@ -1,12 +1,12 @@
-<div class="header teal-300 p-24" fxLayout="column" fxLayoutAlign="space-between">
+<div class="header teal-500 p-24" fxLayout="column" fxLayoutAlign="space-between">
 
     <div *ngIf="selected">
         <div class="toolbar" fxLayout="row" fxLayoutAlign="end center">
 
-            <button mat-icon-button matTooltip="More" [matMenuTriggerFor]="moreMenu">
-                <mat-icon>more_vert</mat-icon>
+            <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More" (click)="$event.stopPropagation();">
+                <mat-icon class="secondary-text">more_vert</mat-icon>
             </button>
-
+                
             <mat-menu #moreMenu="matMenu">
                 <button *ngIf="!selected.isDirectory" mat-menu-item aria-label="download" (click)="downloadFile(row)">
                     <mat-icon>cloud_download</mat-icon>
