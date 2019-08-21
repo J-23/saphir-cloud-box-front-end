@@ -173,6 +173,7 @@ export class AppComponent implements OnInit, OnDestroy
         this.authenticationService.user$
             .subscribe(user => {
 
+                if (user.id != undefined) {
                 this.folderNavigationService.onNavigationChanged
                     .subscribe(fileStorage => {
 
@@ -229,7 +230,9 @@ export class AppComponent implements OnInit, OnDestroy
                         this._fuseNavigationService.register('main', this.navigation);
 
                         this._fuseNavigationService.setCurrentNavigation('main');
-                    });
+                    });    
+                }
+                
             }, () => {
                 this.navigation = navigation;
 

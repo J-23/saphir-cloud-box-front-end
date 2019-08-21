@@ -22,7 +22,7 @@ export class AuthorizedAndAdminUserGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
       
       return this.authenticationService.user$.pipe(
-        map(user => user.role.type == RoleType.SuperAdmin),
+        map(user => user && user.id != undefined && user.role.type == RoleType.SuperAdmin),
         tap(isInRole => {
           if (!isInRole) {
 

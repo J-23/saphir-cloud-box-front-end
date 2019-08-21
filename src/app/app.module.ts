@@ -52,6 +52,11 @@ const appRoutes: Routes = [
         canActivate: [AuthorizedUserGuard]
     },
     {
+        path      : '',
+        pathMatch: 'full',
+        redirectTo: 'apps/clients'
+    },
+    {
         path      : '**',
         redirectTo: 'apps/clients'
     }
