@@ -103,7 +103,7 @@
                     'FILE': 'Datei',
                     'FILEREMOVEQUESTION': 'Wollen Sie diese Datei wirklich löschen?',
                     'FILEREMOVESUCCESS': 'Datei wurde gelöscht',
-                    'REMOVECURRENTFOLDER': 'Remove current folder'
+                    'REMOVECURRENTFOLDER': 'Ausgewählte verzeichnis löschen'
                 }
             },
             'AUTH': {
