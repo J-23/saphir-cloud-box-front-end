@@ -17,6 +17,7 @@ import { Storage, FileStorage } from '../models/file-storage.model';
 import { RoleType } from '../models/role.model';
 import { ConfirmFormComponent } from '../confirm-form/confirm-form.component';
 import { FolderNavigationService } from 'app/navigation/folder-navigation.service';
+import { PermissionFormComponent } from './permission-form/permission-form.component';
 
 @Component({
     selector     : 'file-manager',
@@ -38,8 +39,10 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     
     buttonAddIsAvailable: boolean = false;
     buttonRemoveIsAvailable: boolean = false;
+    addPermissionIsAvailable: boolean = false;
 
     confirmDialogRef: MatDialogRef<ConfirmFormComponent>;
+    permissionDialogRef: any;
     
     isRootFolder: boolean = false;
 
@@ -87,10 +90,18 @@ export class FileManagerComponent implements OnInit, OnDestroy {
 
                             this.buttonAddIsAvailable = true;
                             this.buttonRemoveIsAvailable = true;
+
+                            if (this.fileStorage.parentStorageId && this.fileStorage.parentStorageId != 1) {
+                                this.addPermissionIsAvailable = true;
+                            }
+                            else {
+                                this.addPermissionIsAvailable = false;
+                            }
                         }
                         else {
                             this.buttonAddIsAvailable = false;
                             this.buttonRemoveIsAvailable = false;
+                            this.addPermissionIsAvailable = false;
                         }
                     })
             });
@@ -221,6 +232,56 @@ export class FileManagerComponent implements OnInit, OnDestroy {
                     this.confirmDialogRef = null;
                 });
           });
+    }
+
+    addPermission() {
+        
+        if (this.fileStorage.parentStorageId && this.fileStorage.parentStorageId != 1) {
+            this.translateService.get('PAGES.APPS.FILEMANAGER.ADDPERMISSION')
+                .subscribe(message => {
+
+                    this.permissionDialogRef = this._matDialog.open(PermissionFormComponent, {
+                        panelClass: 'permission-form-dialog',
+                        data: {
+                            fileStorageId: this.fileStorage.id,
+                            title: message
+                        }
+                    });
+
+                    this.permissionDialogRef.afterClosed()
+                        .subscribe((form: FormGroup) => {
+                        
+                            if (form && form.valid) {
+
+                                var permission = {
+                                    RecipientEmail: form.controls['recipientEmail'].value,
+                                    FileStorageId: form.controls['fileStorageId'].value,
+                                    Type: form.controls['type'].value
+                                };
+
+                                this._fileManagerService.addPermission(permission, this.fileStorage.id)
+                                    .then(() => {
+                                        this.translateService.get('PAGES.APPS.FILEMANAGER.PERMISSIONADDSUCCESS').subscribe(message => {
+                                            this.createSnackBar(message);
+                                        });
+                                    })
+                                    .catch(res => {
+                                        if (res && res.status && res.status == 403) {
+                                        this.translateService.get('PAGES.APPS.FILEMANAGER.PERMISSION' + res.error).subscribe(message => {
+                                            this.createSnackBar(message);
+                                        });
+                                        }
+                                        else {
+                                            this.translateService.get('PAGES.APPS.FILEMANAGER.PERMISSIONSERVER_ERROR').subscribe(message => {
+                                                this.createSnackBar(message);
+                                            });
+                                        }
+                                    });
+                            }
+                    });
+                });    
+        }
+        
     }
 
     goBack() {

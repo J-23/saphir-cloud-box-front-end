@@ -30,6 +30,7 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
 
     buttonRemoveIsAvailable:boolean;
     buttonUpdateIsAvailable: boolean;
+    permissionsAreDisabled: boolean = true;
 
     ngOnInit(): void {
 
@@ -47,10 +48,12 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
                                 || user.id == this.selected.owner.id))) {
                                 this.buttonRemoveIsAvailable = true;
                                 this.buttonUpdateIsAvailable = true;
+                                this.permissionsAreDisabled = false;
                             }
                             else {
                                 this.buttonRemoveIsAvailable = false;
                                 this.buttonUpdateIsAvailable = false;
+                                this.permissionsAreDisabled = true;
                             }
                         });
                 }

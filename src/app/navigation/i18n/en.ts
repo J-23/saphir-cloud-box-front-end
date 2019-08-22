@@ -20,7 +20,7 @@ export const locale = {
                     'EDITSUCCESS': 'Client updated',
                     'REMOVEQUESTION': 'Are you sure you want to delete this client?',
                     'REMOVESUCCESS': 'Client removed',
-                    'NOT_FOUNT': 'Client not found',
+                    'NOT_FOUND': 'Client not found',
                     'SAME_NAME': 'Client with the same name is already exists',
                     'REMOVE_ERROR': 'Users and / or departments are attached to this client'
                 },
@@ -35,7 +35,7 @@ export const locale = {
                     'EDITSUCCESS': 'Department updated',
                     'REMOVEQUESTION': 'Are you sure you want to delete this department?',
                     'REMOVESUCCESS': 'Department removed',
-                    'NOT_FOUNT': 'Department not found',
+                    'NOT_FOUND': 'Department not found',
                     'SAME_NAME': 'Client with the same name is already exists',
                     'REMOVE_ERROR': 'Users are attached to this client',
                     'NOT_FOUNT_DEPENDENCY_OBJECT': 'Client not found'
@@ -50,7 +50,7 @@ export const locale = {
                     'REMOVESUCCESS': 'Role removed',
                     'SAME_NAME': 'Role with the same name is already exists',
                     'ADD_ERROR': 'Error adding role. Please contact support, and we will try to fix it soon',
-                    'NOT_FOUNT': 'Role added',
+                    'NOT_FOUND': 'Role added',
                     'UPDATE_ERROR': 'Error updating role. Please contact support, and we will try to fix it soon',
                     'EXIST_DEPENDENCY_ERROR': 'Users are attached to this role',
                     'REMOVE_ERROR': 'Error removing role. Please contact support, and we will try to fix it soon'
@@ -70,7 +70,7 @@ export const locale = {
                     'REMOVEQUESTION': 'Are you sure you want to delete this user?',
                     'REMOVESUCCESS': 'User removed',
                     'SAME_NAME': 'Role with the same email is already exists',
-                    'NOT_FOUNT': 'User not found',
+                    'NOT_FOUND': 'User not found',
                     'NOT_FOUNT_DEPENDENCY_OBJECT': 'No client and / or department found',
                     'ADD_ERROR': 'Error adding user. Please contact support, and we will try to fix it soon',
                     'UPDATE_ERROR': 'Error updating user. Please contact support, and we will try to fix it soon',
@@ -91,19 +91,26 @@ export const locale = {
                     'VIEWRIGHT': 'View right',
                     'FOLDERREMOVEQUESTION': 'Are you sure you want to delete this folder?',
                     'FOLDERREMOVESUCCESS': 'Folder removed',
-                    'FOLDERNOT_FOUNT': 'Folder not found',
+                    'FOLDERNOT_FOUND': 'Folder not found',
                     'FOLDERSERVER_ERROR': 'Oops! Something went wrong. Please contact support, and we will try to fix it soon',
                     'FOLDERSAME_NAME': 'Folder with the same name already exists',
                     'UPDATEFOLDER': 'Update folder',
                     'ADDFILE': 'Add file',
                     'UPDATEFILE': 'Update file',
-                    'FILENOT_FOUNT': 'File not found',
+                    'FILENOT_FOUND': 'File not found',
                     'FILESAME_NAME': 'File with the same name already exists',
                     'FILESERVER_ERROR': 'Oops! Something went wrong. Please contact support, and we will try to fix it soon',
                     'FILE': 'File',
                     'FILEREMOVEQUESTION': 'Are you sure you want to delete this file?',
                     'FILEREMOVESUCCESS': 'File removed',
-                    'REMOVECURRENTFOLDER': 'Remove current folder'
+                    'REMOVECURRENTFOLDER': 'Remove current folder',
+                    'ADDPERMISSION': 'Add permission',
+                    'PERMISSIONADDSUCCESS': 'Permission added',
+                    'PERMISSIONADD_ERROR': "You can't give permission to another user",
+                    'PERMISSIONNOT_FOUND_USER': 'Not found user with this mail',
+                    'PERMISSIONSERVER_ERROR': 'Oops! Something went wrong. Please contact support, and we will try to fix it soon',
+                    'READONLYPERMISSION': 'Read only',
+                    'READANDWRITEPERMISSION': 'Read and write'
                 }
             },
             'AUTH': {
@@ -137,7 +144,7 @@ export const locale = {
                 'EMPTYPASSWORDCONFIRM': 'Password confirmation is required',
                 'INVALIDPASSWORDCONFIRM': 'Passwords must match',
                 'EMPTYUSERNAME': 'User name is required',
-                'NOT_FOUNT': 'User not found',
+                'NOT_FOUND': 'User not found',
                 'UNATHORIZED': 'Oops! Something went wrong. Please contact support and we will try to fix it soon',
                 'SAME_NAME': 'User with the same email already exists'
             }

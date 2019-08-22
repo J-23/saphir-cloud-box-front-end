@@ -1,0 +1,41 @@
+<div class="dialog-content-wrapper">
+  <mat-toolbar matDialogTitle class="mat teal-300 m-0">
+    <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+      <span class="title dialog-title">{{ title }}</span>
+      <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  
+  <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
+  
+    <form [formGroup]="permissionForm" novalidate>
+  
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <mat-form-field appearance="outline" fxFlex="60">
+          <mat-label>{{ 'PAGES.APPS.USERS.EMAIL' | translate }}</mat-label>
+          <input formControlName="recipientEmail" matInput required autocomplete="off">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" fxFlex="35">
+          <mat-select formControlName="type" required>
+            <mat-option [value]="0">{{ 'PAGES.APPS.FILEMANAGER.READONLYPERMISSION' | translate }}</mat-option>
+            <mat-option [value]="1">{{ 'PAGES.APPS.FILEMANAGER.READANDWRITEPERMISSION' | translate }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </div>
+
+    </form>
+  
+  </div>
+  
+  <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+  
+    <button mat-button class="save-button" (click)="matDialogRef.close(permissionForm)" [disabled]="permissionForm.invalid" aria-label="SAVE">
+      {{ 'COMMONACTIONS.SAVE' | translate }}
+    </button>
+  
+  </div>
+</div>

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MatButtonModule, MatIconModule, MatRippleModule, MatSlideToggleModule, MatTableModule, MatToolbarModule, MatFormFieldModule, MatDialogModule, MatInputModule, MatMenuModule, MatSnackBarModule } from '@angular/material';
+import { MatButtonModule, MatIconModule, MatRippleModule, MatSlideToggleModule, MatTableModule, MatToolbarModule, MatFormFieldModule, MatDialogModule, MatInputModule, MatMenuModule, MatSnackBarModule, MatTabsModule, MatOptionModule, MatSelectModule, MatDividerModule, MatListModule } from '@angular/material';
 
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseSidebarModule } from '@fuse/components';
@@ -13,6 +13,7 @@ import { FolderFormComponent } from './folder-form/folder-form.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { FileFormComponent } from './file-form/file-form.component';
 import { AuthorizedUserGuard } from '../guards/authorized-user.guard';
+import { PermissionFormComponent } from './permission-form/permission-form.component';
 
 const routes: Routes = [
     {
@@ -30,7 +31,8 @@ const routes: Routes = [
         FileManagerComponent,
         FileManagerFileListComponent,
         FileManagerDetailsSidebarComponent,
-        FileFormComponent
+        FileFormComponent,
+        PermissionFormComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -46,6 +48,11 @@ const routes: Routes = [
         MatInputModule,
         MatMenuModule,
         MatSnackBarModule,
+        MatTabsModule,
+        MatOptionModule,
+        MatSelectModule,
+        MatDividerModule,
+        MatListModule,
         
         FuseSharedModule,
         FuseSidebarModule,
@@ -56,7 +63,8 @@ const routes: Routes = [
         FileManagerService
     ],
     entryComponents: [
-        FileFormComponent
+        FileFormComponent,
+        PermissionFormComponent
     ]
 })
 export class FileManagerModule

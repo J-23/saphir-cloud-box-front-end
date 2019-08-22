@@ -36,6 +36,7 @@ export class Storage {
     client: Client;
     storageType: string;
     file: File;
+    permissions: Permission[] = [];
 
     constructor(storage?) {
         var storage = storage || {};
@@ -53,6 +54,7 @@ export class Storage {
         this.storageType = storage.storageType || null;
 
         this.file = storage.file ? new File(storage.file) : null;
+        this.permissions = storage.permissions ? storage.permissions.map(permission => new Permission(permission)) : [];
     }
 }
 
@@ -71,4 +73,21 @@ export class File {
         this.size = file.size || null;
         this.sizeType = file.sizeType || null;
     }
+}
+
+export class Permission {
+    recipient: AppUser;
+    type: PermissionType;
+
+    constructor(permission?) {
+        var permission = permission || {};
+
+        this.type = permission.type || null;
+        this.recipient = permission.recipient ? new AppUser(permission.recipient) : null;
+    }
+}
+
+export enum PermissionType {
+    readOnly = 0,
+    readAndWrite = 1
 }

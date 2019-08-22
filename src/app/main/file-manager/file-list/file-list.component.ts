@@ -17,6 +17,7 @@ import { ConfirmFormComponent } from 'app/main/confirm-form/confirm-form.compone
 import { Storage, FileStorage } from 'app/main/models/file-storage.model';
 import { FileFormComponent } from '../file-form/file-form.component';
 import { RoleType } from 'app/main/models/role.model';
+import { PermissionFormComponent } from '../permission-form/permission-form.component';
 
 @Component({
     selector     : 'file-list',
@@ -38,9 +39,12 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
     
     buttonRemoveIsAvailable: boolean = false;
     buttonUpdateIsAvailable: boolean = false;
+    addPermissionIsAvailable: boolean = false;
 
     folderDialogRef: any;
     fileDialogRef: any;
+    permissionDialogRef: any;
+
     confirmDialogRef: MatDialogRef<ConfirmFormComponent>;
 
     private _unsubscribeAll: Subject<any>;
@@ -82,10 +86,12 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
                             || user.id == fileStorage.owner.id))) {
                             this.buttonRemoveIsAvailable = true;
                             this.buttonUpdateIsAvailable = true;
+                            this.addPermissionIsAvailable = true;
                         }
                         else {
                             this.buttonRemoveIsAvailable = false;
                             this.buttonUpdateIsAvailable = false;
+                            this.addPermissionIsAvailable = false;
                         }
                     })
                 
@@ -275,6 +281,54 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
 
     downloadFile(file) {
         this._fileManagerService.downloadFile(file.id, file.owner, file.client);
+    }
+
+    addPermission(fileStorage) {
+        var fileStorageId = fileStorage.id;
+        
+        this.translateService.get('PAGES.APPS.FILEMANAGER.ADDPERMISSION')
+            .subscribe(message => {
+
+                this.permissionDialogRef = this._matDialog.open(PermissionFormComponent, {
+                    panelClass: 'permission-form-dialog',
+                    data: {
+                        fileStorageId: fileStorageId,
+                        title: message
+                    }
+                });
+
+                this.permissionDialogRef.afterClosed()
+                    .subscribe((form: FormGroup) => {
+                    
+                        if (form && form.valid) {
+
+                            var permission = {
+                                RecipientEmail: form.controls['recipientEmail'].value,
+                                FileStorageId: form.controls['fileStorageId'].value,
+                                Type: form.controls['type'].value
+                            };
+
+                            this._fileManagerService.addPermission(permission, this.fileStorage.id)
+                                .then(() => {
+                                    this.translateService.get('PAGES.APPS.FILEMANAGER.PERMISSIONADDSUCCESS').subscribe(message => {
+                                        this.createSnackBar(message);
+                                    });
+                                })
+                                .catch(res => {
+                                    if (res && res.status && res.status == 403) {
+                                    this.translateService.get('PAGES.APPS.FILEMANAGER.PERMISSION' + res.error).subscribe(message => {
+                                        this.createSnackBar(message);
+                                    });
+                                    }
+                                    else {
+                                        this.translateService.get('PAGES.APPS.FILEMANAGER.PERMISSIONSERVER_ERROR').subscribe(message => {
+                                            this.createSnackBar(message);
+                                        });
+                                    }
+                                });
+                        }
+                });
+            });
     }
 
     createSnackBar(message: string) {

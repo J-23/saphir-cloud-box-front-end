@@ -124,4 +124,15 @@ export class FileManagerService implements Resolve<any> {
                 }, reject);
         });
     }
+
+    addPermission(permission, parentId): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this._httpClient.post(this.baseURL + '/api/file-storage/add/permission', permission)
+                .subscribe((response:any) => {
+
+                    this.getFileStorage(parentId);
+                    resolve(response);
+                }, reject);
+        });
+    }
 }
