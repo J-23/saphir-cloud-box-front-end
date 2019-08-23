@@ -32,8 +32,8 @@ export class FeedbackComponent implements OnInit {
       userName: ['', Validators.required],
       theme: ['', Validators.required],
       message: ['', Validators.required],
-      fileName: ['', Validators.required],
-      fileContent: ['', Validators.required]
+      fileName: [''],
+      fileContent: ['']
     });
   }
 
@@ -68,6 +68,15 @@ export class FeedbackComponent implements OnInit {
         .then(() => {
           this.translateService.get('PAGES.APPS.FEEDBACK.SUCCESS').subscribe(message => {
             this.createSnackBar(message);
+
+            this.form.patchValue({
+              email: '',
+              userName: '',
+              theme: '',
+              message: '',
+              fileName: '',
+              fileContent: ''
+            });
           });
         })
         .catch(res => {

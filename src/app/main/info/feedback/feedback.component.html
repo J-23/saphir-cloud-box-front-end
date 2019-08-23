@@ -47,7 +47,7 @@
           <div fxLayout="row" fxLayoutAlign="start start">
               <mat-form-field appearance="outline" fxFlex="40">
                   <mat-label>{{ 'PAGES.APPS.FILEMANAGER.FILE' | translate }}</mat-label>
-                  <input matInput required autocomplete="off" formControlName="fileName">
+                  <input matInput autocomplete="off" formControlName="fileName">
               </mat-form-field>
               <input hidden type="file" #fileInput (change)="onFileChange($event)"/>
               <button class="add-file-button" mat-raised-button (click)="fileInput.click()">{{ 'PAGES.APPS.FILEMANAGER.ADDFILE' | translate }}</button>
