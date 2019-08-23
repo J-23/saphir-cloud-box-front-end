@@ -92,29 +92,32 @@
                 </div> 
             </mat-tab>
 
-            <mat-tab [disabled]="permissionsAreDisabled" label="Permissions">
-                <div class="file-details" [@animate]="{value:'*',params:{delay:'200ms'}}">
+            <div *ngIf="!permissionsAreDisabled">
+                <mat-tab label="Permissions">
+                    <div class="file-details" [@animate]="{value:'*',params:{delay:'200ms'}}">
 
-                    <div *ngFor="let permission of selected.permissions; let i = index" class="mt-16">
-                        <div fxLayout="row" fxLayoutAlign="space-between center">
-                            <div fxFlex="50"> {{permission.recipient.email}} </div>
-                            <div> 
-                                <div *ngIf="permission.type == 0">{{ 'PAGES.APPS.FILEMANAGER.READONLYPERMISSION' | translate }}</div> 
-                                <div *ngIf="permission.type == 1">{{ 'PAGES.APPS.FILEMANAGER.READANDWRITEPERMISSION' | translate }}</div> 
+                        <div *ngFor="let permission of selected.permissions; let i = index" class="mt-16">
+                            <div fxLayout="row" fxLayoutAlign="space-between center">
+                                <div fxFlex="50"> {{permission.recipient.email}} </div>
+                                <div> 
+                                    <div *ngIf="permission.type == 0">{{ 'PAGES.APPS.FILEMANAGER.READONLYPERMISSION' | translate }}</div> 
+                                    <div *ngIf="permission.type == 1">{{ 'PAGES.APPS.FILEMANAGER.READANDWRITEPERMISSION' | translate }}</div> 
+                                </div>
+                                <button mat-icon-button (click)="edit(permission)">
+                                    <mat-icon class="secondary-text">edit</mat-icon>
+                                </button>
+                                <button mat-icon-button (click)="delete(permission)">
+                                    <mat-icon class="secondary-text">delete</mat-icon>
+                                </button>
                             </div>
-                            <button mat-icon-button (click)="edit(permission)">
-                                <mat-icon class="secondary-text">edit</mat-icon>
-                            </button>
-                            <button mat-icon-button (click)="delete(permission)">
-                                <mat-icon class="secondary-text">delete</mat-icon>
-                            </button>
+                            <mat-divider class="mt-16"></mat-divider>
                         </div>
-                        <mat-divider class="mt-16"></mat-divider>
+                            
                     </div>
-                        
-                </div>
-                
-            </mat-tab>
+                    
+                </mat-tab>    
+            </div>
+            
         </mat-tab-group>    
     </div>
     <div *ngIf="!selected">

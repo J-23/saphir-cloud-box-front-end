@@ -30,8 +30,14 @@ export class AuthorizedAndAdminUserGuard implements CanActivate {
             
             if (navigation) {
               var currentNav = navigation.find(nav => nav.id == 'file-manager');
-              var child = currentNav.children.find(ch => ch.title == 'My Folder');
-              this.router.navigate([child.url]);
+
+              if (currentNav) {
+                var child = currentNav.children.find(ch => ch.title == 'My Folder');
+                this.router.navigate([child.url]);
+              }
+              else {
+                this.router.navigate(['/auth/login']);
+              }
             }
             else {
               this.router.navigate(['/auth/login']);
