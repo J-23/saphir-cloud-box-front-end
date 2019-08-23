@@ -33,8 +33,67 @@ import { RoleType } from './main/models/role.model';
 export class AppComponent implements OnInit, OnDestroy
 {
     fuseConfig: any;
-    navigation: any;
+    navigation: any[];
 
+    appNavigation: FuseNavigation = {
+        id       : 'applications',
+        title    : 'Saphir Cloud Box',
+        translate: 'NAV.APPLICATIONS',
+        type     : 'group',
+        children : [
+            {
+                id       : 'clients',
+                title    : 'Kunden',
+                translate: 'NAV.CLIENTS',
+                type     : 'item',
+                url      : '/apps/clients'
+            },
+            {
+                id       : 'departments',
+                title    : 'Objekte',
+                translate: 'NAV.DEPARTMENTS',
+                type     : 'item',
+                url      : '/apps/departments'
+            },
+            {
+                id       : 'roles',
+                title    : 'Rollen',
+                translate: 'NAV.ROLES',
+                type     : 'item',
+                url      : '/apps/roles'
+            },
+            {
+                id       : 'users',
+                title    : 'Benutzern',
+                translate: 'NAV.USERS',
+                type     : 'item',
+                url      : '/apps/users'
+            }
+        ]
+    };
+
+    helpNavigation: FuseNavigation = {
+        id       : 'help',
+        title    : 'Help',
+        translate: 'NAV.HELP',
+        type     : 'group',
+        children : [
+            {
+                id       : 'faq',
+                title    : 'Faq',
+                translate: 'NAV.FAQ',
+                type     : 'item',
+                url      : '/info/faq'
+            },
+            {
+                id       : 'feedback',
+                title    : 'Feedback',
+                translate: 'NAV.FEEDBACK',
+                type     : 'item',
+                url      : '/info/feedback'
+            }
+        ]
+    }
     // Private
     private _unsubscribeAll: Subject<any>;
 
@@ -65,6 +124,10 @@ export class AppComponent implements OnInit, OnDestroy
         private authenticationService: AuthenticationService
     )
     {
+
+        this.navigation = [];
+        this._fuseNavigationService.register('main', this.navigation);
+        this._fuseNavigationService.setCurrentNavigation('main');
         this.SetNavigation();
 
         // Get default navigation
@@ -174,73 +237,63 @@ export class AppComponent implements OnInit, OnDestroy
             .subscribe(user => {
 
                 if (user.id != undefined) {
-                this.folderNavigationService.onNavigationChanged
-                    .subscribe(fileStorage => {
 
-                        var nav = navigation.pop();
+                    if (user.role.type == RoleType.SuperAdmin) {
+                        this.navigation.push(this.appNavigation);
+                    }
+                    else {
+                        this.navigation = this.navigation.filter(nav => !(nav.id == 'applications'));
+                    }
 
-                        if (user.role.type == RoleType.SuperAdmin && nav.id === 'applications') {
-                            navigation.push(nav);
-                        }
+                    this.folderNavigationService.onNavigationChanged
+                        .subscribe(fileStorage => {
 
-                        if (fileStorage) {
-                            var children: FuseNavigationItem[] = fileStorage.storages.map(folder => {
-                                if (folder.isDirectory) {
-                                    var child: FuseNavigationItem = { 
-                                        id: folder.id.toString(),
-                                        title: folder.name,
-                                        type: 'item',
-                                        url: `/file-manager/${folder.id}`
-                                    };
+                            if (fileStorage) {
+                                var children: FuseNavigationItem[] = fileStorage.storages.map(folder => {
+                                    if (folder.isDirectory) {
+                                        var child: FuseNavigationItem = { 
+                                            id: folder.id.toString(),
+                                            title: folder.name,
+                                            type: 'item',
+                                            url: `/file-manager/${folder.id}`
+                                        };
 
-                                    return child;
+                                        return child;
+                                    }
+                                });   
+                                
+                                var fileManagerNavigation: FuseNavigation = {
+                                    id: 'file-manager',
+                                    title: 'File Manager',
+                                    type: 'group',
+                                    children: children
+                                };
+
+                                if (user && user.role && (user.role.type == RoleType.SuperAdmin || user.role.type == RoleType.ClientAdmin)) {
+                                    fileManagerNavigation['button'] = {
+                                        id: 'add-folder',
+                                        title: 'Add Folder',
+                                        icon: 'add'
+                                    }
                                 }
-                            });   
-                            
-                            var fileManagerNavigation: FuseNavigation = {
-                                id: 'file-manager',
-                                title: 'File Manager',
-                                type: 'group',
-                                children: children
-                            };
 
-                            if (user && user.role && (user.role.type == RoleType.SuperAdmin || user.role.type == RoleType.ClientAdmin)) {
-                                fileManagerNavigation['button'] = {
-                                    id: 'add-folder',
-                                    title: 'Add Folder',
-                                    icon: 'add'
-                                }
+                                this.navigation = this.navigation.filter(nav => !(nav.id == 'file-manager'));
+                                this.navigation.push(fileManagerNavigation);
+
+                                this.navigation = this.navigation.filter(nav => !(nav.id == 'help'));
+                                this.navigation.push(this.helpNavigation);
+
+                                this._fuseNavigationService.unregister('main');
+                                this._fuseNavigationService.register('main', this.navigation);
+                                this._fuseNavigationService.setCurrentNavigation('main');
                             }
-                            navigation.push(fileManagerNavigation);
-                        }
-                        else {
-                            this.getFolder();
-                        }
-                        
-                        this.navigation = navigation;
-
-                        this._fuseNavigationService.unregister('main');
-                        
-                        this._fuseNavigationService.register('main', this.navigation);
-
-                        this._fuseNavigationService.setCurrentNavigation('main');
-                    }, () => {
-                        this.navigation = navigation;
-
-                        this._fuseNavigationService.register('main', this.navigation);
-
-                        this._fuseNavigationService.setCurrentNavigation('main');
-                    });    
+                            else {
+                                this.getFolder();
+                            }
+                        }, () => { });    
                 }
                 
-            }, () => {
-                this.navigation = navigation;
-
-                this._fuseNavigationService.register('main', this.navigation);
-
-                this._fuseNavigationService.setCurrentNavigation('main');
-            })
-        
+            }, () => { });
     }
 
     getFolder() {

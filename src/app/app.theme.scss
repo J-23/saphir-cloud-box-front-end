@@ -88,6 +88,7 @@ $typography: mat-typography-config(
 @import "src/app/main/errors/404/error-404.theme";
 @import "src/app/main/errors/500/error-500.theme";
 @import "src/app/main/file-manager/file-manager.theme";
+@import "src/app/main/info/help/help.theme";
 
 // Define a mixin for easier access
 @mixin components-theme($theme) {
@@ -104,6 +105,7 @@ $typography: mat-typography-config(
     @include error-404-theme($theme);
     @include error-500-theme($theme);
     @include file-manager-theme($theme);
+    @include faq-theme($theme);
 }
 
 // -----------------------------------------------------------------------------------------------------

@@ -6,7 +6,10 @@ export const locale = {
             'CLIENTS': 'Clients',
             'DEPARTMENTS': 'Departments',
             'USERS': 'Users',
-            'ROLES': 'Roles'
+            'ROLES': 'Roles',
+            'HELP': 'Help',
+            'FAQ': 'Faq',
+            'FEEDBACK': 'Feedback'
         },
         'PAGES': {
             'APPS': {
@@ -103,7 +106,18 @@ export const locale = {
                     'FILE': 'File',
                     'FILEREMOVEQUESTION': 'Are you sure you want to delete this file?',
                     'FILEREMOVESUCCESS': 'File removed',
-                    'REMOVECURRENTFOLDER': 'Remove current folder'
+                    'REMOVECURRENTFOLDER': 'Remove current folder',
+                    'UPDATECURRENTFOLDER': 'Update current folder'
+                },
+                'FEEDBACK': {
+                    'USEREMAIL': 'Yoer email',
+                    'USERNAME': 'Your usesrname',
+                    'THEME': 'Theme',
+                    'MESSAGE': 'Message',
+                    'SEND': 'Send',
+                    'SUCCESS': 'Message sent successfully',
+                    'NOT_FOUNT': 'User with this email not found',
+                    'SERVER_ERROR': 'Oops! Something went wrong. Please contact support, and we will try to fix it soon'
                 }
             },
             'AUTH': {

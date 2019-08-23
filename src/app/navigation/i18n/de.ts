@@ -6,7 +6,10 @@
             'CLIENTS': 'Kunden',
             'DEPARTMENTS': 'Objekte',
             'USERS': 'Benutzern',
-            'ROLES': 'Rollen'
+            'ROLES': 'Rollen',
+            'HELP': 'Help',
+            'FAQ': 'Faq',
+            'FEEDBACK': 'Feedback'
         },
         'PAGES': {
             'APPS': {
@@ -103,7 +106,18 @@
                     'FILE': 'Datei',
                     'FILEREMOVEQUESTION': 'Wollen Sie diese Datei wirklich löschen?',
                     'FILEREMOVESUCCESS': 'Datei wurde gelöscht',
-                    'REMOVECURRENTFOLDER': 'Ausgewählte verzeichnis löschen'
+                    'REMOVECURRENTFOLDER': 'Ausgewählte verzeichnis löschen',
+                    'UPDATECURRENTFOLDER': 'Update current folder'
+                },
+                'FEEDBACK': {
+                    'USEREMAIL': 'Yoer email',
+                    'USERNAME': 'Your usesrname',
+                    'THEME': 'Theme',
+                    'MESSAGE': 'Message',
+                    'SEND': 'Send',
+                    'SUCCESS': 'Message sent successfully',
+                    'NOT_FOUNT': 'User with this email not found',
+                    'SERVER_ERROR': 'Oops! Something went wrong. Please contact support, and we will try to fix it soon'
                 }
             },
             'AUTH': {
