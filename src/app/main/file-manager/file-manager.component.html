@@ -30,6 +30,10 @@
                         <mat-icon>person_add</mat-icon>
                         <span>{{ 'PAGES.APPS.FILEMANAGER.ADDPERMISSION' | translate }}</span>
                     </button>
+                    <button *ngIf="buttonUpdateIsAvailable" mat-menu-item aria-label="update" (click)="updateFolder()">
+                        <mat-icon>edit</mat-icon>
+                        <span>{{ 'PAGES.APPS.FILEMANAGER.UPDATECURRENTFOLDER' | translate }}</span>
+                    </button>
                     <button *ngIf="buttonRemoveIsAvailable" mat-menu-item aria-label="remove" (click)="removeFolder()">
                         <mat-icon>delete</mat-icon>
                         <span>{{ 'PAGES.APPS.FILEMANAGER.REMOVECURRENTFOLDER' | translate }}</span>

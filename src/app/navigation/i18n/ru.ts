@@ -7,7 +7,10 @@ export const locale = {
             'DEPARTMENTS': 'Отделы',
             'USERS': 'Пользователи',
             'ROLES': 'Роли',
-            'FILEMANAGER': 'Проводник'
+            'FILEMANAGER': 'Проводник',
+            'HELP': 'Помощь',
+            'FAQ': 'Faq',
+            'FEEDBACK': 'Обратная связь'
         },
         'PAGES': {
             'APPS': {
@@ -110,7 +113,19 @@ export const locale = {
                     'PERMISSIONNOT_FOUND_USER': 'Не найден пользователь с данной почтой',
                     'PERMISSIONSERVER_ERROR': 'Упс! Что-то пошло не так. Пожалуйста, свяжитесь со службой поддержки, и мы постараемся исправить это в ближайшее время',
                     'READONLYPERMISSION': 'Только чтение',
-                    'READANDWRITEPERMISSION': 'Чтение и запись'
+                    'READANDWRITEPERMISSION': 'Чтение и запись',
+                    'REMOVECURRENTFOLDER': 'Удалить текущую папку',
+                    'UPDATECURRENTFOLDER': 'Изменить текущую папку'
+                },
+                'FEEDBACK': {
+                    'USEREMAIL': 'Ваша почта',
+                    'USERNAME': 'Ваше имя',
+                    'THEME': 'Тема',
+                    'MESSAGE': 'Сообщение',
+                    'SEND': 'Отправить',
+                    'SUCCESS': 'Сообщение отправлено успешно',
+                    'NOT_FOUNT': 'Пользователь с данной почтой не найден',
+                    'SERVER_ERROR': 'Упс! Что-то пошло не так. Пожалуйста, свяжитесь со службой поддержки, и мы постараемся исправить это в ближайшее время'
                 }
             },
             'AUTH': {

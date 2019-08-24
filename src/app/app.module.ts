@@ -47,6 +47,11 @@ const appRoutes: Routes = [
         canActivate: [AuthorizedAndAdminUserGuard]
     },
     {
+        path: 'info',
+        loadChildren: './main/info/info.module#InfoModule',
+        canActivate: [AuthorizedUserGuard]
+    },
+    {
         path: 'file-manager',
         loadChildren: './main/file-manager/file-manager.module#FileManagerModule',
         canActivate: [AuthorizedUserGuard]

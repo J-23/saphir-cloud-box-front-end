@@ -24,25 +24,29 @@ export class AuthorizedAndAdminUserGuard implements CanActivate {
       return this.authenticationService.user$.pipe(
         map(user => user && user.id != undefined && user.role.type == RoleType.SuperAdmin),
         tap(isInRole => {
-          if (!isInRole) {
 
-            var navigation = this._fuseNavigationService.getCurrentNavigation();
-            
-            if (navigation) {
-              var currentNav = navigation.find(nav => nav.id == 'file-manager');
-
-              if (currentNav) {
-                var child = currentNav.children.find(ch => ch.title == 'My Folder');
-                this.router.navigate([child.url]);
+          this._fuseNavigationService.onNavigationChanged
+            .subscribe(() => {
+              if (!isInRole) { 
+                
+                var navigation = this._fuseNavigationService.getCurrentNavigation();
+                
+                if (navigation) {
+                  var currentNav = navigation.find(nav => nav.id == 'file-manager');
+    
+                  if (currentNav) {
+                    var child = currentNav.children.find(ch => ch.title == 'My Folder');
+                    this.router.navigate([child.url]);
+                  }
+                  else {
+                    this.router.navigate(['/auth/login']);
+                  }
+                }
+                else {
+                  this.router.navigate(['/auth/login']);
+                }
               }
-              else {
-                this.router.navigate(['/auth/login']);
-              }
-            }
-            else {
-              this.router.navigate(['/auth/login']);
-            }
-          }
+            });
         }
       ));
   }

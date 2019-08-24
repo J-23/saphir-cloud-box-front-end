@@ -38,6 +38,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     private _unsubscribeAll: Subject<any>;
     
     buttonAddIsAvailable: boolean = false;
+    buttonUpdateIsAvailable: boolean = false;
     buttonRemoveIsAvailable: boolean = false;
     addPermissionIsAvailable: boolean = false;
 
@@ -97,11 +98,13 @@ export class FileManagerComponent implements OnInit, OnDestroy {
                             else {
                                 this.addPermissionIsAvailable = false;
                             }
+                            this.buttonUpdateIsAvailable = true;
                         }
                         else {
                             this.buttonAddIsAvailable = false;
                             this.buttonRemoveIsAvailable = false;
                             this.addPermissionIsAvailable = false;
+                            this.buttonUpdateIsAvailable = false;
                         }
                     })
             });
@@ -178,6 +181,57 @@ export class FileManagerComponent implements OnInit, OnDestroy {
                     }
                 });
             });
+    }
+
+    updateFolder() {
+        this.translateService.get('PAGES.APPS.FILEMANAGER.UPDATEFOLDER')
+        .subscribe(message => {
+            this.folderDialogRef = this._matDialog.open(FolderFormComponent, {
+                panelClass: 'form-dialog',
+                data: {
+                    parentId: this.fileStorage.id,
+                    title: message,
+                    name: this.fileStorage.name
+                }
+            });
+
+            this.folderDialogRef.afterClosed()
+                .subscribe((form: FormGroup) => {
+                
+                if (form && form.valid) {
+        
+                var folder = {
+                    id: this.fileStorage.id,
+                    name: form.controls['name'].value
+                };
+        
+                this._fileManagerService.updateFolder(folder, this.fileStorage.id)
+                    .then(() => { 
+                        if (!this.fileStorage.parentStorageId || this.fileStorage.parentStorageId == 1) {
+                                        
+                            if (this.fileStorage.parentStorageId == 1) {
+                                this.folderNavigationService.getFolder(1)
+                                    .then()
+                                    .catch();
+                            }
+
+                            this.router.navigate(['/apps/clients']);
+                        }
+                        else {
+                            this.router.navigate([`/file-manager/${this.fileStorage.id}`]);
+                        }
+
+                    })
+                    .catch(res => { 
+                        if (res && res.status && res.status == 403) {
+                            this.translateService.get('PAGES.APPS.FILEMANAGER.FOLDER' + res.error).subscribe(message => {
+                            this.createSnackBar(message);
+                            });
+                        }
+                    });
+                }
+            });
+        });
     }
 
     removeFolder() {
