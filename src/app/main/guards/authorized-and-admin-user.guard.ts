@@ -24,10 +24,11 @@ export class AuthorizedAndAdminUserGuard implements CanActivate {
       return this.authenticationService.user$.pipe(
         map(user => user && user.id != undefined && user.role.type == RoleType.SuperAdmin),
         tap(isInRole => {
-          if (!isInRole) {
 
-            this._fuseNavigationService.onNavigationChanged
-              .subscribe(navName => {
+          this._fuseNavigationService.onNavigationChanged
+            .subscribe(() => {
+              if (!isInRole) { 
+                
                 var navigation = this._fuseNavigationService.getCurrentNavigation();
                 
                 if (navigation) {
@@ -44,8 +45,8 @@ export class AuthorizedAndAdminUserGuard implements CanActivate {
                 else {
                   this.router.navigate(['/auth/login']);
                 }
-              })
-          }
+              }
+            });
         }
       ));
   }

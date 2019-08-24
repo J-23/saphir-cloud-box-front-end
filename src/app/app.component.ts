@@ -128,7 +128,7 @@ export class AppComponent implements OnInit, OnDestroy
         this.navigation = [];
         this._fuseNavigationService.register('main', this.navigation);
         this._fuseNavigationService.setCurrentNavigation('main');
-        this.SetNavigation();
+        this.setNavigation();
 
         // Get default navigation
         //this.navigation = navigation;
@@ -231,7 +231,7 @@ export class AppComponent implements OnInit, OnDestroy
           });
     }
 
-    SetNavigation() {
+    setNavigation() {
 
         this.authenticationService.user$
             .subscribe(user => {
@@ -288,11 +288,23 @@ export class AppComponent implements OnInit, OnDestroy
                                 this._fuseNavigationService.setCurrentNavigation('main');
                             }
                             else {
+                                this.navigation = this.navigation.filter(nav => !(nav.id == 'file-manager'));
+
+                                this._fuseNavigationService.unregister('main');
+                                this._fuseNavigationService.register('main', this.navigation);
+                                this._fuseNavigationService.setCurrentNavigation('main');
+
                                 this.getFolder();
                             }
                         }, () => { });    
                 }
-                
+                else {
+                    this.navigation = this.navigation.filter(nav => !(nav.id == 'applications'));
+
+                    this._fuseNavigationService.unregister('main');
+                    this._fuseNavigationService.register('main', this.navigation);
+                    this._fuseNavigationService.setCurrentNavigation('main');
+                }
             }, () => { });
     }
 

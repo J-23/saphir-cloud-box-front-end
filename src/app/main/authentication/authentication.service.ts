@@ -140,7 +140,7 @@ export class AuthenticationService {
 
     logout() {
 
-        this.userSubject.next(undefined);
+        this.userSubject.next(ANONYMOUS_USER);
         
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
