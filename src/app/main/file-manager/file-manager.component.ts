@@ -13,7 +13,7 @@ import { FileFormComponent } from './file-form/file-form.component';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Storage, FileStorage } from '../models/file-storage.model';
+import { Storage, FileStorage, PermissionType } from '../models/file-storage.model';
 import { RoleType } from '../models/role.model';
 import { ConfirmFormComponent } from '../confirm-form/confirm-form.component';
 import { FolderNavigationService } from 'app/navigation/folder-navigation.service';
@@ -37,10 +37,8 @@ export class FileManagerComponent implements OnInit, OnDestroy {
 
     private _unsubscribeAll: Subject<any>;
     
-    buttonAddIsAvailable: boolean = false;
-    buttonUpdateIsAvailable: boolean = false;
-    buttonRemoveIsAvailable: boolean = false;
-    addPermissionIsAvailable: boolean = false;
+    isAvailableToUpdate: boolean = false;
+    isAvailableToUpdatePermission: boolean = false;
 
     confirmDialogRef: MatDialogRef<ConfirmFormComponent>;
     permissionDialogRef: any;
@@ -84,27 +82,29 @@ export class FileManagerComponent implements OnInit, OnDestroy {
                 this.authenticationService.user$
                     .subscribe(user => {
 
-                        if ((!this.fileStorage.client && !this.fileStorage.owner && (user.role.type == RoleType.SuperAdmin))
+                        var isAvailable = (user.id != undefined && !this.fileStorage.client && !this.fileStorage.owner && (user.role.type == RoleType.SuperAdmin))
                             || (this.fileStorage.client && !this.fileStorage.owner && user.role.type == RoleType.ClientAdmin)
                             || (!this.fileStorage.client && this.fileStorage.owner && (user.role.type == RoleType.SuperAdmin || user.role.type == RoleType.Employee
-                            || user.id == this.fileStorage.owner.id))) {
+                            || user.id == this.fileStorage.owner.id));
 
-                            this.buttonAddIsAvailable = true;
-                            this.buttonRemoveIsAvailable = true;
+                        if (isAvailable) {
 
-                            if (this.fileStorage.parentStorageId && this.fileStorage.parentStorageId != 1) {
-                                this.addPermissionIsAvailable = true;
-                            }
-                            else {
-                                this.addPermissionIsAvailable = false;
-                            }
-                            this.buttonUpdateIsAvailable = true;
+                            this.isAvailableToUpdate = true;
                         }
                         else {
-                            this.buttonAddIsAvailable = false;
-                            this.buttonRemoveIsAvailable = false;
-                            this.addPermissionIsAvailable = false;
-                            this.buttonUpdateIsAvailable = false;
+                            this.isAvailableToUpdate = false;
+                        }
+
+                        var permission = this.fileStorage.permissions.find(perm => {
+                            return perm.recipient.id == user.id && perm.type == PermissionType.readAndWrite;
+                        });
+
+                        if ((isAvailable || permission) && this.fileStorage.parentStorageId 
+                            && this.fileStorage.parentStorageId != 1) {
+                            this.isAvailableToUpdatePermission = true;
+                        }
+                        else {
+                            this.isAvailableToUpdatePermission = false;
                         }
                     })
             });
@@ -339,7 +339,15 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     }
 
     goBack() {
-        this.router.navigate([`/file-manager/${this.fileStorage.parentStorageId}`]);
+        this._fileManagerService.onPrevFileStorageChanged
+            .subscribe(fileStorage => {
+                if (fileStorage) {
+                    this.router.navigate([`/file-manager/${fileStorage.id}`]);
+                }
+                else {
+                    this.router.navigate([`/file-manager/${this.fileStorage.parentStorageId}`]);
+                }
+            })
     }
 
     ngOnDestroy(): void {

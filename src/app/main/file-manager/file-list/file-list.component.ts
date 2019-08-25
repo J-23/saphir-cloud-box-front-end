@@ -14,7 +14,7 @@ import { FolderFormComponent } from '../folder-form/folder-form.component';
 import { FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { ConfirmFormComponent } from 'app/main/confirm-form/confirm-form.component';
-import { Storage, FileStorage } from 'app/main/models/file-storage.model';
+import { Storage, FileStorage, PermissionType } from 'app/main/models/file-storage.model';
 import { FileFormComponent } from '../file-form/file-form.component';
 import { RoleType } from 'app/main/models/role.model';
 import { PermissionFormComponent } from '../permission-form/permission-form.component';
@@ -37,10 +37,6 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
     private userColumns = ['icon', 'name', 'modified', 'access', 'button'];
     displayedColumns;
     
-    buttonRemoveIsAvailable: boolean = false;
-    buttonUpdateIsAvailable: boolean = false;
-    addPermissionIsAvailable: boolean = false;
-
     folderDialogRef: any;
     fileDialogRef: any;
     permissionDialogRef: any;
@@ -80,21 +76,34 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
 
                 this.authenticationService.user$
                     .subscribe(user => {
-                        if ((!fileStorage.client && !fileStorage.owner && user.role.type == RoleType.SuperAdmin)
-                            || (fileStorage.client && !fileStorage.owner && user.role.type == RoleType.ClientAdmin)
-                            || (!fileStorage.client && fileStorage.owner && (user.role.type == RoleType.DepartmentHead || user.role.type == RoleType.Employee
-                            || user.id == fileStorage.owner.id))) {
-                            this.buttonRemoveIsAvailable = true;
-                            this.buttonUpdateIsAvailable = true;
-                            this.addPermissionIsAvailable = true;
-                        }
-                        else {
-                            this.buttonRemoveIsAvailable = false;
-                            this.buttonUpdateIsAvailable = false;
-                            this.addPermissionIsAvailable = false;
-                        }
-                    })
-                
+                        
+                        this.storages.forEach(storage => {
+                            
+                            var isAvailable = (user.id != undefined && !storage.client && !storage.owner && user.role.type == RoleType.SuperAdmin)
+                                || (storage.client && !storage.owner && user.role.type == RoleType.ClientAdmin)
+                                || (!storage.client && storage.owner && user.id == storage.owner.id && 
+                                    (user.role.type == RoleType.DepartmentHead || user.role.type == RoleType.Employee
+                                        || user.id == storage.owner.id))
+
+                            if (isAvailable) {
+                                storage.isAvailableToUpdate = true;
+                            }
+                            else {
+                                storage.isAvailableToUpdate = false;
+                            }
+
+                            var permission = storage.permissions.length > 0 ? storage.permissions.find(perm => {
+                                return perm.recipient.id == user.id && perm.type == PermissionType.readAndWrite;
+                            }) : null;
+
+                            if (isAvailable || permission) {
+                                storage.isAvailableToAddPermision = true;
+                            }
+                            else {
+                                storage.isAvailableToAddPermision = false;
+                            }
+                        });
+                    });
             });
 
         this._fileManagerService.onStorageSelected
@@ -107,6 +116,8 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
     getChildStorages(storage){
 
         if (storage.isDirectory) {
+
+            this._fileManagerService.onPrevFileStorageChanged.next(this.fileStorage);
             this.router.navigate([`/file-manager/${storage.id}`]);
         }
     }

@@ -34,6 +34,14 @@ export class PermissionFormComponent implements OnInit {
 
   createForm(): FormGroup {
 
+    if (this.recipientEmail) {
+      return this._formBuilder.group({
+        recipientEmail: [{value: this.recipientEmail, disabled: true}, [Validators.required, Validators.email]],
+        fileStorageId    : [this.fileStorageId, Validators.required],
+        type    : [this.type, Validators.required]
+      });
+    }
+
     return this._formBuilder.group({
       recipientEmail: [this.recipientEmail, [Validators.required, Validators.email]],
       fileStorageId    : [this.fileStorageId, Validators.required],

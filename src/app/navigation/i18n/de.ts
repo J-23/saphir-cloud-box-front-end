@@ -114,7 +114,14 @@
                     'PERMISSIONSERVER_ERROR': 'Oops! Something went wrong. Please contact support, and we will try to fix it soon',
                     'READONLYPERMISSION': 'Read only',
                     'READANDWRITEPERMISSION': 'Read and write',
-                    'UPDATECURRENTFOLDER': 'Update current folder'
+                    'UPDATECURRENTFOLDER': 'Update current folder',
+                    'PERMISSIONSAME_NAME': 'User already has permission',
+                    'EDITPERMISSION': 'Edit permission',
+                    'PERMISSIONEDITSUCCESS': 'Permission updated',
+                    'PERMISSIONREMOVEQUESTION': 'Are you sure you want to remove this permission?',
+                    'PERMISSIONREMOVESUCCESS' : 'Permission removed',
+                    'PERMISSIONUPDATE_ERROR': "You can't update another user’s permission",
+                    'PERMISSIONREMOVE_ERROR': "You can't remove another user’s permission"
                 },
                 'FEEDBACK': {
                     'USEREMAIL': 'Yoer email',

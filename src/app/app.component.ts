@@ -237,7 +237,7 @@ export class AppComponent implements OnInit, OnDestroy
             .subscribe(user => {
 
                 if (user.id != undefined) {
-
+     
                     if (user.role.type == RoleType.SuperAdmin) {
                         this.navigation.push(this.appNavigation);
                     }
@@ -279,7 +279,7 @@ export class AppComponent implements OnInit, OnDestroy
 
                                 this.navigation = this.navigation.filter(nav => !(nav.id == 'file-manager'));
                                 this.navigation.push(fileManagerNavigation);
-
+                                
                                 this.navigation = this.navigation.filter(nav => !(nav.id == 'help'));
                                 this.navigation.push(this.helpNavigation);
 
@@ -288,13 +288,14 @@ export class AppComponent implements OnInit, OnDestroy
                                 this._fuseNavigationService.setCurrentNavigation('main');
                             }
                             else {
+
+                                this.folderNavigationService.getFolder(1);
+                                
                                 this.navigation = this.navigation.filter(nav => !(nav.id == 'file-manager'));
 
                                 this._fuseNavigationService.unregister('main');
                                 this._fuseNavigationService.register('main', this.navigation);
                                 this._fuseNavigationService.setCurrentNavigation('main');
-
-                                this.getFolder();
                             }
                         }, () => { });    
                 }
@@ -307,12 +308,7 @@ export class AppComponent implements OnInit, OnDestroy
                 }
             }, () => { });
     }
-
-    getFolder() {
-        this.folderNavigationService.getFolder(1)
-            .then()
-            .catch();
-    }
+    
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
     // -----------------------------------------------------------------------------------------------------

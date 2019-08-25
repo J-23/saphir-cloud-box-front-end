@@ -6,12 +6,16 @@ import { fuseAnimations } from '@fuse/animations';
 
 import { FileManagerService } from 'app/main/file-manager/file-manager.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { Storage } from 'app/main/models/file-storage.model';
+import { Storage, PermissionType } from 'app/main/models/file-storage.model';
 import { AuthenticationService } from 'app/main/authentication/authentication.service';
 import { RoleType } from 'app/main/models/role.model';
 import { TranslateService } from '@ngx-translate/core';
 import { MatDialog, MatSnackBar, MatDialogRef } from '@angular/material';
 import { ConfirmFormComponent } from 'app/main/confirm-form/confirm-form.component';
+import { PermissionFormComponent } from '../../permission-form/permission-form.component';
+import { FormGroup } from '@angular/forms';
+import { FileFormComponent } from '../../file-form/file-form.component';
+import { FolderFormComponent } from '../../folder-form/folder-form.component';
 
 @Component({
     selector   : 'file-manager-details-sidebar',
@@ -36,9 +40,14 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
         this._unsubscribeAll = new Subject();
     }
 
-    buttonRemoveIsAvailable:boolean;
-    buttonUpdateIsAvailable: boolean;
-    permissionsAreDisabled: boolean = true;
+    isAvailableToUpdate: boolean = false;
+    isAvailableToOpenPermission: boolean = false;
+    isAvailableToAddPermission: boolean = false;
+    isAvailableToUpdatePermission: boolean = false;
+
+    folderDialogRef: any;
+    fileDialogRef: any;
+    permissionDialogRef: any;
 
     ngOnInit(): void {
 
@@ -51,18 +60,19 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
                 if ( this.selected) {
                     this.authenticationService.user$
                         .subscribe(user => {
-                            if ((!this.selected.client && !this.selected.owner && user.role.type == RoleType.SuperAdmin)
+                            var isAvailable = (user.id != undefined && !this.selected.client && !this.selected.owner && user.role.type == RoleType.SuperAdmin)
                                 || (this.selected.client && !this.selected.owner && user.role.type == RoleType.ClientAdmin)
-                                || (!this.selected.client && this.selected.owner && (user.role.type == RoleType.DepartmentHead || user.role.type == RoleType.Employee
-                                || user.id == this.selected.owner.id))) {
-                                this.buttonRemoveIsAvailable = true;
-                                this.buttonUpdateIsAvailable = true;
+                                || (!this.selected.client && this.selected.owner && user.id == this.selected.owner.id && 
+                                    (user.role.type == RoleType.DepartmentHead || user.role.type == RoleType.Employee
+                                        || user.id == this.selected.owner.id))
+
+                            if (isAvailable) {
+                                this.isAvailableToUpdate = true;
+                                this.isAvailableToUpdatePermission = true;
                             }
                             else {
-                                
-
-                                this.buttonRemoveIsAvailable = false;
-                                this.buttonUpdateIsAvailable = false;
+                                this.isAvailableToUpdate = false;
+                                this.isAvailableToUpdatePermission = false;
                             }
                             
                             var permission = this.selected.permissions.find(permission => {
@@ -70,14 +80,24 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
                             });
 
 
-                            if (permission || (!this.selected.client && !this.selected.owner && user.role.type == RoleType.SuperAdmin)
-                            || (this.selected.client && !this.selected.owner && user.role.type == RoleType.ClientAdmin)
-                            || (!this.selected.client && this.selected.owner && (user.role.type == RoleType.DepartmentHead || user.role.type == RoleType.Employee
-                            || user.id == this.selected.owner.id))) {
-                                this.permissionsAreDisabled = false;
+                            if (permission || isAvailable) {
+                                this.isAvailableToOpenPermission = true;
+
+                                permission = this.selected.permissions.find(perm => {
+                                    return perm.recipient.id == user.id && perm.type == PermissionType.readAndWrite
+                                });
+
+                                if (permission || isAvailable) {
+                                    this.isAvailableToAddPermission = true;
+                                }
+                                else {
+                                    this.isAvailableToAddPermission = false;
+                                }
                             }
                             else {
-                                this.permissionsAreDisabled = true;
+                                this.isAvailableToOpenPermission = false;
+                                this.isAvailableToAddPermission = false;
+                                this.isAvailableToUpdatePermission = false;
                             }
                         });
                 }
@@ -97,11 +117,55 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
         this._fuseSidebarService.getSidebar('file-manager-details-sidebar').toggleOpen();
     }
 
-    edit(permission) {
+    editPermission(permission) {
+        
+        this.translateService.get('PAGES.APPS.FILEMANAGER.EDITPERMISSION')
+            .subscribe(message => {
 
+                this.permissionDialogRef = this._matDialog.open(PermissionFormComponent, {
+                    panelClass: 'permission-form-dialog',
+                    data: {
+                        fileStorageId: this.selected.id,
+                        title: message,
+                        recipientEmail: permission.recipient.email
+                    }
+                });
+
+                this.permissionDialogRef.afterClosed()
+                    .subscribe((form: FormGroup) => {
+                        
+                        if (form && form.valid) {
+
+                            var permission = {
+                                RecipientEmail: form.controls['recipientEmail'].value,
+                                FileStorageId: form.controls['fileStorageId'].value,
+                                Type: form.controls['type'].value
+                            };
+
+                            this._fileManagerService.updatePermission(permission, this.fileStorageId)
+                                .then(() => {
+                                    this.translateService.get('PAGES.APPS.FILEMANAGER.PERMISSIONEDITSUCCESS').subscribe(message => {
+                                        this.createSnackBar(message);
+                                    });
+                                })
+                                .catch(res => {
+                                    if (res && res.status && res.status == 403) {
+                                    this.translateService.get('PAGES.APPS.FILEMANAGER.PERMISSION' + res.error).subscribe(message => {
+                                        this.createSnackBar(message);
+                                    });
+                                    }
+                                    else {
+                                        this.translateService.get('PAGES.APPS.FILEMANAGER.PERMISSIONSERVER_ERROR').subscribe(message => {
+                                            this.createSnackBar(message);
+                                        });
+                                    }
+                                });
+                            }
+                    });
+                });    
     }
 
-    delete(permission) {
+    deletePermission(permission) {
 
         this.translateService.get('PAGES.APPS.FILEMANAGER.PERMISSIONREMOVEQUESTION')
             .subscribe(message => {
@@ -140,6 +204,214 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
                     this.confirmDialogRef = null;
                 });
           });
+    }
+
+    downloadFile() {
+        this._fileManagerService.downloadFile(this.selected.id, this.selected.owner, this.selected.client);
+    }
+
+    update() {
+
+        if (this.selected.isDirectory) {
+            this.updateFolder();
+        }
+        else {
+            this.updateFile();
+        }
+    }
+
+    private updateFile() {
+        
+        this.translateService.get('PAGES.APPS.FILEMANAGER.UPDATEFILE')
+            .subscribe(message => {
+
+                this.fileDialogRef = this._matDialog.open(FileFormComponent, {
+                    panelClass: 'form-dialog',
+                    data: {
+                        parentId: this.fileStorageId,
+                        name: this.selected.name + this.selected.file.extension,
+                        title: message
+                    }
+                });
+
+                this.fileDialogRef.afterClosed()
+                    .subscribe((form: FormGroup) => {
+                    
+                    if (form && form.valid) {
+            
+                        var body = {
+                            id: this.selected.id,
+                            name: form.controls['name'].value
+                        };
+
+                        if (form.controls['content'].value) {
+                            body['content'] = form.controls['content'].value;
+                            body['size'] = form.controls['size'].value;
+                        }
+                        
+                        this._fileManagerService.updateFile(body, this.fileStorageId)
+                            .then()
+                            .catch(res => {
+                                if (res && res.status && res.status == 403) {
+                                    this.translateService.get('PAGES.APPS.FILEMANAGER.FILE' + res.error).subscribe(message => {
+                                    this.createSnackBar(message);
+                                    });
+                                }});
+                    }
+                });
+            });
+    }
+
+    private updateFolder() {
+        
+        this.translateService.get('PAGES.APPS.FILEMANAGER.UPDATEFOLDER')
+            .subscribe(message => {
+
+                this.folderDialogRef = this._matDialog.open(FolderFormComponent, {
+                    panelClass: 'form-dialog',
+                    data: {
+                        parentId: this.fileStorageId,
+                        name: this.selected.name,
+                        title: message
+                    }
+                });
+
+                this.folderDialogRef.afterClosed()
+                    .subscribe((form: FormGroup) => {
+                    
+                    if (form && form.valid) {
+            
+                        var folder = {
+                            id: this.selected.id,
+                            name: form.controls['name'].value
+                        };
+                
+                        this._fileManagerService.updateFolder(folder, this.fileStorageId)
+                            .then(() => { })
+                            .catch(res => { 
+                                if (res && res.status && res.status == 403) {
+                                    this.translateService.get('PAGES.APPS.FILEMANAGER.FOLDER' + res.error).subscribe(message => {
+                                    this.createSnackBar(message);
+                                    });
+                                }
+                            });
+                    }
+                });
+            });
+    }
+
+    remove() {
+
+        this.translateService.get(this.selected.isDirectory ? 'PAGES.APPS.FILEMANAGER.FOLDERREMOVEQUESTION' : 'PAGES.APPS.FILEMANAGER.FILEREMOVEQUESTION')
+            .subscribe(message => {
+                
+                this.confirmDialogRef = this._matDialog.open(ConfirmFormComponent, {
+                    disableClose: false
+                });
+        
+                this.confirmDialogRef.componentInstance.confirmMessage = message;
+        
+                this.confirmDialogRef.afterClosed()
+                    .subscribe(result => {
+                        
+                        if (result) {
+                
+                            var data = {
+                                id: this.selected.id
+                            }
+
+                            if (this.selected.isDirectory) {
+                                
+                                this.removeFolder(data);
+                            }
+                            else {
+                                this.removeFile(data);
+                            }
+                        }
+                        
+                    this.confirmDialogRef = null;
+                });
+          });
+    }
+
+    private removeFile(data) {
+        this._fileManagerService.removeFile(data, this.fileStorageId)
+        .then(() => {
+            this.translateService.get('PAGES.APPS.FILEMANAGER.FILEREMOVESUCCESS').subscribe(message => {
+            this.createSnackBar(message);
+            });
+        })
+        .catch(res => {
+            if (res && res.status && res.status == 403) {
+            this.translateService.get('PAGES.APPS.FILEMANAGER.FILE' + res.error).subscribe(message => {
+                this.createSnackBar(message);
+            });
+            }
+        });
+    }
+
+    private removeFolder(data) {
+        this._fileManagerService.removeFolder(data, this.fileStorageId)
+        .then(() => {
+            this.translateService.get('PAGES.APPS.FILEMANAGER.FOLDERREMOVESUCCESS').subscribe(message => {
+            this.createSnackBar(message);
+            });
+        })
+        .catch(res => {
+            if (res && res.status && res.status == 403) {
+            this.translateService.get('PAGES.APPS.FILEMANAGER.FOLDER' + res.error).subscribe(message => {
+                this.createSnackBar(message);
+            });
+            }
+        });
+    }
+
+    addPermission() {
+        var fileStorageId = this.selected.id;
+        
+        this.translateService.get('PAGES.APPS.FILEMANAGER.ADDPERMISSION')
+            .subscribe(message => {
+
+                this.permissionDialogRef = this._matDialog.open(PermissionFormComponent, {
+                    panelClass: 'permission-form-dialog',
+                    data: {
+                        fileStorageId: this.selected.id,
+                        title: message
+                    }
+                });
+
+                this.permissionDialogRef.afterClosed()
+                    .subscribe((form: FormGroup) => {
+                    
+                        if (form && form.valid) {
+
+                            var permission = {
+                                RecipientEmail: form.controls['recipientEmail'].value,
+                                FileStorageId: form.controls['fileStorageId'].value,
+                                Type: form.controls['type'].value
+                            };
+
+                            this._fileManagerService.addPermission(permission, this.fileStorageId)
+                                .then(() => {
+                                    this.translateService.get('PAGES.APPS.FILEMANAGER.PERMISSIONADDSUCCESS').subscribe(message => {
+                                        this.createSnackBar(message);
+                                    });
+                                })
+                                .catch(res => {
+                                    if (res && res.status && res.status == 403) {
+                                    this.translateService.get('PAGES.APPS.FILEMANAGER.PERMISSION' + res.error).subscribe(message => {
+                                        this.createSnackBar(message);
+                                    });
+                                    }
+                                    else {
+                                        this.translateService.get('PAGES.APPS.FILEMANAGER.PERMISSIONSERVER_ERROR').subscribe(message => {
+                                            this.createSnackBar(message);
+                                        });
+                                    }
+                                });
+                        }
+                });
+            });
     }
 
     ngOnDestroy(): void {

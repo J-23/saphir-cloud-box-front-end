@@ -13,30 +13,30 @@
             </div>
 
             <div>
-                <button *ngIf="buttonAddIsAvailable || buttonRemoveIsAvailable" mat-icon-button matTooltip="More" [matMenuTriggerFor]="moreMenu">
+                <button *ngIf="isAvailableToUpdate || isAvailableToUpdatePermission" mat-icon-button matTooltip="More" [matMenuTriggerFor]="moreMenu">
                     <mat-icon>more_vert</mat-icon>
                 </button>
                 
                 <mat-menu #moreMenu="matMenu">
-                    <button *ngIf="buttonAddIsAvailable" mat-menu-item aria-label="download" (click)="addFolder()">
+                    <button *ngIf="isAvailableToUpdate" mat-menu-item aria-label="download" (click)="addFolder()">
                         <mat-icon>add</mat-icon>
                         <span>{{ 'PAGES.APPS.FILEMANAGER.ADDFOLDER' | translate }}</span>
                     </button>
-                    <button *ngIf="buttonAddIsAvailable" mat-menu-item aria-label="edit" (click)="addFile()">
+                    <button *ngIf="isAvailableToUpdate" mat-menu-item aria-label="edit" (click)="addFile()">
                         <mat-icon>add</mat-icon>
                         <span>{{ 'PAGES.APPS.FILEMANAGER.ADDFILE' | translate }}</span>
                     </button>
-                    <button *ngIf="addPermissionIsAvailable" mat-menu-item aria-label="add permission" (click)="addPermission()">
-                        <mat-icon>person_add</mat-icon>
-                        <span>{{ 'PAGES.APPS.FILEMANAGER.ADDPERMISSION' | translate }}</span>
-                    </button>
-                    <button *ngIf="buttonUpdateIsAvailable" mat-menu-item aria-label="update" (click)="updateFolder()">
+                    <button *ngIf="isAvailableToUpdate" mat-menu-item aria-label="update" (click)="updateFolder()">
                         <mat-icon>edit</mat-icon>
                         <span>{{ 'PAGES.APPS.FILEMANAGER.UPDATECURRENTFOLDER' | translate }}</span>
                     </button>
-                    <button *ngIf="buttonRemoveIsAvailable" mat-menu-item aria-label="remove" (click)="removeFolder()">
+                    <button *ngIf="isAvailableToUpdate" mat-menu-item aria-label="remove" (click)="removeFolder()">
                         <mat-icon>delete</mat-icon>
                         <span>{{ 'PAGES.APPS.FILEMANAGER.REMOVECURRENTFOLDER' | translate }}</span>
+                    </button>
+                    <button *ngIf="isAvailableToUpdatePermission" mat-menu-item aria-label="add permission" (click)="addPermission()">
+                        <mat-icon>person_add</mat-icon>
+                        <span>{{ 'PAGES.APPS.FILEMANAGER.ADDPERMISSION' | translate }}</span>
                     </button>
                 </mat-menu>
             </div>

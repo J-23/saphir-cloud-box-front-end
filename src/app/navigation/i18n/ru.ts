@@ -115,7 +115,14 @@ export const locale = {
                     'READONLYPERMISSION': 'Только чтение',
                     'READANDWRITEPERMISSION': 'Чтение и запись',
                     'REMOVECURRENTFOLDER': 'Удалить текущую папку',
-                    'UPDATECURRENTFOLDER': 'Изменить текущую папку'
+                    'UPDATECURRENTFOLDER': 'Изменить текущую папку',
+                    'PERMISSIONSAME_NAME': 'Пользователь уже имеет права',
+                    'EDITPERMISSION': 'Изменить доступ',
+                    'PERMISSIONEDITSUCCESS': 'Доступ успешно изменен',
+                    'PERMISSIONREMOVEQUESTION': 'Вы уверены, что хотите удалить данный доступ?',
+                    'PERMISSIONREMOVESUCCESS' : 'Доступ успешно удален',
+                    'PERMISSIONUPDATE_ERROR': 'Вы не можете изменить доступ другого пользователя',
+                    'PERMISSIONREMOVE_ERROR': 'Вы не можете удалить доступ другого пользователя'
                 },
                 'FEEDBACK': {
                     'USEREMAIL': 'Ваша почта',

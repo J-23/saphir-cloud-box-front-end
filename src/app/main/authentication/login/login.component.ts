@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit
                     this.folderNavigationService.getFolder(1)
                         .then()
                         .catch();
-                        
+
                     this.router.navigate(['/']);
                 })
                 .catch(res => {

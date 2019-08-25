@@ -5,8 +5,9 @@ export class FileStorage {
     owner: AppUser;
     client: Client;
     parentStorageId?: number;
-    id: number;
+    id: any;
     name: string;
+    permissions: Permission[] = [];
 
     storages: Storage[] = [];
 
@@ -20,12 +21,13 @@ export class FileStorage {
         this.owner = fileStorage.owner ? new AppUser(fileStorage.owner) : null;
         this.client = fileStorage.client ? new Client(fileStorage.client) : null;
 
-        this.storages = fileStorage.storages ? fileStorage.storages.map(storage => new Storage(storage)) : null;
+        this.storages = fileStorage.storages ? fileStorage.storages.map(storage => new Storage(storage)) : [];
+        this.permissions = fileStorage.permissions ? fileStorage.permissions.map(permission => new Permission(permission)) : [];
     }
 }
 
 export class Storage {
-    id: number;
+    id: any;
     name: string;
     isDirectory: boolean;
     createBy: AppUser;
@@ -37,6 +39,8 @@ export class Storage {
     storageType: string;
     file: File;
     permissions: Permission[] = [];
+    isAvailableToUpdate: boolean = false;
+    isAvailableToAddPermision: boolean = false;
 
     constructor(storage?) {
         var storage = storage || {};

@@ -47,17 +47,17 @@
                         <mat-icon>cloud_download</mat-icon>
                         <span>{{ 'COMMONACTIONS.DOWNLOAD' | translate }}</span>
                     </button>
-                    <button *ngIf="addPermissionIsAvailable" mat-menu-item aria-label="add permission" (click)="addPermission(row)">
-                        <mat-icon>person_add</mat-icon>
-                        <span>{{ 'PAGES.APPS.FILEMANAGER.ADDPERMISSION' | translate }}</span>
-                    </button>
-                    <button *ngIf="buttonUpdateIsAvailable" mat-menu-item aria-label="edit" (click)="update(row)">
+                    <button *ngIf="row.isAvailableToUpdate" mat-menu-item aria-label="edit" (click)="update(row)">
                         <mat-icon>edit</mat-icon>
                         <span>{{ 'COMMONACTIONS.EDIT' | translate }}</span>
                     </button>
-                    <button *ngIf="buttonRemoveIsAvailable" mat-menu-item aria-label="remove" (click)="remove(row)">
+                    <button *ngIf="row.isAvailableToUpdate" mat-menu-item aria-label="remove" (click)="remove(row)">
                         <mat-icon>delete</mat-icon>
                         <span>{{ 'COMMONACTIONS.REMOVE' | translate }}</span>
+                    </button>
+                    <button *ngIf="row.isAvailableToAddPermision" mat-menu-item aria-label="add permission" (click)="addPermission(row)">
+                        <mat-icon>person_add</mat-icon>
+                        <span>{{ 'PAGES.APPS.FILEMANAGER.ADDPERMISSION' | translate }}</span>
                     </button>
                 </mat-menu>
             </div>

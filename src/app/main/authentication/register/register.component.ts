@@ -13,6 +13,7 @@ import { ClientsService } from 'app/main/apps/clients/clients.service';
 import { DepartmentsService } from 'app/main/apps/departments/departments.service';
 import { Client } from 'app/main/models/client.model';
 import { Department } from 'app/main/models/department.model';
+import { FolderNavigationService } from 'app/navigation/folder-navigation.service';
 
 @Component({
     selector     : 'register',
@@ -39,7 +40,8 @@ export class RegisterComponent implements OnInit, OnDestroy
         private _matSnackBar: MatSnackBar,
         private translateService: TranslateService,
         private clientsService: ClientsService,
-        private departmentsService: DepartmentsService) {
+        private departmentsService: DepartmentsService,
+        private folderNavigationService: FolderNavigationService) {
 
         this._fuseConfigService.config = {
             layout: {
@@ -96,7 +98,12 @@ export class RegisterComponent implements OnInit, OnDestroy
                 this.registerForm.controls['department'].value ? this.registerForm.controls['department'].value.id : null)
                 .then(() => {
                     this.isRegister = false;
-                    this.router.navigate(['/apps/clients']);
+
+                    this.folderNavigationService.getFolder(1)
+                        .then()
+                        .catch();
+
+                    this.router.navigate(['/']);
                 })
                 .catch(res => {
                     if (res && res.status && res.status == 401) {

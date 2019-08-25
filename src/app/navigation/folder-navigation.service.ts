@@ -24,9 +24,34 @@ export class FolderNavigationService {
     
     return new Promise((resolve, reject) => {
       this._httpClient.get(this.baseURL + `/api/file-storage/${parentId}`)
-        .subscribe((response: any) => {
-          this.onNavigationChanged.next(response);
-          resolve(response);
+        .subscribe((fileStorage: any) => {
+          
+          this._httpClient.get(this.baseURL + '/api/file-storage/shared-with-me')
+            .subscribe((files: any[]) => {
+
+              if (files.length > 0) {
+
+                fileStorage.storages.push({
+                  id: 'shared-with-me',
+                  name: 'Shared with me',
+                  isDirectory: true,
+                  createBy: null,
+                  createDate: new Date(),
+                  updateBy: null,
+                  updateDate: new Date(),
+                  owner: null,
+                  client: null,
+                  storageType: 'folder',
+                  file: null,
+                  permissions: [],
+                  isAvailableToUpdate: false,
+                  isAvailablaToAddPermision: false
+                });
+              }
+
+              this.onNavigationChanged.next(fileStorage);
+              resolve(fileStorage);
+            }, reject);
         }, reject);
       });
   }

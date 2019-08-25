@@ -10,6 +10,7 @@ export class FileManagerService implements Resolve<any> {
     
     onFileStorageChanged: BehaviorSubject<FileStorage>;
     onStorageSelected: BehaviorSubject<Storage>;
+    onPrevFileStorageChanged: BehaviorSubject<FileStorage>;
 
     private baseURL: string;
 
@@ -18,6 +19,7 @@ export class FileManagerService implements Resolve<any> {
         
         this.onFileStorageChanged = new BehaviorSubject(null);
         this.onStorageSelected = new BehaviorSubject(null);
+        this.onPrevFileStorageChanged = new BehaviorSubject(null);
 
         this.baseURL = this.appConfig['config']['URL'];
     }
@@ -41,12 +43,33 @@ export class FileManagerService implements Resolve<any> {
 
         return new Promise((resolve, reject) => {
 
-            this._httpClient.get(this.baseURL + `/api/file-storage/${id}`)
-                .subscribe((fileStorage: any) => {
-                    this.onFileStorageChanged.next(fileStorage);
-                    this.onStorageSelected.next(fileStorage.storages[0]);
-                    resolve(fileStorage);
-                }, reject);
+            if (id == 'shared-with-me') {
+                this._httpClient.get(this.baseURL + '/api/file-storage/shared-with-me')
+                    .subscribe((storages: any) => {
+
+                        var fileStorage: FileStorage = {
+                            owner: null,
+                            client: null,
+                            parentStorageId: 1,
+                            id: 'shared-with-me',
+                            name: 'Shared with me',
+                            permissions: [],
+                            storages: storages
+                        };
+
+                        this.onFileStorageChanged.next(fileStorage);
+                        this.onStorageSelected.next(fileStorage.storages[0]);
+                        resolve(fileStorage);
+                    }, reject);
+            }
+            else {
+                this._httpClient.get(this.baseURL + `/api/file-storage/${id}`)
+                    .subscribe((fileStorage: any) => {
+                        this.onFileStorageChanged.next(fileStorage);
+                        this.onStorageSelected.next(fileStorage.storages[0]);
+                        resolve(fileStorage);
+                    }, reject);
+            }
         });
     }
 
@@ -128,6 +151,17 @@ export class FileManagerService implements Resolve<any> {
     addPermission(permission, parentId): Promise<any> {
         return new Promise((resolve, reject) => {
             this._httpClient.post(this.baseURL + '/api/file-storage/add/permission', permission)
+                .subscribe((response:any) => {
+
+                    this.getFileStorage(parentId);
+                    resolve(response);
+                }, reject);
+        });
+    }
+
+    updatePermission(permission, parentId): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this._httpClient.post(this.baseURL + '/api/file-storage/update/permission', permission)
                 .subscribe((response:any) => {
 
                     this.getFileStorage(parentId);
