@@ -135,8 +135,13 @@ export class FileManagerComponent implements OnInit, OnDestroy {
                         .then(() => { })
                         .catch(res => { 
                             if (res && res.status && res.status == 403) {
-                                this.translateService.get('PAGES.APPS.FILEMANAGER.FOLDER' + res.error).subscribe(message => {
+                                this.translateService.get('PAGES.APPS.FILEMANAGER.FOLDER_' + res.error).subscribe(message => {
                                 this.createSnackBar(message);
+                                });
+                            }
+                            else if (res && res.status && res.status == 500) {
+                                this.translateService.get('COMMONACTIONS.OOPS').subscribe(message => {
+                                  this.createSnackBar(message);
                                 });
                             }
                         });
@@ -173,8 +178,13 @@ export class FileManagerComponent implements OnInit, OnDestroy {
                             .then(() => { })
                             .catch(res => { 
                                 if (res && res.status && res.status == 403) {
-                                    this.translateService.get('PAGES.APPS.FILEMANAGER.' + res.error).subscribe(message => {
+                                    this.translateService.get('PAGES.APPS.FILEMANAGER.FILE_' + res.error).subscribe(message => {
                                     this.createSnackBar(message);
+                                    });
+                                }
+                                else if (res && res.status && res.status == 500) {
+                                    this.translateService.get('COMMONACTIONS.OOPS').subscribe(message => {
+                                      this.createSnackBar(message);
                                     });
                                 }
                             });
@@ -224,8 +234,13 @@ export class FileManagerComponent implements OnInit, OnDestroy {
                     })
                     .catch(res => { 
                         if (res && res.status && res.status == 403) {
-                            this.translateService.get('PAGES.APPS.FILEMANAGER.FOLDER' + res.error).subscribe(message => {
+                            this.translateService.get('PAGES.APPS.FILEMANAGER.FOLDER_' + res.error).subscribe(message => {
                             this.createSnackBar(message);
+                            });
+                        }
+                        else if (res && res.status && res.status == 500) {
+                            this.translateService.get('COMMONACTIONS.OOPS').subscribe(message => {
+                              this.createSnackBar(message);
                             });
                         }
                     });
@@ -276,8 +291,13 @@ export class FileManagerComponent implements OnInit, OnDestroy {
                                 })
                                 .catch(res => {
                                     if (res && res.status && res.status == 403) {
-                                        this.translateService.get('PAGES.APPS.FILEMANAGER.FOLDER' + res.error).subscribe(message => {
+                                        this.translateService.get('PAGES.APPS.FILEMANAGER.FOLDER_' + res.error).subscribe(message => {
                                             this.createSnackBar(message);
+                                        });
+                                    }
+                                    else if (res && res.status && res.status == 500) {
+                                        this.translateService.get('COMMONACTIONS.OOPS').subscribe(message => {
+                                          this.createSnackBar(message);
                                         });
                                     }
                                 });
@@ -321,12 +341,18 @@ export class FileManagerComponent implements OnInit, OnDestroy {
                                     })
                                     .catch(res => {
                                         if (res && res.status && res.status == 403) {
-                                        this.translateService.get('PAGES.APPS.FILEMANAGER.PERMISSION' + res.error).subscribe(message => {
+                                        this.translateService.get('PAGES.APPS.FILEMANAGER.PERMISSION_' + res.error).subscribe(message => {
                                             this.createSnackBar(message);
                                         });
                                         }
-                                        else {
-                                            this.translateService.get('PAGES.APPS.FILEMANAGER.PERMISSIONSERVER_ERROR').subscribe(message => {
+                                        
+                                        else if (res && res.status && res.status == 500) {
+                                            this.translateService.get('COMMONACTIONS.OOPS').subscribe(message => {
+                                            this.createSnackBar(message);
+                                            });
+                                        }
+                                        else if (res && res.status && res.status == 401) {
+                                            this.translateService.get('PAGES.APPS.FILEMANAGER.PERMISSION_' + res.error).subscribe(message => {
                                                 this.createSnackBar(message);
                                             });
                                         }

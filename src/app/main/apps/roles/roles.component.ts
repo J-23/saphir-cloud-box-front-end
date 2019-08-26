@@ -70,6 +70,11 @@ export class RolesComponent implements OnInit {
                   this.createSnackBar(message);
                 });
               }
+              else if (res && res.status && res.status == 500) {
+                this.translateService.get('COMMONACTIONS.OOPS').subscribe(message => {
+                  this.createSnackBar(message);
+                });
+              }
             });
         }
       });
@@ -108,6 +113,11 @@ export class RolesComponent implements OnInit {
                   this.createSnackBar(message);
                 });
               }
+              else if (res && res.status && res.status == 500) {
+                this.translateService.get('COMMONACTIONS.OOPS').subscribe(message => {
+                  this.createSnackBar(message);
+                });
+              }
             });
         }
       });
@@ -140,6 +150,11 @@ export class RolesComponent implements OnInit {
             .catch(res => {
               if (res && res.status && res.status == 403) {
                 this.translateService.get('PAGES.APPS.ROLES.' + res.error).subscribe(message => {
+                  this.createSnackBar(message);
+                });
+              }
+              else if (res && res.status && res.status == 500) {
+                this.translateService.get('COMMONACTIONS.OOPS').subscribe(message => {
                   this.createSnackBar(message);
                 });
               }

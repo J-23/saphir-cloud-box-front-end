@@ -24,8 +24,8 @@
                     'REMOVEQUESTION': 'Wollen Sie diese Kunde wirklich löschen?',
                     'REMOVESUCCESS': 'Kunde wurde gelöscht',
                     'NOT_FOUND': 'Die Kunde wurde nicht gefunden',
-                    'SAME_NAME': 'Die Bezeichnung für die Kunde wird schon verwendet',
-                    'REMOVE_ERROR': 'Die Kunde hat Benutzer oder Objekte. Löschen ist nicht möglich!'
+                    'SAME_OBJECT': 'Die Bezeichnung für die Kunde wird schon verwendet',
+                    'EXIST_DEPENDENCY_OBJECTS': 'Die Kunde hat Benutzer oder Objekte. Löschen ist nicht möglich!'
                 },
                 'DEPARTMENTS': {
                     'NAME': 'Name',
@@ -39,9 +39,9 @@
                     'REMOVEQUESTION': 'Wollen Sie dieses Objekt wirklich löschen?',
                     'REMOVESUCCESS': 'Objekt wurde gelöscht',
                     'NOT_FOUND': 'Dieses Objekt wurde nicht gefunden',
-                    'SAME_NAME': 'Die Bezeichnung für das Objekt wird schon verwendet',
-                    'REMOVE_ERROR': 'Das Objekt hat Benutzer. Löschen ist nicht möglich!',
-                    'NOT_FOUNT_DEPENDENCY_OBJECT': 'Dieses Objekt wurde nicht gefunden'
+                    'SAME_OBJECT': 'Die Bezeichnung für das Objekt wird schon verwendet',
+                    'EXIST_DEPENDENCY_OBJECTS': 'Das Objekt hat Benutzer. Löschen ist nicht möglich!',
+                    'NOT_FOUND_DEPENDENCY_OBJECT': 'Dieses Objekt wurde nicht gefunden'
                 },
                 'ROLES': {
                     'NAME': 'Name',
@@ -51,12 +51,11 @@
                     'EDITSUCCESS': 'Rolle wurde geändert',
                     'REMOVEQUESTION': 'Wollen Sie diese Rolle wirklich löschen?',
                     'REMOVESUCCESS': 'Rolle wurde gelöscht',
-                    'SAME_NAME': 'Die Bezeichnung für die Rolle wird schon verwendet',
+                    'SAME_OBJECT': 'Die Bezeichnung für die Rolle wird schon verwendet',
                     'ADD_ERROR': 'Fehler beim Hinzufügen einer Rolle. Kontaktieren Sie bitte unseren Support',
                     'NOT_FOUND': 'Rolle wurde hinzugefügt',
-                    'UPDATE_ERROR': 'Fehler bei der Änderung einer Rolle. Kontaktieren Sie bitte unseren Support',
-                    'EXIST_DEPENDENCY_ERROR': 'Benutzer hat schon diese Rolle',
-                    'REMOVE_ERROR': 'Fehler beim Löschen einer Rolle. Kontaktieren Sie bitte unseren Support'
+                    'EXIST_DEPENDENCY_OBJECTS': 'Benutzer hat schon diese Rolle',
+                    'ERROR': 'Es ist ein Fehler aufgetretten. Kontaktieren Sie bitte unseren Support'
                 },
                 'USERS': {
                     'USERNAME': 'Benutzername',
@@ -72,12 +71,10 @@
                     'EDITSUCCESS': 'Benutzer wurde geändert',
                     'REMOVEQUESTION': 'Wollen Sie diesen Benutzer wirklich löschen?',
                     'REMOVESUCCESS': 'Benutzer wurde gelöscht',
-                    'SAME_NAME': 'Die Bezeichnung für den Benutzer wird schon verwendet',
+                    'SAME_OBJECT': 'Die Bezeichnung für den Benutzer wird schon verwendet',
                     'NOT_FOUND': 'Benutzer wurde nicht gefunden',
-                    'NOT_FOUNT_DEPENDENCY_OBJECT': 'Kunde oder Objekt wurden nicht gefunden',
-                    'ADD_ERROR': 'Fehler beim Hinzufügen eines Benutzers. Kontaktieren Sie bitte unseren Support',
-                    'UPDATE_ERROR': 'Fehler bei der Änderung eines Benutzers. Kontaktieren Sie bitte unseren Support',
-                    'REMOVE_ERROR': 'Fehler beim Löschen eines Benutzers. Kontaktieren Sie bitte unseren Support'
+                    'NOT_FOUND_DEPENDENCY_OBJECT': 'Kunde oder Objekt wurden nicht gefunden',
+                    'ERROR': 'Es ist ein Fehler aufgetretten. Kontaktieren Sie bitte unseren Support'
                 },
                 'FILEMANAGER': {
                     'ADDFOLDER': 'Verzeichnis hinzufügen',
@@ -94,34 +91,36 @@
                     'VIEWRIGHT': 'View right',
                     'FOLDERREMOVEQUESTION': 'Wollen Sie diesen Verzeichnis wirklich löschen?',
                     'FOLDERREMOVESUCCESS': 'Verzeichnis wurde gelöscht',
-                    'FOLDERNOT_FOUND': 'Verzeichnis wurde nicht gefunden',
+                    'FOLDER_NOT_FOUND': 'Verzeichnis wurde nicht gefunden',
                     'FOLDERSERVER_ERROR': 'Fehler in der Verzeichnisverwaltung. Kontaktieren Sie bitte unseren Support',
-                    'FOLDERSAME_NAME': 'Ein Verzeichnis mit gleichem Namen existiert bereits',
+                    'FOLDER_SAME_OBJECT': 'Ein Verzeichnis mit gleichem Namen existiert bereits',
+                    'FOLDER_NO_ACCESS': "You don't have permissions to this folder",
                     'UPDATEFOLDER': 'Verzeichnis ändern',
                     'ADDFILE': 'Datei hinzufügen',
                     'UPDATEFILE': 'Datei ändern',
-                    'FILENOT_FOUND': 'Datei nicht gefunden',
-                    'FILESAME_NAME': 'Eine Datei mit gleichem Namen existiert bereits',
-                    'FILESERVER_ERROR': 'Fehler in der Datenverwaltung. Kontaktieren Sie bitte unseren Support',
+                    'FILE_NOT_FOUND': 'Datei nicht gefunden',
+                    'FILE_SAME_OBJECT': 'Eine Datei mit gleichem Namen existiert bereits',
+                    'FILE_NOT_FOUND_DEPENDENCY_OBJECT': 'File not found',
                     'FILE': 'Datei',
+                    'FILE_NO_ACCESS': "You don't have permissions to this file",
                     'FILEREMOVEQUESTION': 'Wollen Sie diese Datei wirklich löschen?',
                     'FILEREMOVESUCCESS': 'Datei wurde gelöscht',
                     'REMOVECURRENTFOLDER': 'Ausgewählte verzeichnis löschen',
                     'ADDPERMISSION': 'Add permission',
                     'PERMISSIONADDSUCCESS': 'Permission added',
                     'PERMISSIONADD_ERROR': "You can't give permission to another user",
-                    'PERMISSIONNOT_FOUND_USER': 'Not found user with this mail',
+                    'PERMISSION_NOT_FOUND_USER': 'Not found user with this mail',
                     'PERMISSIONSERVER_ERROR': 'Oops! Something went wrong. Please contact support, and we will try to fix it soon',
                     'READONLYPERMISSION': 'Read only',
                     'READANDWRITEPERMISSION': 'Read and write',
                     'UPDATECURRENTFOLDER': 'Update current folder',
-                    'PERMISSIONSAME_NAME': 'User already has permission',
+                    'PERMISSION_SAME_OBJECT': 'User already has permission',
                     'EDITPERMISSION': 'Edit permission',
                     'PERMISSIONEDITSUCCESS': 'Permission updated',
                     'PERMISSIONREMOVEQUESTION': 'Are you sure you want to remove this permission?',
                     'PERMISSIONREMOVESUCCESS' : 'Permission removed',
-                    'PERMISSIONUPDATE_ERROR': "You can't update another user’s permission",
-                    'PERMISSIONREMOVE_ERROR': "You can't remove another user’s permission"
+                    'PERMISSION_NOT_FOUND': "Permission not found",
+                    'PERMISSION_NO_ACCESS': "You can't update permissions"
                 },
                 'FEEDBACK': {
                     'USEREMAIL': 'Yoer email',
@@ -165,9 +164,10 @@
                 'EMPTYPASSWORDCONFIRM': 'Bestätigung des Passwortes ist erforderlich',
                 'INVALIDPASSWORDCONFIRM': 'Ungültiges Passwort',
                 'EMPTYUSERNAME': 'Benutzername ist erforderlich',
-                'NOT_FOUND': 'Benutzer wurde nicht gefunden',
-                'UNATHORIZED': 'Es ist ein Fehler aufgetretten. Anmeldung ist nicht möglich',
-                'SAME_NAME': 'Benutzer mit dieser E-Mail Adresse ist vorhanden'
+                'NOT_FOUND_USER': 'User not found',
+                'ERROR': 'Es ist ein Fehler aufgetretten. Anmeldung ist nicht möglich',
+                'SAME_USER': 'Benutzer mit dieser E-Mail Adresse ist vorhanden',
+                'NOT_FOUND_ROLE': 'Role not found'
             }
         },
         'COMMONACTIONS': {
@@ -182,7 +182,8 @@
             'CANCEL': 'Abbruch',
             'ALL': 'Аlles',
             'INFO': 'Info',
-            'DOWNLOAD': 'Download'
+            'DOWNLOAD': 'Download',
+            'OOPS': 'Es ist ein Fehler aufgetretten. Anmeldung ist nicht möglich'
         }
     }
 };

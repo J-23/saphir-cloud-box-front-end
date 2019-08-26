@@ -24,8 +24,8 @@ export const locale = {
                     'REMOVEQUESTION': 'Are you sure you want to remove this client?',
                     'REMOVESUCCESS': 'Client removed',
                     'NOT_FOUND': 'Client not found',
-                    'SAME_NAME': 'Client with the same name is already exists',
-                    'REMOVE_ERROR': 'Users and / or departments are attached to this client'
+                    'SAME_OBJECT': 'Client with the same name is already exists',
+                    'EXIST_DEPENDENCY_OBJECTS': 'Users and / or departments are attached to this client'
                 },
                 'DEPARTMENTS': {
                     'NAME': 'Name',
@@ -39,9 +39,9 @@ export const locale = {
                     'REMOVEQUESTION': 'Are you sure you want to remove this department?',
                     'REMOVESUCCESS': 'Department removed',
                     'NOT_FOUND': 'Department not found',
-                    'SAME_NAME': 'Client with the same name is already exists',
-                    'REMOVE_ERROR': 'Users are attached to this client',
-                    'NOT_FOUNT_DEPENDENCY_OBJECT': 'Client not found'
+                    'SAME_OBJECT': 'Client with the same name is already exists',
+                    'EXIST_DEPENDENCY_OBJECTS': 'Users are attached to this client',
+                    'NOT_FOUND_DEPENDENCY_OBJECT': 'Client not found'
                 },
                 'ROLES': {
                     'NAME': 'Name',
@@ -51,12 +51,10 @@ export const locale = {
                     'EDITSUCCESS': 'Role updated',
                     'REMOVEQUESTION': 'Are you sure you want to remove this role?',
                     'REMOVESUCCESS': 'Role removed',
-                    'SAME_NAME': 'Role with the same name is already exists',
-                    'ADD_ERROR': 'Error adding role. Please contact support, and we will try to fix it soon',
+                    'SAME_OBJECT': 'Role with the same name is already exists',
                     'NOT_FOUND': 'Role added',
-                    'UPDATE_ERROR': 'Error updating role. Please contact support, and we will try to fix it soon',
-                    'EXIST_DEPENDENCY_ERROR': 'Users are attached to this role',
-                    'REMOVE_ERROR': 'Error removing role. Please contact support, and we will try to fix it soon'
+                    'EXIST_DEPENDENCY_OBJECTS': 'Users are attached to this role',
+                    'ERROR': 'Oops! Something went wrong. Please contact support, and we will try to fix it soon'
                 },
                 'USERS': {
                     'USERNAME': 'User name',
@@ -72,12 +70,10 @@ export const locale = {
                     'EDITSUCCESS': 'User updated',
                     'REMOVEQUESTION': 'Are you sure you want to remove this user?',
                     'REMOVESUCCESS': 'User removed',
-                    'SAME_NAME': 'Role with the same email is already exists',
+                    'SAME_OBJECT': 'Role with the same email is already exists',
                     'NOT_FOUND': 'User not found',
-                    'NOT_FOUNT_DEPENDENCY_OBJECT': 'No client and / or department found',
-                    'ADD_ERROR': 'Error adding user. Please contact support, and we will try to fix it soon',
-                    'UPDATE_ERROR': 'Error updating user. Please contact support, and we will try to fix it soon',
-                    'REMOVE_ERROR': 'Error removing user. Please contact support, and we will try to fix it soon'
+                    'NOT_FOUND_DEPENDENCY_OBJECT': 'No client and / or department found',
+                    'ERROR': 'Oops! Something went wrong. Please contact support, and we will try to fix it soon'
                 },
                 'FILEMANAGER': {
                     'ADDFOLDER': 'Add folder',
@@ -94,16 +90,17 @@ export const locale = {
                     'VIEWRIGHT': 'View right',
                     'FOLDERREMOVEQUESTION': 'Are you sure you want to remove this folder?',
                     'FOLDERREMOVESUCCESS': 'Folder removed',
-                    'FOLDERNOT_FOUND': 'Folder not found',
-                    'FOLDERSERVER_ERROR': 'Oops! Something went wrong. Please contact support, and we will try to fix it soon',
-                    'FOLDERSAME_NAME': 'Folder with the same name already exists',
+                    'FOLDER_NOT_FOUND': 'Folder not found',
+                    'FOLDER_SAME_OBJECT': 'Folder with the same name already exists',
+                    'FOLDER_NO_ACCESS': "You don't have permissions to this folder",
                     'UPDATEFOLDER': 'Update folder',
                     'ADDFILE': 'Add file',
                     'UPDATEFILE': 'Update file',
-                    'FILENOT_FOUND': 'File not found',
-                    'FILESAME_NAME': 'File with the same name already exists',
-                    'FILESERVER_ERROR': 'Oops! Something went wrong. Please contact support, and we will try to fix it soon',
+                    'FILE_NOT_FOUND': 'File not found',
+                    'FILE_SAME_OBJECT': 'File with the same name already exists',
+                    'FILE_NOT_FOUND_DEPENDENCY_OBJECT': 'File not found',
                     'FILE': 'File',
+                    'FILE_NO_ACCESS': "You don't have permissions to this file",
                     'FILEREMOVEQUESTION': 'Are you sure you want to remove this file?',
                     'FILEREMOVESUCCESS': 'File removed',
                     'REMOVECURRENTFOLDER': 'Remove current folder',
@@ -115,13 +112,14 @@ export const locale = {
                     'READONLYPERMISSION': 'Read only',
                     'READANDWRITEPERMISSION': 'Read and write',
                     'UPDATECURRENTFOLDER': 'Update current folder',
-                    'PERMISSIONSAME_NAME': 'User already has permission',
+                    'PERMISSION_SAME_OBJECT': 'User already has permission',
                     'EDITPERMISSION': 'Edit permission',
                     'PERMISSIONEDITSUCCESS': 'Permission updated',
                     'PERMISSIONREMOVEQUESTION': 'Are you sure you want to remove this permission?',
                     'PERMISSIONREMOVESUCCESS' : 'Permission removed',
-                    'PERMISSIONUPDATE_ERROR': "You can't update another user’s permission",
-                    'PERMISSIONREMOVE_ERROR': "You can't remove another user’s permission"
+                    'PERMISSION_NO_ACCESS': "You can't update permissions",
+                    'PERMISSION_NOT_FOUND_USER': 'User not found',
+                    'PERMISSION_NOT_FOUND': 'Permission not found'
                 },
                 'FEEDBACK': {
                     'USEREMAIL': 'Yoer email',
@@ -165,9 +163,10 @@ export const locale = {
                 'EMPTYPASSWORDCONFIRM': 'Password confirmation is required',
                 'INVALIDPASSWORDCONFIRM': 'Passwords must match',
                 'EMPTYUSERNAME': 'User name is required',
-                'NOT_FOUND': 'User not found',
-                'UNATHORIZED': 'Oops! Something went wrong. Please contact support and we will try to fix it soon',
-                'SAME_NAME': 'User with the same email already exists'
+                'NOT_FOUND_USER': 'User not found',
+                'ERROR': 'Oops! Something went wrong. Please contact support and we will try to fix it soon',
+                'SAME_USER': 'User with the same email already exists',
+                'NOT_FOUND_ROLE': 'Role not found'
             }
         },
         'COMMONACTIONS': {
@@ -182,7 +181,8 @@ export const locale = {
             'CANCEL': 'Cancel',
             'ALL': 'All',
             'INFO': 'Info',
-            'DOWNLOAD': 'Download'
+            'DOWNLOAD': 'Download',
+            'OOPS': 'Oops! Something went wrong. Please contact support and we will try to fix it soon'
         }
     }
 };
