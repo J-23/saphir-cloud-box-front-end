@@ -11,7 +11,7 @@ import { FolderFormComponent } from './folder-form/folder-form.component';
 import { FormGroup } from '@angular/forms';
 import { FileFormComponent } from './file-form/file-form.component';
 import { AuthenticationService } from '../authentication/authentication.service';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Storage, FileStorage, PermissionType } from '../models/file-storage.model';
 import { RoleType } from '../models/role.model';
@@ -44,6 +44,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     permissionDialogRef: any;
     
     isRootFolder: boolean = false;
+    navigations: any[];
 
     constructor (private _fileManagerService: FileManagerService,
         private _fuseSidebarService: FuseSidebarService,
@@ -108,6 +109,12 @@ export class FileManagerComponent implements OnInit, OnDestroy {
                         }
                     })
             });
+
+        this._fileManagerService.onNavigationChanged
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(navigations => {
+                this.navigations = navigations;
+        });
     }
 
     addFolder() {
@@ -365,15 +372,22 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     }
 
     goBack() {
-        this._fileManagerService.onPrevFileStorageChanged
-            .subscribe(fileStorage => {
-                if (fileStorage) {
-                    this.router.navigate([`/file-manager/${fileStorage.id}`]);
-                }
-                else {
-                    this.router.navigate([`/file-manager/${this.fileStorage.parentStorageId}`]);
-                }
-            })
+        
+        if (this.navigations.length > 0) {
+
+            this.navigations.pop();
+            var previousNavigation = this.navigations.pop();
+
+            if (previousNavigation) {
+                this.router.navigate([`/file-manager/${previousNavigation.id}`]);
+            }
+            else {
+                this.router.navigate([`/file-manager/${this.fileStorage.parentStorageId}`]);
+            }
+        }
+        else {
+            this.router.navigate([`/file-manager/${this.fileStorage.parentStorageId}`]);
+        }
     }
 
     ngOnDestroy(): void {

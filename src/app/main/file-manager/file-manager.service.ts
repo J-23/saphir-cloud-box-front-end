@@ -8,9 +8,11 @@ import { FileStorage, Storage } from '../models/file-storage.model';
 @Injectable()
 export class FileManagerService implements Resolve<any> {
     
+    private navigations: any[] = [];
     onFileStorageChanged: BehaviorSubject<FileStorage>;
     onStorageSelected: BehaviorSubject<Storage>;
-    onPrevFileStorageChanged: BehaviorSubject<FileStorage>;
+
+    onNavigationChanged: BehaviorSubject<any[]>;
 
     private baseURL: string;
 
@@ -19,7 +21,7 @@ export class FileManagerService implements Resolve<any> {
         
         this.onFileStorageChanged = new BehaviorSubject(null);
         this.onStorageSelected = new BehaviorSubject(null);
-        this.onPrevFileStorageChanged = new BehaviorSubject(null);
+        this.onNavigationChanged = new BehaviorSubject([]);
 
         this.baseURL = this.appConfig['config']['URL'];
     }
@@ -57,6 +59,13 @@ export class FileManagerService implements Resolve<any> {
                             storages: storages
                         };
 
+                        this.navigations.push({
+                            id: 'shared-with-me',
+                            name: 'Shared with me'
+                        });
+
+                        this.onNavigationChanged.next(this.navigations);
+
                         this.onFileStorageChanged.next(fileStorage);
                         this.onStorageSelected.next(fileStorage.storages[0]);
                         resolve(fileStorage);
@@ -65,6 +74,13 @@ export class FileManagerService implements Resolve<any> {
             else {
                 this._httpClient.get(this.baseURL + `/api/file-storage/${id}`)
                     .subscribe((fileStorage: any) => {
+
+                        this.navigations.push({
+                            id: id,
+                            name: fileStorage.name
+                        });
+                        this.onNavigationChanged.next(this.navigations);
+
                         this.onFileStorageChanged.next(fileStorage);
                         this.onStorageSelected.next(fileStorage.storages[0]);
                         resolve(fileStorage);

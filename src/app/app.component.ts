@@ -11,7 +11,6 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { FuseSplashScreenService } from '@fuse/services/splash-screen.service';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 
-import { navigation } from 'app/navigation/navigation';
 import { locale as english } from 'app/navigation/i18n/en';
 import { locale as german } from 'app/navigation/i18n/de';
 import { locale as russian } from 'app/navigation/i18n/ru';
@@ -21,7 +20,6 @@ import { MatDialog } from '@angular/material';
 import { FolderFormComponent } from './main/file-manager/folder-form/folder-form.component';
 import { FormGroup } from '@angular/forms';
 import { AuthenticationService } from './main/authentication/authentication.service';
-import { userInfo } from 'os';
 import { FuseNavigationItem, FuseNavigation } from '@fuse/types';
 import { RoleType } from './main/models/role.model';
 

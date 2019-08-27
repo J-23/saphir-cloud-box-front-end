@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MatButtonModule, MatIconModule, MatRippleModule, MatSlideToggleModule, MatTableModule, MatToolbarModule, MatFormFieldModule, MatDialogModule, MatInputModule, MatMenuModule, MatSnackBarModule, MatTabsModule, MatOptionModule, MatSelectModule, MatDividerModule, MatListModule } from '@angular/material';
+import { MatButtonModule, MatIconModule, MatRippleModule, MatSlideToggleModule, MatTableModule, MatToolbarModule, MatFormFieldModule, MatDialogModule, MatInputModule, MatMenuModule, MatSnackBarModule, MatTabsModule, MatOptionModule, MatSelectModule, MatDividerModule, MatListModule, MatAutocompleteModule } from '@angular/material';
 
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseSidebarModule } from '@fuse/components';
@@ -53,6 +53,7 @@ const routes: Routes = [
         MatSelectModule,
         MatDividerModule,
         MatListModule,
+        MatAutocompleteModule,
         
         FuseSharedModule,
         FuseSidebarModule,

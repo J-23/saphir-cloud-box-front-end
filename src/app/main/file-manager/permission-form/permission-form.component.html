@@ -13,9 +13,15 @@
     <form [formGroup]="permissionForm" novalidate>
   
       <div fxLayout="row" fxLayoutAlign="space-between center">
+
         <mat-form-field appearance="outline" fxFlex="60">
           <mat-label>{{ 'PAGES.APPS.USERS.EMAIL' | translate }}</mat-label>
-          <input formControlName="recipientEmail" matInput required autocomplete="off">
+          <input type="text" aria-label="Number" matInput formControlName="recipientEmail" [matAutocomplete]="auto">
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+            <mat-option *ngFor="let email of filtredEmails | async" [value]="email">
+              {{email}}
+            </mat-option>
+          </mat-autocomplete>
         </mat-form-field>
 
         <mat-form-field appearance="outline" fxFlex="35">

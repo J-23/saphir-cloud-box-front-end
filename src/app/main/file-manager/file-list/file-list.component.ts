@@ -117,7 +117,6 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
 
         if (storage.isDirectory) {
 
-            this._fileManagerService.onPrevFileStorageChanged.next(this.fileStorage);
             this.router.navigate([`/file-manager/${storage.id}`]);
         }
     }
