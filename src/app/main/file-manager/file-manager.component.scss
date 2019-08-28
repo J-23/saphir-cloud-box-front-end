@@ -3,12 +3,16 @@
 #file-manager {
 
     .sidebar {
+        @include media-breakpoint('gt-xs') {
+            width: 450px !important;
+            min-width: 450px !important;
+            max-width: 450px !important;
+        }
+
         width: 320px !important;
         min-width: 320px !important;
         max-width: 320px !important;
-
-        &.main-sidebar {
-        }
+        
 
         &.details-sidebar {
             @include media-breakpoint('gt-md') {
@@ -130,4 +134,8 @@
         display: flex;
         flex-direction: column;
     }
+}
+
+.detail {
+    min-width: 450px !important;
 }
