@@ -18,6 +18,8 @@ import { Storage, FileStorage, PermissionType } from 'app/main/models/file-stora
 import { FileFormComponent } from '../file-form/file-form.component';
 import { RoleType } from 'app/main/models/role.model';
 import { PermissionFormComponent } from '../permission-form/permission-form.component';
+import { AppUser } from 'app/main/models/app-user.model';
+import { Client } from 'app/main/models/client.model';
 
 @Component({
     selector     : 'file-list',
@@ -28,6 +30,7 @@ import { PermissionFormComponent } from '../permission-form/permission-form.comp
 })
 export class FileManagerFileListComponent implements OnInit, OnDestroy {
     
+    currentUser: AppUser;
     storages: Storage[] = [];
     selected: Storage;
 
@@ -77,6 +80,7 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
                 this.authenticationService.user$
                     .subscribe(user => {
                         
+                        this.currentUser = user;
                         this.storages.forEach(storage => {
                             
                             var isAvailable = (user.id != undefined && !storage.client && !storage.owner && user.role.type == RoleType.SuperAdmin)
@@ -316,6 +320,7 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
 
     addPermission(fileStorage) {
         var fileStorageId = fileStorage.id;
+        var permissions = fileStorage.permissions;
         
         this.translateService.get('PAGES.APPS.FILEMANAGER.ADDPERMISSION')
             .subscribe(message => {
@@ -324,7 +329,9 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
                     panelClass: 'permission-form-dialog',
                     data: {
                         fileStorageId: fileStorageId,
-                        title: message
+                        permissions: permissions,
+                        title: message,
+                        currentUserId: this.currentUser.id
                     }
                 });
 
@@ -334,12 +341,13 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
                         if (form && form.valid) {
 
                             var permission = {
-                                RecipientEmail: form.controls['recipientEmail'].value,
+                                UserIds: form.controls['objects'].value.filter(data => data instanceof AppUser).map(data => data.id),
+                                ClientIds: form.controls['objects'].value.filter(data => data instanceof Client).map(data => data.id),
                                 FileStorageId: form.controls['fileStorageId'].value,
                                 Type: form.controls['type'].value
                             };
 
-                            this._fileManagerService.addPermission(permission, this.fileStorage.id)
+                            this._fileManagerService.checkPermission(permission, this.fileStorage.id)
                                 .then(() => {
                                     this.translateService.get('PAGES.APPS.FILEMANAGER.PERMISSIONADDSUCCESS').subscribe(message => {
                                         this.createSnackBar(message);

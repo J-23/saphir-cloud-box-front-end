@@ -18,6 +18,8 @@ import { RoleType } from '../models/role.model';
 import { ConfirmFormComponent } from '../confirm-form/confirm-form.component';
 import { FolderNavigationService } from 'app/navigation/folder-navigation.service';
 import { PermissionFormComponent } from './permission-form/permission-form.component';
+import { AppUser } from '../models/app-user.model';
+import { Client } from '../models/client.model';
 
 @Component({
     selector     : 'file-manager',
@@ -28,6 +30,8 @@ import { PermissionFormComponent } from './permission-form/permission-form.compo
 })
 export class FileManagerComponent implements OnInit, OnDestroy {
     selected: Storage;
+
+    currentUser: AppUser;
 
     folderDialogRef: any;
     fileDialogRef: any;
@@ -83,6 +87,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
                 this.authenticationService.user$
                     .subscribe(user => {
 
+                        this.currentUser = user;
                         var isAvailable = (user.id != undefined && !this.fileStorage.client && !this.fileStorage.owner && (user.role.type == RoleType.SuperAdmin))
                             || (this.fileStorage.client && !this.fileStorage.owner && user.role.type == RoleType.ClientAdmin)
                             || (!this.fileStorage.client && this.fileStorage.owner && (user.role.type == RoleType.SuperAdmin || user.role.type == RoleType.Employee
@@ -325,7 +330,9 @@ export class FileManagerComponent implements OnInit, OnDestroy {
                         panelClass: 'permission-form-dialog',
                         data: {
                             fileStorageId: this.fileStorage.id,
-                            title: message
+                            permissions: this.fileStorage.permissions,
+                            title: message,
+                            currentUserId: this.currentUser.id
                         }
                     });
 
@@ -335,12 +342,13 @@ export class FileManagerComponent implements OnInit, OnDestroy {
                             if (form && form.valid) {
 
                                 var permission = {
-                                    RecipientEmail: form.controls['recipientEmail'].value,
+                                    UserIds: form.controls['objects'].value.filter(data => data instanceof AppUser).map(data => data.id),
+                                    ClientIds: form.controls['objects'].value.filter(data => data instanceof Client).map(data => data.id),
                                     FileStorageId: form.controls['fileStorageId'].value,
                                     Type: form.controls['type'].value
                                 };
 
-                                this._fileManagerService.addPermission(permission, this.fileStorage.id)
+                                this._fileManagerService.checkPermission(permission, this.fileStorage.id)
                                     .then(() => {
                                         this.translateService.get('PAGES.APPS.FILEMANAGER.PERMISSIONADDSUCCESS').subscribe(message => {
                                             this.createSnackBar(message);

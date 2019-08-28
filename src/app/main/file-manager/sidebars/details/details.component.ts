@@ -16,6 +16,9 @@ import { PermissionFormComponent } from '../../permission-form/permission-form.c
 import { FormGroup } from '@angular/forms';
 import { FileFormComponent } from '../../file-form/file-form.component';
 import { FolderFormComponent } from '../../folder-form/folder-form.component';
+import { AppUser } from 'app/main/models/app-user.model';
+import { Client } from 'app/main/models/client.model';
+import { EditPermissionFormComponent } from '../../edit-permission-form/edit-permission-form.component';
 
 @Component({
     selector   : 'file-manager-details-sidebar',
@@ -24,6 +27,9 @@ import { FolderFormComponent } from '../../folder-form/folder-form.component';
     animations : fuseAnimations
 })
 export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
+
+    currentUser: AppUser;
+
     selected: Storage;
     fileStorageId: number;
 
@@ -48,6 +54,7 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
     folderDialogRef: any;
     fileDialogRef: any;
     permissionDialogRef: any;
+    editPermissionDialogRef: any;
 
     ngOnInit(): void {
 
@@ -60,6 +67,9 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
                 if ( this.selected) {
                     this.authenticationService.user$
                         .subscribe(user => {
+
+                            this.currentUser = user;
+
                             var isAvailable = (user.id != undefined && !this.selected.client && !this.selected.owner && user.role.type == RoleType.SuperAdmin)
                                 || (this.selected.client && !this.selected.owner && user.role.type == RoleType.ClientAdmin)
                                 || (!this.selected.client && this.selected.owner && user.id == this.selected.owner.id && 
@@ -117,27 +127,28 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
         this._fuseSidebarService.getSidebar('file-manager-details-sidebar').toggleOpen();
     }
 
-    editPermission(permission) {
+    editPermission(currentPermission) {
         
         this.translateService.get('PAGES.APPS.FILEMANAGER.EDITPERMISSION')
             .subscribe(message => {
 
-                this.permissionDialogRef = this._matDialog.open(PermissionFormComponent, {
+                this.editPermissionDialogRef = this._matDialog.open(EditPermissionFormComponent, {
                     panelClass: 'permission-form-dialog',
                     data: {
                         fileStorageId: this.selected.id,
                         title: message,
-                        recipientEmail: permission.recipient.email
+                        recipientEmail: currentPermission.recipient.email,
+                        type: currentPermission.type
                     }
                 });
 
-                this.permissionDialogRef.afterClosed()
+                this.editPermissionDialogRef.afterClosed()
                     .subscribe((form: FormGroup) => {
                         
                         if (form && form.valid) {
 
                             var permission = {
-                                RecipientEmail: form.controls['recipientEmail'].value,
+                                RecipientId: currentPermission.recipient.id,
                                 FileStorageId: form.controls['fileStorageId'].value,
                                 Type: form.controls['type'].value
                             };
@@ -188,7 +199,7 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
                         if (result) {
                 
                             var data = {
-                                RecipientEmail: permission.recipient.email,
+                                RecipientId: permission.recipient.id,
                                 FileStorageId: this.selected.id
                             }
 
@@ -413,7 +424,9 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
                     panelClass: 'permission-form-dialog',
                     data: {
                         fileStorageId: this.selected.id,
-                        title: message
+                        permissions: this.selected.permissions,
+                        title: message,
+                        currentUserId: this.currentUser.id
                     }
                 });
 
@@ -423,12 +436,13 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
                         if (form && form.valid) {
 
                             var permission = {
-                                RecipientEmail: form.controls['recipientEmail'].value,
+                                UserIds: form.controls['objects'].value.filter(data => data instanceof AppUser).map(data => data.id),
+                                ClientIds: form.controls['objects'].value.filter(data => data instanceof Client).map(data => data.id),
                                 FileStorageId: form.controls['fileStorageId'].value,
                                 Type: form.controls['type'].value
                             };
 
-                            this._fileManagerService.addPermission(permission, this.fileStorageId)
+                            this._fileManagerService.checkPermission(permission, this.fileStorageId)
                                 .then(() => {
                                     this.translateService.get('PAGES.APPS.FILEMANAGER.PERMISSIONADDSUCCESS').subscribe(message => {
                                         this.createSnackBar(message);

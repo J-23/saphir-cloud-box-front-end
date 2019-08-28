@@ -14,21 +14,17 @@
   
       <div fxLayout="row" fxLayoutAlign="space-between center">
 
-        <mat-form-field appearance="outline" fxFlex="70" fxFlex.lt-sm="55">
-          <mat-label>Pick...</mat-label>
-          <mat-select multiple formControlName="objects" [compareWith]="compare">
-            <mat-optgroup [label]="'Clients'" >
-              <mat-option  [value]="allClients">All clients</mat-option>
-              <mat-option *ngFor="let client of clients" [value]="client">{{client.name}}</mat-option>
-            </mat-optgroup>
-            <mat-optgroup [label]="'Users'">
-              <mat-option [value]="allUsers">All users</mat-option>
-              <mat-option *ngFor="let user of users" [value]="user">{{user.userName}} ({{user.email}}) </mat-option>
-            </mat-optgroup>
-          </mat-select>
+        <mat-form-field appearance="outline" fxFlex="60">
+          <mat-label>{{ 'PAGES.APPS.USERS.EMAIL' | translate }}</mat-label>
+          <input type="text" aria-label="Number" matInput formControlName="recipientEmail" [matAutocomplete]="auto">
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+            <mat-option *ngFor="let email of filtredEmails | async" [value]="email">
+              {{email}}
+            </mat-option>
+          </mat-autocomplete>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" fxFlex="25" fxFlex.lt-sm="40">
+        <mat-form-field appearance="outline" fxFlex="35">
           <mat-select formControlName="type" required>
             <mat-option [value]="0">{{ 'PAGES.APPS.FILEMANAGER.READONLYPERMISSION' | translate }}</mat-option>
             <mat-option [value]="1">{{ 'PAGES.APPS.FILEMANAGER.READANDWRITEPERMISSION' | translate }}</mat-option>
@@ -43,7 +39,7 @@
   
   <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
   
-    <button mat-button class="save-button" (click)="sendForm()" [disabled]="permissionForm.invalid" aria-label="SAVE">
+    <button mat-button class="save-button" (click)="matDialogRef.close(permissionForm)" [disabled]="permissionForm.invalid" aria-label="SAVE">
       {{ 'COMMONACTIONS.SAVE' | translate }}
     </button>
   

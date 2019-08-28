@@ -59,6 +59,12 @@ export class FileManagerService implements Resolve<any> {
                             storages: storages
                         };
 
+                        var nav = this.navigations.pop();
+
+                        if (nav && nav.id != 'shared-with-me') {
+                            this.navigations.push(nav);
+                        }
+
                         this.navigations.push({
                             id: 'shared-with-me',
                             name: 'Shared with me'
@@ -74,6 +80,12 @@ export class FileManagerService implements Resolve<any> {
             else {
                 this._httpClient.get(this.baseURL + `/api/file-storage/${id}`)
                     .subscribe((fileStorage: any) => {
+
+                        var nav = this.navigations.pop();
+
+                        if (nav && nav.id != id) {
+                            this.navigations.push(nav);
+                        }
 
                         this.navigations.push({
                             id: id,
@@ -164,9 +176,9 @@ export class FileManagerService implements Resolve<any> {
         });
     }
 
-    addPermission(permission, parentId): Promise<any> {
+    checkPermission(permission, parentId): Promise<any> {
         return new Promise((resolve, reject) => {
-            this._httpClient.post(this.baseURL + '/api/file-storage/add/permission', permission)
+            this._httpClient.post(this.baseURL + '/api/file-storage/check/permission', permission)
                 .subscribe((response:any) => {
 
                     this.getFileStorage(parentId);

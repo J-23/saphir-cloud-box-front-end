@@ -14,6 +14,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FileFormComponent } from './file-form/file-form.component';
 import { AuthorizedUserGuard } from '../guards/authorized-user.guard';
 import { PermissionFormComponent } from './permission-form/permission-form.component';
+import { EditPermissionFormComponent } from './edit-permission-form/edit-permission-form.component';
 
 const routes: Routes = [
     {
@@ -32,7 +33,8 @@ const routes: Routes = [
         FileManagerFileListComponent,
         FileManagerDetailsSidebarComponent,
         FileFormComponent,
-        PermissionFormComponent
+        PermissionFormComponent,
+        EditPermissionFormComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -65,7 +67,8 @@ const routes: Routes = [
     ],
     entryComponents: [
         FileFormComponent,
-        PermissionFormComponent
+        PermissionFormComponent,
+        EditPermissionFormComponent
     ]
 })
 export class FileManagerModule
