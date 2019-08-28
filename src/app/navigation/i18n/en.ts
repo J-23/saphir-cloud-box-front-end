@@ -119,7 +119,10 @@ export const locale = {
                     'PERMISSIONREMOVESUCCESS' : 'Permission removed',
                     'PERMISSION_NO_ACCESS': "You can't update permissions",
                     'PERMISSION_NOT_FOUND_USER': 'User not found',
-                    'PERMISSION_NOT_FOUND': 'Permission not found'
+                    'PERMISSION_NOT_FOUND': 'Permission not found',
+                    'PICK': 'Pick',
+                    'ALLCLIENTS': 'All clients',
+                    'ALLUSERS': 'All users'
                 },
                 'FEEDBACK': {
                     'USEREMAIL': 'Yoer email',

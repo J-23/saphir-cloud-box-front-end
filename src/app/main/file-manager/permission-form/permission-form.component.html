@@ -15,14 +15,16 @@
       <div fxLayout="row" fxLayoutAlign="space-between center">
 
         <mat-form-field appearance="outline" fxFlex="70" fxFlex.lt-sm="55">
-          <mat-label>Pick...</mat-label>
+          <mat-label>{{ 'PAGES.APPS.FILEMANAGER.PICK' | translate }}...</mat-label>
           <mat-select multiple formControlName="objects" [compareWith]="compare">
-            <mat-optgroup [label]="'Clients'" >
-              <mat-option  [value]="allClients">All clients</mat-option>
+            <mat-optgroup>
+              <mat-label>{{ 'NAV.CLIENTS' | translate }}</mat-label>
+              <mat-option  [value]="allClients">{{ 'PAGES.APPS.FILEMANAGER.ALLCLIENTS' | translate }}</mat-option>
               <mat-option *ngFor="let client of clients" [value]="client">{{client.name}}</mat-option>
             </mat-optgroup>
-            <mat-optgroup [label]="'Users'">
-              <mat-option [value]="allUsers">All users</mat-option>
+            <mat-optgroup>
+              <mat-label>{{ 'NAV.USERS' | translate }}</mat-label>
+              <mat-option [value]="allUsers">{{ 'PAGES.APPS.FILEMANAGER.ALLUSERS' | translate }}</mat-option>
               <mat-option *ngFor="let user of users" [value]="user">{{user.userName}} ({{user.email}}) </mat-option>
             </mat-optgroup>
           </mat-select>

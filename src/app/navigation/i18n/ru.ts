@@ -119,7 +119,10 @@ export const locale = {
                     'PERMISSIONREMOVESUCCESS' : 'Доступ успешно удален',
                     'PERMISSION_NO_ACCESS': 'Вы не можете изменять доступы',
                     'PERMISSION_NOT_FOUND_USER': 'Не найден пользователь',
-                    'PERMISSION_NOT_FOUND': 'Не найден доступ'
+                    'PERMISSION_NOT_FOUND': 'Не найден доступ',
+                    'PICK': 'Выберите',
+                    'ALLCLIENTS': 'Все клиенты',
+                    'ALLUSERS': 'Все пользователи'
                 },
                 'FEEDBACK': {
                     'USEREMAIL': 'Ваша почта',

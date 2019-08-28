@@ -120,7 +120,10 @@
                     'PERMISSIONREMOVEQUESTION': 'Are you sure you want to remove this permission?',
                     'PERMISSIONREMOVESUCCESS' : 'Permission removed',
                     'PERMISSION_NOT_FOUND': "Permission not found",
-                    'PERMISSION_NO_ACCESS': "You can't update permissions"
+                    'PERMISSION_NO_ACCESS': "You can't update permissions",
+                    'PICK': 'Pick',
+                    'ALLCLIENTS': 'All clients',
+                    'ALLUSERS': 'All users'
                 },
                 'FEEDBACK': {
                     'USEREMAIL': 'Yoer email',
