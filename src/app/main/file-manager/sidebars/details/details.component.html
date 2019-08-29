@@ -103,7 +103,7 @@
 
                         <div *ngFor="let permission of selected.permissions; let i = index" class="mt-16">
                             <div fxLayout="row" fxLayoutAlign="space-between center">
-                                <div fxFlex="60">{{permission.recipient.userName}}<span fxHide fxShow.gt-xs>({{permission.recipient.email}})</span></div>
+                                <div fxFlex="60">{{permission.recipient.userName}}<span fxHide fxShow.gt-xs><br>({{permission.recipient.email}})</span></div>
                                 <div> 
                                     <div *ngIf="permission.type == 0">{{ 'PAGES.APPS.FILEMANAGER.READONLYPERMISSION' | translate }}</div> 
                                     <div *ngIf="permission.type == 1">{{ 'PAGES.APPS.FILEMANAGER.READANDWRITEPERMISSION' | translate }}</div> 
