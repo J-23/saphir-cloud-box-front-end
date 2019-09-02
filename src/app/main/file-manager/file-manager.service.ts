@@ -4,6 +4,7 @@ import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/r
 import { Observable, BehaviorSubject } from 'rxjs';
 import { AppConfig } from 'app/app.config';
 import { FileStorage, Storage } from '../models/file-storage.model';
+import 'rxjs/add/operator/map';
 
 @Injectable()
 export class FileManagerService implements Resolve<any> {
@@ -147,11 +148,12 @@ export class FileManagerService implements Resolve<any> {
         });
     }
 
-    downloadFile(fileId, owner, client) {
-        var ownerId = owner ? owner.id : 0;
-        var clientId = client ? client.id : 0;
+    downloadFile(fileId): Observable<any> {
         
-        window.open(this.baseURL + `/api/file-storage/download/file/${fileId}/${ownerId}/${clientId}`);
+        return this._httpClient.get(this.baseURL + `/api/file-storage/download/file/${fileId}`, { responseType: 'blob' })
+                .map((response) => {
+                    return response;
+                });
     }
 
     updateFile(file, parentId): Promise<any> {

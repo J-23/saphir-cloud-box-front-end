@@ -117,11 +117,48 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
             });
     }
 
+    isSecondClick: boolean = false;
     getChildStorages(storage){
 
         if (storage.isDirectory) {
 
             this.router.navigate([`/file-manager/${storage.id}`]);
+        }
+        else {
+            if (this.isSecondClick) {
+                this._fileManagerService.downloadFile(storage.id)
+                    .subscribe(blob => {
+                        
+                        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                            window.navigator.msSaveOrOpenBlob(blob, storage.name + storage.file.extension);
+                        }
+                        else {
+
+                            var url = URL.createObjectURL(blob);
+                            var a = document.createElement("a");
+                            document.body.appendChild(a);
+                            a.style.display = "none";
+                            
+                            a.href =  url;
+                            a.target = '_blank';
+                            a.download = storage.name + storage.file.extension;
+                            a.click();
+                            URL.revokeObjectURL(a.href)
+                            a.remove();
+                            
+                            setTimeout(() =>
+                            {
+                                window.URL.revokeObjectURL(url);
+                            }, 100);
+                        }
+                    });
+            }
+            
+            this.isSecondClick = true;
+
+            setTimeout(() => {
+                this.isSecondClick = false;
+            }, 250);
         }
     }
 
@@ -315,7 +352,34 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
     }
 
     downloadFile(file) {
-        this._fileManagerService.downloadFile(file.id, file.owner, file.client);
+        if (!file.isDirectory) {
+            this._fileManagerService.downloadFile(file.id)
+                .subscribe(blob => {
+                        
+                    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                        window.navigator.msSaveOrOpenBlob(blob, file.name + file.file.extension);
+                    }
+                    else {
+
+                        var url = URL.createObjectURL(blob);
+                        var a = document.createElement("a");
+                        document.body.appendChild(a);
+                        a.style.display = "none";
+                        
+                        a.href =  url;
+                        a.target = '_blank';
+                        a.download = file.name + file.file.extension;
+                        a.click();
+                        URL.revokeObjectURL(a.href)
+                        a.remove();
+                        
+                        setTimeout(() =>
+                        {
+                            window.URL.revokeObjectURL(url);
+                        }, 100);
+                    }
+                });
+        }
     }
 
     addPermission(fileStorage) {

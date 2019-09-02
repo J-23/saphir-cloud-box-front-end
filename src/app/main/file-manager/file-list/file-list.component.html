@@ -67,8 +67,8 @@
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"
-             (click)="getChildStorages(row)"
-             [ngClass]="{'selected' : row == selected}"
-             matRipple [@animate]="{value:'*',params:{y:'100%'}}">
+            (click)="getChildStorages(row)"
+            [ngClass]="{'selected' : row == selected}"
+            matRipple [@animate]="{value:'*',params:{y:'100%'}}">
     </mat-row>
 </mat-table>

@@ -234,7 +234,32 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
     }
 
     downloadFile() {
-        this._fileManagerService.downloadFile(this.selected.id, this.selected.owner, this.selected.client);
+        this._fileManagerService.downloadFile(this.selected.id)
+            .subscribe(blob => {
+                        
+                if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                    window.navigator.msSaveOrOpenBlob(blob, this.selected.name + this.selected.file.extension);
+                }
+                else {
+
+                    var url = URL.createObjectURL(blob);
+                    var a = document.createElement("a");
+                    document.body.appendChild(a);
+                    a.style.display = "none";
+                    
+                    a.href =  url;
+                    a.target = '_blank';
+                    a.download = this.selected.name + this.selected.file.extension;
+                    a.click();
+                    URL.revokeObjectURL(a.href)
+                    a.remove();
+                    
+                    setTimeout(() =>
+                    {
+                        window.URL.revokeObjectURL(url);
+                    }, 100);
+                }
+            });
     }
 
     update() {
