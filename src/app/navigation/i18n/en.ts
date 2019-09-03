@@ -9,7 +9,9 @@ export const locale = {
             'ROLES': 'Roles',
             'HELP': 'Help',
             'FAQ': 'Faq',
-            'FEEDBACK': 'Feedback'
+            'FEEDBACK': 'Feedback',
+            'USERMENU': 'User menu',
+            'USERGROUPS': 'Groups'
         },
         'PAGES': {
             'APPS': {
@@ -133,6 +135,18 @@ export const locale = {
                     'SUCCESS': 'Message sent successfully',
                     'NOT_FOUNT': 'User with this email not found',
                     'SERVER_ERROR': 'Oops! Something went wrong. Please contact support, and we will try to fix it soon'
+                },
+                'USERGROUPS': {
+                    'NAME': 'Name',
+                    'USERS': 'Users',
+                    'ADD': 'Add group',
+                    'ADDSUCCESS': 'Group added',
+                    'SAME_OBJECT': 'Group with the same name is already exists',
+                    'EDIT': 'Update group',
+                    'UPDATESUCCESS': 'Group updated',
+                    'NOT_FOUND': 'Group not found',
+                    'REMOVEQUESTION': 'Are you sure you want to remove this group?',
+                    'REMOVESUCCESS': 'Group removed'
                 }
             },
             'AUTH': {

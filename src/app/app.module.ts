@@ -47,6 +47,11 @@ const appRoutes: Routes = [
         canActivate: [AuthorizedAndAdminUserGuard]
     },
     {
+        path: 'user-menu',
+        loadChildren: './main/user-menu/user-menu.module#UserMenuModule',
+        canActivate: [AuthorizedUserGuard]
+    },
+    {
         path: 'info',
         loadChildren: './main/info/info.module#InfoModule',
         canActivate: [AuthorizedUserGuard]

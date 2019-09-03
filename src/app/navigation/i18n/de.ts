@@ -9,7 +9,9 @@
             'ROLES': 'Rollen',
             'HELP': 'Help',
             'FAQ': 'Faq',
-            'FEEDBACK': 'Kontakt'
+            'FEEDBACK': 'Kontakt',
+            'USERMENU': 'User menu',
+            'USERGROUPS': 'Groups'
         },
         'PAGES': {
             'APPS': {
@@ -134,6 +136,18 @@
                     'SUCCESS': 'Nachricht wurde versendet',
                     'NOT_FOUNT': 'Benutzer mit diesem E-Mail wurde nicht gefunden',
                     'SERVER_ERROR': 'Fehler beim Emailversand. Kontaktieren Sie bitte unseren Support'
+                },
+                'USERGROUPS': {
+                    'NAME': 'Name',
+                    'USERS': 'Users',
+                    'ADD': 'Add group',
+                    'ADDSUCCESS': 'Group added',
+                    'SAME_OBJECT': 'Group with the same name is already exists',
+                    'EDIT': 'Update group',
+                    'UPDATESUCCESS': 'Group updated',
+                    'NOT_FOUND': 'Group not found',
+                    'REMOVEQUESTION': 'Are you sure you want to remove this group?',
+                    'REMOVESUCCESS': 'Group removed'
                 }
             },
             'AUTH': {

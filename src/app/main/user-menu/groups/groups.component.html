@@ -1,0 +1,85 @@
+<div id="groups" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+    <div class="header teal-300 p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start"
+        fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+    
+        <div fxLayout="row" fxLayoutAlign="start center">
+        
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{ 'NAV.USERGROUPS' | translate }} 
+                </span>
+            </div>
+        </div>
+
+        <button mat-raised-button class="add-car-button fuse-white mt-24 mt-md-0" (click)="add()">
+            <span>{{ 'COMMONACTIONS.ADD' | translate }}</span>
+        </button>
+    </div>
+
+    <div class="content">
+
+        <div class="center p-24 pb-56 pr-sm-92" fusePerfectScrollbar>
+
+            <div class="content">
+                <mat-table #table [dataSource]="dataSource" matSort [@animateStagger]="{value:'50'}" fusePerfectScrollbar>
+
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="40%">
+                            {{ 'PAGES.APPS.USERGROUPS.NAME' | translate }}
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let group" fxFlex="40%">
+                            <p class="text-truncate">{{group.name}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="users">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="40%">
+                            {{ 'PAGES.APPS.USERGROUPS.USERS' | translate }}
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let group" fxFlex="40%">
+                            <ul class="li-without-point">
+                                <li *ngFor="let user of group.users">{{user.userName}} ({{user.email}})</li>
+                            </ul>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="buttons">
+                        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                            <mat-cell *matCellDef="let group">
+                                <div fxLayoutAlign="end center">
+                    
+                                    <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
+                                        (click)="$event.stopPropagation();">
+                                        <mat-icon class="secondary-text">more_vert</mat-icon>
+                                    </button>
+                    
+                                    <mat-menu #moreMenu="matMenu">
+                                        <button mat-menu-item aria-label="edit" (click)="update(group)">
+                                            <mat-icon>edit</mat-icon>
+                                            <span>{{ 'COMMONACTIONS.EDIT' | translate }}</span>
+                                        </button>
+                                        <button mat-menu-item aria-label="remove" (click)="remove(group.id)">
+                                            <mat-icon>delete</mat-icon>
+                                            <span>{{ 'COMMONACTIONS.REMOVE' | translate }}</span>
+                                        </button>
+                                    </mat-menu>
+                                </div>
+                    
+                            </mat-cell>
+                        </ng-container>
+                    <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                    <mat-row *matRowDef="let group; columns: displayedColumns;" matRipple></mat-row>
+                </mat-table>
+
+                <mat-paginator #paginator
+                    [length]="dataSource.filteredData.length"
+                    [pageIndex]="0"
+                    [pageSize]="10"
+                    [pageSizeOptions]="[5, 10, 25, 100]">
+                </mat-paginator>
+            </div>
+        </div>
+    </div>
+</div>

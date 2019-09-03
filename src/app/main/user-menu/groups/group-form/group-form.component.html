@@ -1,0 +1,42 @@
+<div class="dialog-content-wrapper">
+  <mat-toolbar matDialogTitle class="mat teal-300 m-0">
+    <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+      <span class="title dialog-title">{{ dialogTitle | translate }}</span>
+      <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+      </button>
+     </mat-toolbar-row>
+  </mat-toolbar>
+  
+  <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
+  
+    <form [formGroup]="form" novalidate>
+  
+      <div fxLayout="row" fxLayoutAlign="start start">
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>{{ 'PAGES.APPS.USERGROUPS.NAME' | translate }}</mat-label>
+          <input name="name" formControlName="name" matInput required autocomplete="off">
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="start start">
+        <mat-form-field appearance="outline" fxFlex="100">
+          <mat-label>{{ 'PAGES.APPS.USERGROUPS.USERS' | translate }}</mat-label>
+          <mat-select formControlName="users" multiple [compareWith]="compare">
+            <mat-option *ngFor="let user of users" [value]="user">{{user.userName}} ({{user.email}})</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </form>
+  
+  </div>
+  
+  <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+  
+    <button mat-button class="save-button" (click)="matDialogRef.close(form)" [disabled]="form.invalid" aria-label="SAVE">
+      {{ 'COMMONACTIONS.SAVE' | translate }}
+    </button>
+  
+  </div>
+</div>
+  

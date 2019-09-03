@@ -22,6 +22,7 @@ import { FormGroup } from '@angular/forms';
 import { AuthenticationService } from './main/authentication/authentication.service';
 import { FuseNavigationItem, FuseNavigation } from '@fuse/types';
 import { RoleType } from './main/models/role.model';
+import { appNavigation, helpNavigation, userNavigation } from './navigation/navigation';
 
 @Component({
     selector   : 'app',
@@ -33,65 +34,6 @@ export class AppComponent implements OnInit, OnDestroy
     fuseConfig: any;
     navigation: any[];
 
-    appNavigation: FuseNavigation = {
-        id       : 'applications',
-        title    : 'Saphir Cloud Box',
-        translate: 'NAV.APPLICATIONS',
-        type     : 'group',
-        children : [
-            {
-                id       : 'clients',
-                title    : 'Kunden',
-                translate: 'NAV.CLIENTS',
-                type     : 'item',
-                url      : '/apps/clients'
-            },
-            {
-                id       : 'departments',
-                title    : 'Objekte',
-                translate: 'NAV.DEPARTMENTS',
-                type     : 'item',
-                url      : '/apps/departments'
-            },
-            {
-                id       : 'roles',
-                title    : 'Rollen',
-                translate: 'NAV.ROLES',
-                type     : 'item',
-                url      : '/apps/roles'
-            },
-            {
-                id       : 'users',
-                title    : 'Benutzern',
-                translate: 'NAV.USERS',
-                type     : 'item',
-                url      : '/apps/users'
-            }
-        ]
-    };
-
-    helpNavigation: FuseNavigation = {
-        id       : 'help',
-        title    : 'Help',
-        translate: 'NAV.HELP',
-        type     : 'group',
-        children : [
-            {
-                id       : 'faq',
-                title    : 'Faq',
-                translate: 'NAV.FAQ',
-                type     : 'item',
-                url      : '/info/faq'
-            },
-            {
-                id       : 'feedback',
-                title    : 'Feedback',
-                translate: 'NAV.FEEDBACK',
-                type     : 'item',
-                url      : '/info/feedback'
-            }
-        ]
-    }
     // Private
     private _unsubscribeAll: Subject<any>;
 
@@ -237,11 +179,13 @@ export class AppComponent implements OnInit, OnDestroy
                 if (user.id != undefined) {
      
                     if (user.role.type == RoleType.SuperAdmin) {
-                        this.navigation.push(this.appNavigation);
+                        this.navigation.push(appNavigation);
                     }
                     else {
                         this.navigation = this.navigation.filter(nav => !(nav.id == 'applications'));
                     }
+
+                    this.navigation.push(userNavigation);
 
                     this.folderNavigationService.onNavigationChanged
                         .subscribe(fileStorage => {
@@ -279,7 +223,7 @@ export class AppComponent implements OnInit, OnDestroy
                                 this.navigation.push(fileManagerNavigation);
                                 
                                 this.navigation = this.navigation.filter(nav => !(nav.id == 'help'));
-                                this.navigation.push(this.helpNavigation);
+                                this.navigation.push(helpNavigation);
 
                                 this._fuseNavigationService.unregister('main');
                                 this._fuseNavigationService.register('main', this.navigation);
@@ -299,6 +243,7 @@ export class AppComponent implements OnInit, OnDestroy
                 }
                 else {
                     this.navigation = this.navigation.filter(nav => !(nav.id == 'applications'));
+                    this.navigation = this.navigation.filter(nav => !(nav.id == 'user-menu'));
 
                     this._fuseNavigationService.unregister('main');
                     this._fuseNavigationService.register('main', this.navigation);
