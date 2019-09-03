@@ -19,6 +19,7 @@ import { FolderFormComponent } from '../../folder-form/folder-form.component';
 import { AppUser } from 'app/main/models/app-user.model';
 import { Client } from 'app/main/models/client.model';
 import { EditPermissionFormComponent } from '../../edit-permission-form/edit-permission-form.component';
+import { Group } from 'app/main/models/group.model';
 
 @Component({
     selector   : 'file-manager-details-sidebar',
@@ -461,8 +462,9 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
                         if (form && form.valid) {
 
                             var permission = {
-                                UserIds: form.controls['objects'].value.filter(data => data instanceof AppUser).map(data => data.id),
-                                ClientIds: form.controls['objects'].value.filter(data => data instanceof Client).map(data => data.id),
+                                UserIds: form.controls['userIds'].value,
+                                GroupIds: form.controls['groupIds'].value,
+                                ClientIds: form.controls['clientIds'].value,
                                 FileStorageId: form.controls['fileStorageId'].value,
                                 Type: form.controls['type'].value
                             };

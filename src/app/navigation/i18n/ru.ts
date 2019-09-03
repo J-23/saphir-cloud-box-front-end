@@ -124,7 +124,8 @@ export const locale = {
                     'PERMISSION_NOT_FOUND': 'Не найден доступ',
                     'PICK': 'Выберите',
                     'ALLCLIENTS': 'Все клиенты',
-                    'ALLUSERS': 'Все пользователи'
+                    'ALLUSERS': 'Все пользователи',
+                    'ALLGROUPS': 'Все группы'
                 },
                 'FEEDBACK': {
                     'USEREMAIL': 'Ваша почта',

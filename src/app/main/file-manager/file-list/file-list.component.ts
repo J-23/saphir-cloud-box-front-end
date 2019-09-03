@@ -20,6 +20,7 @@ import { RoleType } from 'app/main/models/role.model';
 import { PermissionFormComponent } from '../permission-form/permission-form.component';
 import { AppUser } from 'app/main/models/app-user.model';
 import { Client } from 'app/main/models/client.model';
+import { Group } from 'app/main/models/group.model';
 
 @Component({
     selector     : 'file-list',
@@ -405,8 +406,9 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
                         if (form && form.valid) {
 
                             var permission = {
-                                UserIds: form.controls['objects'].value.filter(data => data instanceof AppUser).map(data => data.id),
-                                ClientIds: form.controls['objects'].value.filter(data => data instanceof Client).map(data => data.id),
+                                UserIds: form.controls['userIds'].value,
+                                GroupIds: form.controls['groupIds'].value,
+                                ClientIds: form.controls['clientIds'].value,
                                 FileStorageId: form.controls['fileStorageId'].value,
                                 Type: form.controls['type'].value
                             };

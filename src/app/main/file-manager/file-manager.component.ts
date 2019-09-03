@@ -20,6 +20,7 @@ import { FolderNavigationService } from 'app/navigation/folder-navigation.servic
 import { PermissionFormComponent } from './permission-form/permission-form.component';
 import { AppUser } from '../models/app-user.model';
 import { Client } from '../models/client.model';
+import { Group } from '../models/group.model';
 
 @Component({
     selector     : 'file-manager',
@@ -342,12 +343,14 @@ export class FileManagerComponent implements OnInit, OnDestroy {
                             if (form && form.valid) {
 
                                 var permission = {
-                                    UserIds: form.controls['objects'].value.filter(data => data instanceof AppUser).map(data => data.id),
-                                    ClientIds: form.controls['objects'].value.filter(data => data instanceof Client).map(data => data.id),
+                                    UserIds: form.controls['userIds'].value,
+                                    GroupIds: form.controls['groupIds'].value,
+                                    ClientIds: form.controls['clientIds'].value,
                                     FileStorageId: form.controls['fileStorageId'].value,
                                     Type: form.controls['type'].value
                                 };
 
+                                console.log(permission)
                                 this._fileManagerService.checkPermission(permission, this.fileStorage.id)
                                     .then(() => {
                                         this.translateService.get('PAGES.APPS.FILEMANAGER.PERMISSIONADDSUCCESS').subscribe(message => {

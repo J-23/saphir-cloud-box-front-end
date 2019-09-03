@@ -124,7 +124,8 @@ export const locale = {
                     'PERMISSION_NOT_FOUND': 'Permission not found',
                     'PICK': 'Pick',
                     'ALLCLIENTS': 'All clients',
-                    'ALLUSERS': 'All users'
+                    'ALLUSERS': 'All users',
+                    'ALLGROUPS': 'All groups'
                 },
                 'FEEDBACK': {
                     'USEREMAIL': 'Yoer email',

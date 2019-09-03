@@ -125,7 +125,8 @@
                     'PERMISSION_NO_ACCESS': "Sie dürfen nicht diese Berechtigung ändern",
                     'PICK': 'Auswahl',
                     'ALLCLIENTS': 'Alle',
-                    'ALLUSERS': 'Alle Benutzern'
+                    'ALLUSERS': 'Alle Benutzern',
+                    'ALLGROUPS': 'All groups'
                 },
                 'FEEDBACK': {
                     'USEREMAIL': 'Ihre E-Mail',
