@@ -1,0 +1,47 @@
+@import "src/@fuse/scss/fuse";
+
+::ng-deep .mat-form-field-flex {
+
+    @include media-breakpoint('gt-sm') {
+        max-height: calc(100vh - 410px);
+    }
+}
+
+.ul-object {
+    list-style-type: none;
+    padding-inline-start: 0px !important;
+    overflow-y: auto;
+
+    @include media-breakpoint('gt-sm') { 
+        max-height: calc(100vh - 520px);
+    }
+    @include media-breakpoint('lt-md') {
+        max-height: 95px;
+    }
+}
+
+.li-object {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.content {
+    overflow: hidden;
+    margin: 0 !important;
+    padding-top: 24px !important;
+
+    @include media-breakpoint('gt-sm') {
+        
+        height: calc(100vh - 350px) !important;
+        
+    }
+    @include media-breakpoint('lt-md') {
+        height: 250px;
+    }
+}
+
+.mat-from-custom {
+    @include media-breakpoint('gt-sm') { 
+        width: 100%;
+    }
+}
