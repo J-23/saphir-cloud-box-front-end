@@ -63,28 +63,21 @@ export class PermissionFormComponent implements OnInit {
 
     this.permissionForm = this.createForm();
 
-    this.usersService.getUsers()
-      .then(users => {
-        this.users = users.filter(user => user.id != this.currentUserId);
-
-        var recipients = this.permissions.map(perm => perm.recipient);
-        this.setUsers(recipients);
-        
-        this.clientsService.getClients()
-          .then(clients => {
-            this.clients = clients;
-
-            this.setClients();
-          })
-          .catch();
-          
+    this.clientsService.getClients()
+      .then(clients => {
+        this.clients = clients;
+            
         this.groupsService.getGroups()
           .then(groups => {
-            groups.forEach(group => {
-              this.groups.push(group);
-            });
+            this.groups = groups.map(group => new Group(group));
+            
+            this.usersService.getUsers()
+              .then(users => {
 
-            this.setGroups();
+                this.users = users.filter(user => user.id != this.currentUserId);
+                this.setSelected();
+              })
+              .catch();
           })
           .catch();
       })
@@ -103,78 +96,66 @@ export class PermissionFormComponent implements OnInit {
     });
   }
 
-  setUsers(recipients: AppUser[]) {
+  setSelected() {
 
-    if (recipients.length == this.users.length) {
-      this.selectedUsers.push(this.allUsers);
+    var result = [];
+
+    var selectedUsers = this.permissions.map(perm => perm.recipient);
+    selectedUsers = this.getUniqueUsers(selectedUsers);
+
+    if (selectedUsers.length == this.users.length && selectedUsers.length > 1) {
+      result.push(this.allUsers);
     }
     else {
-      recipients.forEach(recip => {
-        this.selectedUsers.push(recip)
+      selectedUsers.forEach(user => {
+        result.push(new AppUser(user));
+      });
+    }
+
+    var selectedClients = selectedUsers.map(user => user.client);
+    selectedClients = this.getUniqueClients(selectedClients);
+
+    if (selectedClients.length == this.clients.length && selectedClients.length > 1) {
+      result.push(this.allClients);
+    }
+    else {
+      selectedClients.forEach(client => {
+        result.push(new Client(client));
+      });
+    }
+
+    var selectedGroups: Group[] = [];
+
+    this.groups.forEach(group => {
+
+      var isSelected = selectedUsers.length > 0 ? true : false;
+
+      for (var selectedUser of selectedUsers) {
+        if (!group.users.find(user => user.id == selectedUser.id)) {
+          isSelected = false;
+        }
+
+        if (!isSelected) {
+          break;
+        }
+      }
+
+      if (isSelected) {
+        selectedGroups.push(group);
+      }
+    });
+
+    if (selectedGroups.length == this.groups.length && selectedGroups.length > 1) {
+      result.push(this.allGroups);
+    }
+    else {
+      selectedGroups.forEach(group => {
+        result.push(new Group(group));
       });
     }
 
     this.permissionForm.patchValue({
-      'objects': this.selectedUsers
-    });
-  }
-
-  setClients() {
-    var clients = this.permissions.map(perm => perm.recipient.client);
-    clients = this.getUniqueClients(clients);
-
-    var values: any[] = this.permissionForm.controls['objects'].value;
-
-    if (clients.length == this.clients.length && this.selectedUsers.length == this.users.length) {
-      this.selectedClients.push(this.allClients);
-      
-      values.push(this.allClients);
-    }
-    else {
-
-      if (this.selectedUsers.find(user => user.id == this.allUsers.id)) {
-      
-        clients.forEach(client => {
-          this.selectedClients.push(client);
-          values.push(client);
-        });
-      }
-    }
-
-    this.permissionForm.patchValue({
-      'objects': values
-    });
-  }
-
-  setGroups() {
-
-    var allUserIds = [];
-
-    this.groups.forEach(group => {
-
-      var userIds = group.users.map(user => user.id);
-      var users = this.selectedUsers.filter(user => userIds.includes(user.id));
-
-      if (userIds.length == users.length || this.selectedUsers.find(us => us.id == this.allUsers.id)) {
-        this.selectedGroups.push(group);
-      }
-
-      userIds.forEach(id => allUserIds.push(id));
-    });
-
-    if (this.selectedGroups.length == this.groups.length) {
-      this.selectedGroups = [];
-      this.selectedGroups.push(this.allGroups);
-    }
-
-    var values: any[] = this.permissionForm.controls['objects'].value;
-
-    this.selectedGroups.forEach(group => {
-      values.push(group);
-    });
-
-    this.permissionForm.patchValue({
-      'objects': values
+      'objects': result
     });
   }
 
@@ -190,21 +171,33 @@ export class PermissionFormComponent implements OnInit {
     return result;
   }
 
+  getUniqueUsers(users: AppUser[]) : AppUser[] {
+    let result: AppUser[] = [];
+
+    for (var user of users) {
+      if (!result.find(cl => cl.id == user.id)) {
+        result.push(user);
+      }
+    }
+
+    return result;
+  }
+
   compare(object1: any, object2: any) {
     var result = false;
 
-    if (object1 && object2) {
-      if (object1 instanceof AppUser) {
-        result = object1.userName && object2.userName && object1.id == object2.id;
-      }
-      else if (object1 instanceof Client) {
-        result = object1.createDate && object2.createDate && object1.id == object2.id;
-      }
-      else {
-        result = object1.users && object2.users && object1.users.length == object2.users.length && object1.id == object2.id;
-      }
+    
+    if (object1 instanceof AppUser && object2 instanceof AppUser) {
+      result = object1 && object2 ? object1.id == object2.id : object1 == object2;
     }
-    return result
+    else if (object1 instanceof Client && object2 instanceof Client) {
+      result = object1 && object2 ? object1.id == object2.id : object1 == object2;
+    }
+    else if (object1 instanceof Group && object2 instanceof Group) {
+      result = object1 && object2 ? object1.id == object2.id : object1 == object2;
+    }
+
+    return result;
   }
 
   sendForm() {
@@ -238,7 +231,7 @@ export class PermissionFormComponent implements OnInit {
       });
     }
 
-    var group = values.find(value => !(value instanceof Client || value instanceof AppUser) && value.id == this.allGroups.id);
+    var group = values.find(value => value instanceof Group && value.id == this.allGroups.id);
 
     if (group) {
       this.permissionForm.patchValue({
@@ -246,7 +239,7 @@ export class PermissionFormComponent implements OnInit {
       });
     }
     else {
-      var groups = values.filter(value => !(value instanceof Client || value instanceof AppUser));
+      var groups = values.filter(value => value instanceof Group);
       this.permissionForm.patchValue({
         'groupIds': groups.map(group => group.id)
       });
