@@ -8,31 +8,45 @@
     </mat-toolbar-row>
   </mat-toolbar>
   
-  <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
+  <div mat-dialog-content class="p-24 pb-0 m-0" class="content">
   
     <form [formGroup]="permissionForm" novalidate>
   
-      <div fxLayout="row" fxLayoutAlign="space-between center">
+      <div fxLayout="row" fxLayoutAlign="space-between center" >
 
         <mat-form-field appearance="outline" fxFlex="70" fxFlex.lt-sm="55">
           <mat-label>{{ 'PAGES.APPS.FILEMANAGER.PICK' | translate }}...</mat-label>
-          <mat-select multiple formControlName="objects" [compareWith]="compare">
-            <mat-optgroup *ngIf="clients.length > 0">
-              <mat-label>{{ 'NAV.CLIENTS' | translate }}</mat-label>
-              <mat-option *ngIf="clients.length > 1" [value]="allClients">{{ 'PAGES.APPS.FILEMANAGER.ALLCLIENTS' | translate }}</mat-option>
-              <mat-option *ngFor="let client of clients" [value]="client">{{client.name}}</mat-option>
-            </mat-optgroup>
-            <mat-optgroup *ngIf="groups.length > 0">
-              <mat-label>{{ 'NAV.USERGROUPS' | translate }}</mat-label>
-              <mat-option *ngIf="groups.length > 1" [value]="allGroups">{{ 'PAGES.APPS.FILEMANAGER.ALLGROUPS' | translate }}</mat-option>
-              <mat-option *ngFor="let group of groups" [value]="group">{{group.name}}</mat-option>
-            </mat-optgroup>
-            <mat-optgroup *ngIf="users.length > 0">
-              <mat-label>{{ 'NAV.USERS' | translate }}</mat-label>
-              <mat-option *ngIf="users.length > 1" [value]="allUsers">{{ 'PAGES.APPS.FILEMANAGER.ALLUSERS' | translate }}</mat-option>
-              <mat-option *ngFor="let user of users" [value]="user">{{user.userName}} ({{user.email}}) </mat-option>
-            </mat-optgroup>
-          </mat-select>
+          <div class="mat-from-custom">
+            <ul class="ul-object">
+              <li *ngFor="let object of permissionForm.controls['objects'].value; let last = last" class="li-object">
+                <span *ngIf="object.userName && object.id != -1 && object.id != -2 && object.id != -3">{{object.userName}} <span fxHide fxShow.gt-xs>({{object.email}})</span><span *ngIf="!last">,</span></span>
+                <span *ngIf="!object.userName && object.id != -1 && object.id != -2 && object.id != -3">{{object.name}}<span *ngIf="!last">,</span></span>
+                <span *ngIf="object.id == -1">{{ 'PAGES.APPS.FILEMANAGER.ALLUSERS' | translate }}<span *ngIf="!last">,</span></span>
+                <span *ngIf="object.id == -2">{{ 'PAGES.APPS.FILEMANAGER.ALLCLIENTS' | translate }}<span *ngIf="!last">,</span></span>
+                <span *ngIf="object.id == -3">{{ 'PAGES.APPS.FILEMANAGER.ALLGROUPS' | translate }}<span *ngIf="!last">,</span></span>
+              </li>
+            </ul>
+          
+            <mat-select multiple formControlName="objects" [compareWith]="compare" style="display: inline-block !important">
+              <mat-select-trigger></mat-select-trigger>
+              <mat-optgroup *ngIf="clients.length > 0">
+                <mat-label>{{ 'NAV.CLIENTS' | translate }}</mat-label>
+                <mat-option *ngIf="clients.length > 1" [value]="allClients">{{ 'PAGES.APPS.FILEMANAGER.ALLCLIENTS' | translate }}</mat-option>
+                <mat-option *ngFor="let client of clients" [value]="client">{{client.name}}</mat-option>
+              </mat-optgroup>
+              <mat-optgroup *ngIf="groups.length > 0">
+                <mat-label>{{ 'NAV.USERGROUPS' | translate }}</mat-label>
+                <mat-option *ngIf="groups.length > 1" [value]="allGroups">{{ 'PAGES.APPS.FILEMANAGER.ALLGROUPS' | translate }}</mat-option>
+                <mat-option *ngFor="let group of groups" [value]="group">{{group.name}}</mat-option>
+              </mat-optgroup>
+              <mat-optgroup *ngIf="users.length > 0">
+                <mat-label>{{ 'NAV.USERS' | translate }}</mat-label>
+                <mat-option *ngIf="users.length > 1" [value]="allUsers">{{ 'PAGES.APPS.FILEMANAGER.ALLUSERS' | translate }}</mat-option>
+                <mat-option *ngFor="let user of users" [value]="user">{{user.userName}} ({{user.email}}) </mat-option>
+              </mat-optgroup>
+            </mat-select>
+          </div>
+          
         </mat-form-field>
 
         <mat-form-field appearance="outline" fxFlex="25" fxFlex.lt-sm="40">

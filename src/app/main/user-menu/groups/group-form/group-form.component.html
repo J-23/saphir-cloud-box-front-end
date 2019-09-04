@@ -8,7 +8,7 @@
      </mat-toolbar-row>
   </mat-toolbar>
   
-  <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
+  <div mat-dialog-content class="p-24 pb-0 m-0" class="content">
   
     <form [formGroup]="form" novalidate>
   
@@ -22,9 +22,20 @@
       <div fxLayout="row" fxLayoutAlign="start start">
         <mat-form-field appearance="outline" fxFlex="100">
           <mat-label>{{ 'PAGES.APPS.USERGROUPS.USERS' | translate }}</mat-label>
-          <mat-select formControlName="users" multiple [compareWith]="compare">
-            <mat-option *ngFor="let user of users" [value]="user">{{user.userName}} ({{user.email}})</mat-option>
-          </mat-select>
+          <div class="mat-from-custom">
+
+            <ul class="ul-object">
+              <li *ngFor="let user of form.controls['users'].value; let last = last" class="li-object">
+                <span>{{user.userName}} ({{user.email}}) <span *ngIf="!last">,</span></span>
+              </li>
+            </ul>
+
+            <mat-select formControlName="users" multiple [compareWith]="compare">
+              <mat-select-trigger></mat-select-trigger>
+              <mat-option *ngFor="let user of users" [value]="user">{{user.userName}} ({{user.email}})</mat-option>
+            </mat-select>  
+          </div>
+          
         </mat-form-field>
       </div>
     </form>
