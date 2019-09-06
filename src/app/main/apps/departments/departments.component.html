@@ -42,7 +42,7 @@
                             {{ 'PAGES.APPS.DEPARTMENTS.CREATEDATE' | translate }}
                         </mat-header-cell>
                         <mat-cell *matCellDef="let department" fxHide fxShow.gt-xs>
-                            <p class="text-truncate">{{department.createDate | date: 'dd/MM/yyyy HH:mm'}} GTM+0</p>
+                            <p class="text-truncate">{{department.createDate | date: 'dd/MM/yyyy HH:mm O'}}</p>
                         </mat-cell>
                     </ng-container>
 
@@ -51,7 +51,7 @@
                             {{ 'PAGES.APPS.DEPARTMENTS.UPDATEDATE' | translate }}
                         </mat-header-cell>
                         <mat-cell *matCellDef="let department" fxHide fxShow.gt-xs>
-                            <p class="text-truncate" *ngIf="department.updateDate">{{department.updateDate | date: 'dd/MM/yyyy HH:mm'}} GTM+0</p>
+                            <p class="text-truncate" *ngIf="department.updateDate">{{department.updateDate | date: 'dd/MM/yyyy HH:mm O'}}</p>
                         </mat-cell>
                     </ng-container>
 

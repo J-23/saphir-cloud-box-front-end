@@ -1,6 +1,8 @@
 import { Client } from "./client.model";
 import { Department } from "./department.model";
 import { Role } from "./role.model";
+import * as moment from 'moment';
+import { create } from 'domain';
 
 export class AppUser {
     id: number;
@@ -9,8 +11,8 @@ export class AppUser {
     client: Client;
     department?: Department;
     role: Role;
-    createDate: Date;
-    updateDate?: Date;
+    createDate: string;
+    updateDate?: string;
 
     constructor(user?) {
         var user = user || {};
@@ -21,7 +23,7 @@ export class AppUser {
         this.client = new Client(user.client);
         this.department = new Department(user.department);
         this.role = new Role(user.role);
-        this.createDate = user.createDate || new Date();
-        this.updateDate = user.updateDate || null;
+        this.createDate = moment.utc(user.createDate).local().format('YYYY-MM-DD HH:mm:ss') || moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
+        this.updateDate = user.updateDate ? moment.utc(user.updateDate).local().format('YYYY-MM-DD HH:mm:ss') : null;
     }
 }

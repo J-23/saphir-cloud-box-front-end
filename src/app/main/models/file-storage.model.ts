@@ -1,5 +1,7 @@
 import { AppUser } from "./app-user.model";
 import { Client } from "./client.model";
+import * as moment from 'moment';
+import { create } from 'domain';
 
 export class FileStorage {
     owner: AppUser;
@@ -31,9 +33,9 @@ export class Storage {
     name: string;
     isDirectory: boolean;
     createBy: AppUser;
-    createDate: Date;
+    createDate: string;
     updateBy: AppUser;
-    updateDate: Date;
+    updateDate: string;
     owner: AppUser;
     client: Client;
     storageType: string;
@@ -50,9 +52,9 @@ export class Storage {
         this.name = storage.name || null;
         this.isDirectory = storage.isDirectory || false;
         this.createBy = storage.createBy ? new AppUser(storage.createBy) : null;
-        this.createDate = storage.createDate || null;
+        this.createDate = moment.utc(storage.createDate).local().format('YYYY-MM-DD HH:mm:ss') || moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
+        this.updateDate = storage.updateDate ? moment.utc(storage.updateDate).local().format('YYYY-MM-DD HH:mm:ss') : null;
         this.updateBy = storage.updateBy ? new AppUser(storage.updateBy) : null;
-        this.updateDate = storage.updateDate || null;
         this.owner = storage.owner ? new AppUser(storage.owner) : null;
         this.client = storage.client ? new Client(storage.client) : null;
         this.storageType = storage.storageType || null;

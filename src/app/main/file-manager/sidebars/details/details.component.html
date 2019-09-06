@@ -81,7 +81,7 @@
 
                         <tr class="modified">
                             <th>{{ 'PAGES.APPS.FILEMANAGER.MODIFIEDDATE' | translate }}</th>
-                            <td *ngIf="selected.updateDate">{{selected.updateDate | date: 'dd/MM/yyyy HH:mm'}} GTM+0</td>
+                            <td *ngIf="selected.updateDate">{{selected.updateDate | date: 'dd/MM/yyyy HH:mm O'}}</td>
                         </tr>
 
                         <tr class="created">
@@ -91,7 +91,7 @@
 
                         <tr class="created">
                             <th>{{ 'PAGES.APPS.FILEMANAGER.CREATEDATE' | translate }}</th>
-                            <td *ngIf="selected.createDate">{{selected.createDate | date: 'dd/MM/yyyy HH:mm'}} GTM+0</td>
+                            <td *ngIf="selected.createDate">{{selected.createDate | date: 'dd/MM/yyyy HH:mm O'}}</td>
                         </tr>
                     </table>
                 </div> 
