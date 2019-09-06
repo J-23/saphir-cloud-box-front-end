@@ -12,7 +12,8 @@ export const ANONYMOUS_USER: AppUser = {
     email: undefined,
     client: undefined,
     department: undefined,
-    role: undefined
+    role: undefined,
+    createDate: undefined
   }
 
 @Injectable()

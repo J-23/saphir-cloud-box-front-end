@@ -50,7 +50,7 @@
             <mat-tab label="Info">
                 <div class="file-details" [@animate]="{value:'*',params:{delay:'200ms'}}">
 
-                    <div *ngIf="selected" class="preview file-icon" fxLayout="row" fxLayoutAlign="center center">
+                    <div *ngIf="selected" class="preview file-icon" fxLayout="row" fxLayoutAlign="center center" fxHide fxShow.gt-sm>
                         <mat-icon class="type-icon s-48">{{selected.storageType}}</mat-icon>
                     </div>
 
@@ -81,7 +81,7 @@
 
                         <tr class="modified">
                             <th>{{ 'PAGES.APPS.FILEMANAGER.MODIFIEDDATE' | translate }}</th>
-                            <td *ngIf="selected.updateDate">{{selected.updateDate | date: 'dd/MM/yyyy hh:mm'}}</td>
+                            <td *ngIf="selected.updateDate">{{selected.updateDate | date: 'dd/MM/yyyy HH:mm'}} GTM+0</td>
                         </tr>
 
                         <tr class="created">
@@ -91,7 +91,7 @@
 
                         <tr class="created">
                             <th>{{ 'PAGES.APPS.FILEMANAGER.CREATEDATE' | translate }}</th>
-                            <td *ngIf="selected.createDate">{{selected.createDate | date: 'dd/MM/yyyy hh:mm'}}</td>
+                            <td *ngIf="selected.createDate">{{selected.createDate | date: 'dd/MM/yyyy HH:mm'}} GTM+0</td>
                         </tr>
                     </table>
                 </div> 

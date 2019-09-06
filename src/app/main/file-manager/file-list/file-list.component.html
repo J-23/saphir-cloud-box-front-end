@@ -16,10 +16,10 @@
         <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>{{ 'PAGES.APPS.FILEMANAGER.MODIFIEDDATE' | translate }}</mat-header-cell>
         <mat-cell *matCellDef="let row" fxHide fxShow.gt-md>
             <div *ngIf="row.updateDate">
-                {{row.updateDate | date: 'dd/MM/yyyy hh:mm'}}
+                {{row.updateDate | date: 'dd/MM/yyyy HH:mm'}} GTM+0
             </div>
             <div *ngIf="!row.updateDate">
-                {{row.createDate | date: 'dd/MM/yyyy hh:mm'}}
+                {{row.createDate | date: 'dd/MM/yyyy HH:mm'}} GTM+0
             </div>
         </mat-cell>
     </ng-container>

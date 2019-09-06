@@ -9,6 +9,8 @@ export class AppUser {
     client: Client;
     department?: Department;
     role: Role;
+    createDate: Date;
+    updateDate?: Date;
 
     constructor(user?) {
         var user = user || {};
@@ -19,5 +21,7 @@ export class AppUser {
         this.client = new Client(user.client);
         this.department = new Department(user.department);
         this.role = new Role(user.role);
+        this.createDate = user.createDate || new Date();
+        this.updateDate = user.updateDate || null;
     }
 }
