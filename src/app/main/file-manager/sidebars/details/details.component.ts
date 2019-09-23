@@ -238,7 +238,10 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
         this._fileManagerService.downloadFile(this.selected.id)
             .subscribe(blob => {
                         
-                if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                var FileSaver = require('file-saver');
+                FileSaver.saveAs(blob, this.selected.name + this.selected.file.extension);
+                
+                /*if (window.navigator && window.navigator.msSaveOrOpenBlob) {
                     window.navigator.msSaveOrOpenBlob(blob, this.selected.name + this.selected.file.extension);
                 }
                 else {
@@ -259,7 +262,7 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
                     {
                         window.URL.revokeObjectURL(url);
                     }, 100);
-                }
+                }*/
             });
     }
 

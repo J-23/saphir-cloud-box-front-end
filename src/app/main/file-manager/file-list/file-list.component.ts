@@ -21,6 +21,7 @@ import { PermissionFormComponent } from '../permission-form/permission-form.comp
 import { AppUser } from 'app/main/models/app-user.model';
 import { Client } from 'app/main/models/client.model';
 import { Group } from 'app/main/models/group.model';
+import { saveAs } from 'file-saver';
 
 @Component({
     selector     : 'file-list',
@@ -130,7 +131,10 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
                 this._fileManagerService.downloadFile(storage.id)
                     .subscribe(blob => {
                         
-                        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                        var FileSaver = require('file-saver');
+                        FileSaver.saveAs(blob, storage.name + storage.file.extension);
+
+                        /*if (window.navigator && window.navigator.msSaveOrOpenBlob) {
                             window.navigator.msSaveOrOpenBlob(blob, storage.name + storage.file.extension);
                         }
                         else {
@@ -151,7 +155,7 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
                             {
                                 window.URL.revokeObjectURL(url);
                             }, 100);
-                        }
+                        }*/
                     });
             }
             
@@ -356,8 +360,11 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
         if (!file.isDirectory) {
             this._fileManagerService.downloadFile(file.id)
                 .subscribe(blob => {
-                        
-                    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                    
+                    var FileSaver = require('file-saver');
+                    FileSaver.saveAs(blob, file.name + file.file.extension);
+
+                    /*if (window.navigator && window.navigator.msSaveOrOpenBlob) {
                         window.navigator.msSaveOrOpenBlob(blob, file.name + file.file.extension);
                     }
                     else {
@@ -378,7 +385,7 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
                         {
                             window.URL.revokeObjectURL(url);
                         }, 100);
-                    }
+                    }*/
                 });
         }
     }
