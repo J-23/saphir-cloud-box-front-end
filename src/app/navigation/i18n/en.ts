@@ -200,7 +200,8 @@ export const locale = {
             'ALL': 'All',
             'INFO': 'Info',
             'DOWNLOAD': 'Download',
-            'OOPS': 'Oops! Something went wrong. Please contact support and we will try to fix it soon'
+            'OOPS': 'Oops! Something went wrong. Please contact support and we will try to fix it soon',
+            'VIEW': 'View'
         }
     }
 };

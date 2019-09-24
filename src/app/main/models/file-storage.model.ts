@@ -43,6 +43,7 @@ export class Storage {
     permissions: Permission[] = [];
     isAvailableToUpdate: boolean = false;
     isAvailableToAddPermision: boolean = false;
+    newFileCount: number;
 
     constructor(storage?) {
         var storage = storage || {};
@@ -61,6 +62,7 @@ export class Storage {
 
         this.file = storage.file ? new File(storage.file) : null;
         this.permissions = storage.permissions ? storage.permissions.map(permission => new Permission(permission)) : [];
+        this.newFileCount = storage.newFileCount ? storage.newFileCount : 0;
     }
 }
 

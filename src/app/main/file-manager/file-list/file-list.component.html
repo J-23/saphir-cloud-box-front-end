@@ -47,6 +47,10 @@
                         <mat-icon>cloud_download</mat-icon>
                         <span>{{ 'COMMONACTIONS.DOWNLOAD' | translate }}</span>
                     </button>
+                    <button *ngIf="!row.isDirectory" mat-menu-item aria-label="download" (click)="downloadFile(row)">
+                        <mat-icon>remove_red_eye</mat-icon>
+                        <span>{{ 'COMMONACTIONS.VIEW' | translate }}</span>
+                    </button>
                     <button *ngIf="row.isAvailableToUpdate" mat-menu-item aria-label="edit" (click)="update(row)">
                         <mat-icon>edit</mat-icon>
                         <span>{{ 'COMMONACTIONS.EDIT' | translate }}</span>

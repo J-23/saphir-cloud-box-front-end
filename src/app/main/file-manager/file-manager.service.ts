@@ -48,7 +48,7 @@ export class FileManagerService implements Resolve<any> {
 
             if (id == 'shared-with-me') {
                 this._httpClient.get(this.baseURL + '/api/file-storage/shared-with-me')
-                    .subscribe((storages: any) => {
+                    .subscribe((response: any) => {
 
                         var fileStorage: FileStorage = {
                             owner: null,
@@ -57,7 +57,7 @@ export class FileManagerService implements Resolve<any> {
                             id: 'shared-with-me',
                             name: 'Shared with me',
                             permissions: [],
-                            storages: storages
+                            storages: response.storages
                         };
 
                         var nav = this.navigations.pop();

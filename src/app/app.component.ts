@@ -200,6 +200,14 @@ export class AppComponent implements OnInit, OnDestroy
                                             url: `/file-manager/${folder.id}`
                                         };
 
+                                        if (folder.newFileCount > 0) {
+                                            child.badge = {
+                                                title: folder.newFileCount.toString(),
+                                                bg: '#4DB6AC',
+                                                fg: '#FFFFFF'
+                                            }
+                                        }
+
                                         return child;
                                     }
                                 });   

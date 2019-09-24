@@ -27,9 +27,9 @@ export class FolderNavigationService {
         .subscribe((fileStorage: any) => {
           
           this._httpClient.get(this.baseURL + '/api/file-storage/shared-with-me')
-            .subscribe((files: any[]) => {
+            .subscribe((response: any) => {
 
-              if (files.length > 0) {
+              if (response.storages.length > 0) {
 
                 fileStorage.storages.push({
                   id: 'shared-with-me',
@@ -45,7 +45,8 @@ export class FolderNavigationService {
                   file: null,
                   permissions: [],
                   isAvailableToUpdate: false,
-                  isAvailablaToAddPermision: false
+                  isAvailablaToAddPermision: false,
+                  newFileCount: response.newFileCount
                 });
               }
 
