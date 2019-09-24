@@ -133,29 +133,6 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
                         
                         var FileSaver = require('file-saver');
                         FileSaver.saveAs(blob, storage.name + storage.file.extension);
-
-                        /*if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-                            window.navigator.msSaveOrOpenBlob(blob, storage.name + storage.file.extension);
-                        }
-                        else {
-
-                            var url = URL.createObjectURL(blob);
-                            var a = document.createElement("a");
-                            document.body.appendChild(a);
-                            a.style.display = "none";
-                            
-                            a.href =  url;
-                            a.target = '_blank';
-                            a.download = storage.name + storage.file.extension;
-                            a.click();
-                            URL.revokeObjectURL(a.href)
-                            a.remove();
-                            
-                            setTimeout(() =>
-                            {
-                                window.URL.revokeObjectURL(url);
-                            }, 100);
-                        }*/
                     });
             }
             
@@ -363,29 +340,6 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
                     
                     var FileSaver = require('file-saver');
                     FileSaver.saveAs(blob, file.name + file.file.extension);
-
-                    /*if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-                        window.navigator.msSaveOrOpenBlob(blob, file.name + file.file.extension);
-                    }
-                    else {
-
-                        var url = URL.createObjectURL(blob);
-                        var a = document.createElement("a");
-                        document.body.appendChild(a);
-                        a.style.display = "none";
-                        
-                        a.href =  url;
-                        a.target = '_blank';
-                        a.download = file.name + file.file.extension;
-                        a.click();
-                        URL.revokeObjectURL(a.href)
-                        a.remove();
-                        
-                        setTimeout(() =>
-                        {
-                            window.URL.revokeObjectURL(url);
-                        }, 100);
-                    }*/
                 });
         }
     }
