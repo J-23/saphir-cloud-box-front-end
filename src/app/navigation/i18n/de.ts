@@ -202,7 +202,8 @@
             'INFO': 'Info',
             'DOWNLOAD': 'Download',
             'OOPS': 'Es ist ein Fehler aufgetretten. Anmeldung ist nicht möglich',
-            'VIEW': 'View'
+            'VIEW': 'View',
+            'CANCELVIEW': 'Cancel view'
         }
     }
 };

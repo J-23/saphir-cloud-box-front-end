@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit
                 .then(() => {
                     this.isLogin = false;
 
-                    this.folderNavigationService.getFolder(1)
+                    this.folderNavigationService.getFolder()
                         .then()
                         .catch();
 

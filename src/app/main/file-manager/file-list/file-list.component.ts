@@ -22,6 +22,7 @@ import { AppUser } from 'app/main/models/app-user.model';
 import { Client } from 'app/main/models/client.model';
 import { Group } from 'app/main/models/group.model';
 import { saveAs } from 'file-saver';
+import { FolderNavigationService } from 'app/navigation/folder-navigation.service';
 
 @Component({
     selector     : 'file-list',
@@ -56,7 +57,8 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
         private router: Router,
         private _matDialog: MatDialog,
         private translateService: TranslateService,
-        private _matSnackBar: MatSnackBar) {
+        private _matSnackBar: MatSnackBar,
+        private folderNavigationService: FolderNavigationService) {
             
         this._unsubscribeAll = new Subject();
     }
@@ -93,9 +95,11 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
 
                             if (isAvailable) {
                                 storage.isAvailableToUpdate = true;
+                                storage.isAvailableToView = false;
                             }
                             else {
                                 storage.isAvailableToUpdate = false;
+                                storage.isAvailableToView = true;
                             }
 
                             var permission = storage.permissions.length > 0 ? storage.permissions.find(perm => {
@@ -382,9 +386,9 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
                                 })
                                 .catch(res => {
                                     if (res && res.status && res.status == 403) {
-                                    this.translateService.get('PAGES.APPS.FILEMANAGER.PERMISSION_' + res.error).subscribe(message => {
-                                        this.createSnackBar(message);
-                                    });
+                                        this.translateService.get('PAGES.APPS.FILEMANAGER.PERMISSION_' + res.error).subscribe(message => {
+                                            this.createSnackBar(message);
+                                        });
                                     }
                                     else if (res && res.status && res.status == 500) {
                                         this.translateService.get('COMMONACTIONS.OOPS').subscribe(message => {
@@ -407,5 +411,56 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
             verticalPosition: 'top',
             duration: 2000
         });
+    }
+
+    viewFile(fileId) {
+
+        var file = {
+            Id: fileId
+        };
+
+        this._fileManagerService.viewFile(file, this.fileStorage.id)
+            .then(() => {
+                this.folderNavigationService.getFolder()
+                    .then()
+                    .catch();
+            })
+            .catch(res => {
+                if (res && res.status && res.status == 403) {
+                  this.translateService.get('PAGES.APPS.FILEMANAGER.FILE_' + res.error).subscribe(message => {
+                    this.createSnackBar(message);
+                  });
+                }
+                else if (res && res.status && res.status == 500) {
+                  this.translateService.get('COMMONACTIONS.OOPS').subscribe(message => {
+                    this.createSnackBar(message);
+                  });
+                }
+              });
+    }
+
+    cancelFileView(fileId) {
+        var file = {
+            Id: fileId
+        };
+
+        this._fileManagerService.cancelFileView(file, this.fileStorage.id)
+            .then(() => {
+                this.folderNavigationService.getFolder()
+                    .then()
+                    .catch();
+            })
+            .catch(res => {
+                if (res && res.status && res.status == 403) {
+                  this.translateService.get('PAGES.APPS.FILEMANAGER.FILE_' + res.error).subscribe(message => {
+                    this.createSnackBar(message);
+                  });
+                }
+                else if (res && res.status && res.status == 500) {
+                  this.translateService.get('COMMONACTIONS.OOPS').subscribe(message => {
+                    this.createSnackBar(message);
+                  });
+                }
+              });
     }
 }

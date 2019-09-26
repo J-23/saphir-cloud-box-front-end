@@ -20,6 +20,7 @@ import { AppUser } from 'app/main/models/app-user.model';
 import { Client } from 'app/main/models/client.model';
 import { EditPermissionFormComponent } from '../../edit-permission-form/edit-permission-form.component';
 import { Group } from 'app/main/models/group.model';
+import { FolderNavigationService } from 'app/navigation/folder-navigation.service';
 
 @Component({
     selector   : 'file-manager-details-sidebar',
@@ -42,7 +43,8 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
         private authenticationService: AuthenticationService,
         private translateService: TranslateService,
         private _matDialog: MatDialog,
-        private _matSnackBar: MatSnackBar) {
+        private _matSnackBar: MatSnackBar,
+        private folderNavigationService: FolderNavigationService) {
         
         this._unsubscribeAll = new Subject();
     }
@@ -51,6 +53,7 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
     isAvailableToOpenPermission: boolean = false;
     isAvailableToAddPermission: boolean = false;
     isAvailableToUpdatePermission: boolean = false;
+    isAvailableToView: boolean = false;
 
     folderDialogRef: any;
     fileDialogRef: any;
@@ -80,10 +83,12 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
                             if (isAvailable) {
                                 this.isAvailableToUpdate = true;
                                 this.isAvailableToUpdatePermission = true;
+                                this.isAvailableToView = false;
                             }
                             else {
                                 this.isAvailableToUpdate = false;
                                 this.isAvailableToUpdatePermission = false;
+                                this.isAvailableToView = true;
                             }
                             
                             var permission = this.selected.permissions.find(permission => {
@@ -489,5 +494,56 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
           verticalPosition: 'top',
           duration: 2000
         });
+    }
+
+    viewFile() {
+
+        var file = {
+            Id: this.selected.id
+        };
+
+        this._fileManagerService.viewFile(file, this.fileStorageId)
+            .then(() => {
+                this.folderNavigationService.getFolder()
+                    .then()
+                    .catch();
+            })
+            .catch(res => {
+                if (res && res.status && res.status == 403) {
+                  this.translateService.get('PAGES.APPS.FILEMANAGER.FILE_' + res.error).subscribe(message => {
+                    this.createSnackBar(message);
+                  });
+                }
+                else if (res && res.status && res.status == 500) {
+                  this.translateService.get('COMMONACTIONS.OOPS').subscribe(message => {
+                    this.createSnackBar(message);
+                  });
+                }
+              });
+    }
+
+    cancelFileView() {
+        var file = {
+            Id: this.selected.id
+        };
+
+        this._fileManagerService.cancelFileView(file, this.fileStorageId)
+            .then(() => {
+                this.folderNavigationService.getFolder()
+                    .then()
+                    .catch();
+            })
+            .catch(res => {
+                if (res && res.status && res.status == 403) {
+                  this.translateService.get('PAGES.APPS.FILEMANAGER.FILE_' + res.error).subscribe(message => {
+                    this.createSnackBar(message);
+                  });
+                }
+                else if (res && res.status && res.status == 500) {
+                  this.translateService.get('COMMONACTIONS.OOPS').subscribe(message => {
+                    this.createSnackBar(message);
+                  });
+                }
+              });
     }
 }

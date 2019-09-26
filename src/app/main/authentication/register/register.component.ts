@@ -99,7 +99,7 @@ export class RegisterComponent implements OnInit, OnDestroy
                 .then(() => {
                     this.isRegister = false;
 
-                    this.folderNavigationService.getFolder(1)
+                    this.folderNavigationService.getFolder()
                         .then()
                         .catch();
 

@@ -43,6 +43,7 @@ export class Storage {
     permissions: Permission[] = [];
     isAvailableToUpdate: boolean = false;
     isAvailableToAddPermision: boolean = false;
+    isAvailableToView: boolean = false;
     newFileCount: number;
 
     constructor(storage?) {

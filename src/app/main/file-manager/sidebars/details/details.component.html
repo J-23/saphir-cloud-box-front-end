@@ -13,6 +13,14 @@
                     <mat-icon>cloud_download</mat-icon>
                     <span>{{ 'COMMONACTIONS.DOWNLOAD' | translate }}</span>
                 </button>
+                <button *ngIf="!selected.isDirectory && isAvailableToView && !selected.isViewed" mat-menu-item aria-label="view" (click)="viewFile()">
+                    <mat-icon>visibility</mat-icon>
+                    <span>{{ 'COMMONACTIONS.VIEW' | translate }}</span>
+                </button>
+                <button *ngIf="!selected.isDirectory && isAvailableToView && selected.isViewed" mat-menu-item aria-label="cancel view" (click)="cancelFileView()">
+                    <mat-icon>visibility_off</mat-icon>
+                    <span>{{ 'COMMONACTIONS.CANCELVIEW' | translate }}</span>
+                </button>
                 <button *ngIf="isAvailableToUpdate" mat-menu-item aria-label="edit" (click)="update()">
                     <mat-icon>edit</mat-icon>
                     <span>{{ 'COMMONACTIONS.EDIT' | translate }}</span>

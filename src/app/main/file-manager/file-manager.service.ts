@@ -5,6 +5,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { AppConfig } from 'app/app.config';
 import { FileStorage, Storage } from '../models/file-storage.model';
 import 'rxjs/add/operator/map';
+import { reject } from 'q';
 
 @Injectable()
 export class FileManagerService implements Resolve<any> {
@@ -205,6 +206,30 @@ export class FileManagerService implements Resolve<any> {
             this._httpClient.post(this.baseURL + '/api/file-storage/remove/permission', permission)
                 .subscribe((response:any) => {
 
+                    this.getFileStorage(parentId);
+                    resolve(response);
+                }, reject);
+        });
+    }
+
+    viewFile(file, parentId): Promise<any> {
+
+        return new Promise((resolve, reject) => {
+            this._httpClient.post(this.baseURL + '/api/file-storage/view', file)
+                .subscribe((response:any) => {
+
+                    this.getFileStorage(parentId);
+                    resolve(response);
+                }, reject);
+        });
+    }
+
+    cancelFileView(file, parentId): Promise<any> {
+
+        return new Promise((resolve, reject) => {
+
+            this._httpClient.post(this.baseURL + '/api/file-storage/cancel-view', file)
+                .subscribe((response: any) => {
                     this.getFileStorage(parentId);
                     resolve(response);
                 }, reject);

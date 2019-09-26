@@ -233,7 +233,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
                         if (!this.fileStorage.parentStorageId || this.fileStorage.parentStorageId == 1) {
                                         
                             if (this.fileStorage.parentStorageId == 1) {
-                                this.folderNavigationService.getFolder(1)
+                                this.folderNavigationService.getFolder()
                                     .then()
                                     .catch();
                             }
@@ -287,7 +287,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
                                     if (!this.fileStorage.parentStorageId || this.fileStorage.parentStorageId == 1) {
                                         
                                         if (this.fileStorage.parentStorageId == 1) {
-                                            this.folderNavigationService.getFolder(1)
+                                            this.folderNavigationService.getFolder()
                                                 .then()
                                                 .catch();
                                         }

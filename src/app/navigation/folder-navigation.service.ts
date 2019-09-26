@@ -11,6 +11,8 @@ export class FolderNavigationService {
 
   private baseURL: string;
 
+  private rootId = 1;
+
   onNavigationChanged: BehaviorSubject<FileStorage>;
 
   constructor(private _httpClient: HttpClient,
@@ -20,10 +22,10 @@ export class FolderNavigationService {
     this.onNavigationChanged = new BehaviorSubject(null);
   }
 
-  getFolder(parentId: number): Promise<any> {
+  getFolder(): Promise<any> {
     
     return new Promise((resolve, reject) => {
-      this._httpClient.get(this.baseURL + `/api/file-storage/${parentId}`)
+      this._httpClient.get(this.baseURL + `/api/file-storage/${this.rootId}`)
         .subscribe((fileStorage: any) => {
           
           this._httpClient.get(this.baseURL + '/api/file-storage/shared-with-me')

@@ -162,7 +162,7 @@ export class AppComponent implements OnInit, OnDestroy
               this._fileManagerService.addFolder(folder)
                 .then(() => { 
                     
-                    this.folderNavigationService.getFolder(1)
+                    this.folderNavigationService.getFolder()
                         .then()
                         .catch();
                 })
@@ -239,7 +239,7 @@ export class AppComponent implements OnInit, OnDestroy
                             }
                             else {
 
-                                this.folderNavigationService.getFolder(1);
+                                this.folderNavigationService.getFolder();
                                 
                                 this.navigation = this.navigation.filter(nav => !(nav.id == 'file-manager'));
 
