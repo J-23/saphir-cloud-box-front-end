@@ -12,7 +12,8 @@ export const locale = {
             'FAQ': 'Faq',
             'FEEDBACK': 'Обратная связь',
             'USERMENU': 'Меню пользователя',
-            'USERGROUPS': 'Группы'
+            'USERGROUPS': 'Группы',
+            'ADVANCEDSEARCH': 'Полный поиск'
         },
         'PAGES': {
             'APPS': {
@@ -148,6 +149,17 @@ export const locale = {
                     'NOT_FOUND': 'Группа не найдена',
                     'REMOVEQUESTION': 'Вы уверены, что хотите удалить данную группу?',
                     'REMOVESUCCESS': 'Группа успешно удалена'
+                },
+                'ADVANCEDSEARCH': {
+                    'STARTDATE': 'Дата начала',
+                    'ENDDATE': 'Дата окончания',
+                    'SEARCHBYTEXT': 'Поиск по тексту',
+                    'SEARCH': 'Найти',
+                    'NAME': 'Название',
+                    'EXTENSION': 'Расширение',
+                    'UPDATEDATE': 'Дата изменения',
+                    'UPDATEBY': 'Кем изменен',
+                    'SIZE': 'Размер'
                 }
             },
             'AUTH': {
@@ -203,7 +215,8 @@ export const locale = {
             'DOWNLOAD': 'Скачать',
             'OOPS': 'Упс! Что-то пошло не так. Пожалуйста, свяжитесь со службой поддержки, и мы постараемся исправить это в ближайшее время',
             'VIEW': 'Просмотреть',
-            'CANCELVIEW': 'Отменить просмотр'
+            'CANCELVIEW': 'Отменить просмотр',
+            'FILTER': 'Фильтровать'
         }
     }
 };

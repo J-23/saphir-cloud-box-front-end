@@ -43,6 +43,10 @@
         </div>
 
         <div class="content" fusePerfectScrollbar>
+            <mat-form-field class="ml-16">
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="{{ 'COMMONACTIONS.FILTER' | translate }}...">
+            </mat-form-field>
+            
             <file-list></file-list>
         </div>
 

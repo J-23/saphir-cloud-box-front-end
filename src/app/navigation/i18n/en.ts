@@ -11,7 +11,8 @@ export const locale = {
             'FAQ': 'Faq',
             'FEEDBACK': 'Feedback',
             'USERMENU': 'User menu',
-            'USERGROUPS': 'Groups'
+            'USERGROUPS': 'Groups',
+            'ADVANCEDSEARCH': 'Advanced Search'
         },
         'PAGES': {
             'APPS': {
@@ -148,6 +149,17 @@ export const locale = {
                     'NOT_FOUND': 'Group not found',
                     'REMOVEQUESTION': 'Are you sure you want to remove this group?',
                     'REMOVESUCCESS': 'Group removed'
+                },
+                'ADVANCEDSEARCH': {
+                    'STARTDATE': 'Start date',
+                    'ENDDATE': 'End date',
+                    'SEARCHBYTEXT': 'Search by text',
+                    'SEARCH': 'Search',
+                    'NAME': 'Name',
+                    'EXTENSION': 'Extension',
+                    'UPDATEDATE': 'Update date',
+                    'UPDATEBY': 'Update by',
+                    'SIZE': 'Size'
                 }
             },
             'AUTH': {
@@ -202,7 +214,8 @@ export const locale = {
             'DOWNLOAD': 'Download',
             'OOPS': 'Oops! Something went wrong. Please contact support and we will try to fix it soon',
             'VIEW': 'View',
-            'CANCELVIEW': 'Cancel view'
+            'CANCELVIEW': 'Cancel view',
+            'FILTER': 'Filter'
         }
     }
 };

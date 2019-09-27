@@ -1,4 +1,4 @@
-import { FuseNavigation } from '@fuse/types';
+import { FuseNavigation, FuseNavigationItem } from '@fuse/types';
 
 export const navigation: FuseNavigation[] = [
     {
@@ -113,4 +113,13 @@ export const userNavigation: FuseNavigation = {
             url      : '/user-menu/groups'
         }
     ]
+}
+
+export const advancedSearchNavigation: FuseNavigationItem = {
+    id: 'advanced-search',
+    title: 'Advansed Search',
+    translate: 'NAV.ADVANCEDSEARCH',
+    type: 'item',
+    url: '/file-manager/advanced-search',
+    icon: 'search'
 }

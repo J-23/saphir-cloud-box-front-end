@@ -22,7 +22,7 @@ import { FormGroup } from '@angular/forms';
 import { AuthenticationService } from './main/authentication/authentication.service';
 import { FuseNavigationItem, FuseNavigation } from '@fuse/types';
 import { RoleType } from './main/models/role.model';
-import { appNavigation, helpNavigation, userNavigation } from './navigation/navigation';
+import { appNavigation, helpNavigation, userNavigation, advancedSearchNavigation } from './navigation/navigation';
 
 @Component({
     selector   : 'app',
@@ -212,6 +212,13 @@ export class AppComponent implements OnInit, OnDestroy
                                     }
                                 });   
                                 
+                                if (user.role.type == RoleType.SuperAdmin) {
+                                    children.unshift(advancedSearchNavigation);
+                                }
+                                else {
+                                    children = children.filter(child => child.id != 'advanced-search');
+                                }
+
                                 var fileManagerNavigation: FuseNavigation = {
                                     id: 'file-manager',
                                     title: 'File Manager',

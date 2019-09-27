@@ -1,0 +1,148 @@
+<div id="advanced-search" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+  
+  <div class="header teal-300 p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start"
+    fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+    
+    <div fxLayout="row" fxLayoutAlign="start center">
+      
+      <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+        <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+          {{ 'NAV.ADVANCEDSEARCH' | translate }} 
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    
+    <div class="center p-24 pb-56 pr-sm-92" fusePerfectScrollbar>
+      
+      <div class="content p-24" [formGroup]="advancedSearchForm">
+        
+        <div fxLayout="column" fxLayoutAlign="start" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+            
+          <mat-form-field appearance="outline" fxFlex="47">
+              <mat-label>{{ 'NAV.CLIENTS' | translate }}</mat-label>
+              <mat-select matNativeControl formControlName="clients" multiple (selectionChange)="search()">
+                <mat-option *ngFor="let client of clients" [value]="client">{{client.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex="47">
+              <mat-label>{{ 'NAV.DEPARTMENTS' | translate }}</mat-label>
+              <mat-select matNativeControl formControlName="departments" multiple (selectionChange)="search()">
+                <mat-option *ngFor="let department of departments" [value]="department">{{department.name}} (Client: {{department.client.name}})</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+        </div>
+
+        <div fxLayout="column" fxLayoutAlign="start" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+            
+            <mat-form-field appearance="outline" fxFlex="47">
+              <mat-label>{{ 'NAV.USERS' | translate }}</mat-label>
+              <mat-select matNativeControl formControlName="users" multiple (selectionChange)="search()">
+                <mat-option *ngFor="let user of users" [value]="user">{{user.userName}} (Client: {{user.client.name}}
+                  <span *ngIf="user.department">, Department: {{user.department.name}}</span>)
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex="47">
+              <mat-label>{{ 'NAV.USERGROUPS' | translate }}</mat-label>
+              <mat-select matNativeControl formControlName="userGroups" multiple (selectionChange)="search()">
+                <mat-option *ngFor="let userGroup of userGroups" [value]="userGroup">{{userGroup.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+        </div>
+
+        <div fxLayout="column" fxLayoutAlign="start" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+
+            <mat-form-field appearance="outline" fxFlex="47">
+              <mat-label>{{ 'PAGES.APPS.ADVANCEDSEARCH.STARTDATE' | translate }}</mat-label>
+              <input matInput [matDatepicker]="startDate" formControlName="startDate" (dateChange)="search()">
+              <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+              <mat-datepicker #startDate></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex="47">
+              <mat-label>{{ 'PAGES.APPS.ADVANCEDSEARCH.ENDDATE' | translate }}</mat-label>
+              <input matInput [matDatepicker]="endDate" formControlName="endDate" (dateChange)="search()">
+              <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+              <mat-datepicker #endDate></mat-datepicker>
+            </mat-form-field>
+
+        </div>
+
+        <div fxLayout="column" fxLayoutAlign="start" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+          <mat-form-field appearance="outline" fxFlex="100">
+            <mat-label>{{ 'PAGES.APPS.ADVANCEDSEARCH.SEARCHBYTEXT' | translate }}...</mat-label>
+            <input matInput formControlName="searchString" (keydown.enter)="search()">
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="column" fxLayoutAlign="end" fxLayout.gt-sm="row">
+          <button mat-raised-button class="add-car-button teal-300 mt-24 mt-md-0">
+            <span>{{ 'PAGES.APPS.ADVANCEDSEARCH.SEARCH' | translate }}</span>
+            <mat-icon>search</mat-icon>
+          </button>
+        </div>
+      </div>
+      
+      <div class="content mt-24">
+        <mat-table #table [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
+
+          <ng-container matColumnDef="icon">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <mat-icon class="type-icon"></mat-icon>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef>{{ 'PAGES.APPS.ADVANCEDSEARCH.NAME' | translate }}</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="extension">
+            <mat-header-cell *matHeaderCellDef>{{ 'PAGES.APPS.ADVANCEDSEARCH.EXTENSION' | translate }}</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="updateDate">
+            <mat-header-cell *matHeaderCellDef>{{ 'PAGES.APPS.ADVANCEDSEARCH.UPDATEDATE' | translate }}</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="updateBy">
+            <mat-header-cell *matHeaderCellDef>{{ 'PAGES.APPS.ADVANCEDSEARCH.UPDATEBY' | translate }}</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="size">
+            <mat-header-cell *matHeaderCellDef>{{ 'PAGES.APPS.ADVANCEDSEARCH.SIZE' | translate }}</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+            </mat-cell>
+          </ng-container>
+                    
+          <ng-container matColumnDef="button">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let row">
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'selected' : row == selected}" 
+            matRipple [@animate]="{value:'*',params:{y:'100%'}}">
+          </mat-row>
+
+        </mat-table>
+      </div>
+    </div>
+  </div>
+</div>

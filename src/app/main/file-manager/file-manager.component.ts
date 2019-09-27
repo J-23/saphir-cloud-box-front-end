@@ -350,7 +350,6 @@ export class FileManagerComponent implements OnInit, OnDestroy {
                                     Type: form.controls['type'].value
                                 };
 
-                                console.log(permission)
                                 this._fileManagerService.checkPermission(permission, this.fileStorage.id)
                                     .then(() => {
                                         this.translateService.get('PAGES.APPS.FILEMANAGER.PERMISSIONADDSUCCESS').subscribe(message => {
@@ -416,5 +415,10 @@ export class FileManagerComponent implements OnInit, OnDestroy {
           verticalPosition: 'top',
           duration: 2000
         });
-      }
+    }
+
+    applyFilter(filterValue: string) {
+        this._fileManagerService.onFilterChanged
+            .next(filterValue.trim().toLowerCase());
+    }
 }

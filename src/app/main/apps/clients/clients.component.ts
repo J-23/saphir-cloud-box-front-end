@@ -1,14 +1,15 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
 import { MatDialogRef, MatPaginator, MatSort, MatDialog, MatSnackBar } from '@angular/material';
-import { Subject, Observable, merge, BehaviorSubject } from 'rxjs';
+import { Subject, Observable, merge, BehaviorSubject, fromEvent } from 'rxjs';
 import { ClientsService } from './clients.service';
 import { TranslateService } from '@ngx-translate/core';
 import { FormGroup } from '@angular/forms';
-import { map } from 'rxjs/operators';
+import { map, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { DataSource } from '@angular/cdk/collections';
 import { ConfirmFormComponent } from '../../confirm-form/confirm-form.component';
 import { ClientFormComponent } from './client-form/client-form.component';
+import { FuseUtils } from '@fuse/utils';
 
 @Component({
   selector: 'app-clients',
@@ -24,15 +25,16 @@ export class ClientsComponent implements OnInit {
 
   clientDialogRef: any;
   confirmDialogRef: MatDialogRef<ConfirmFormComponent>;
-  
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   @ViewChild(MatSort) sort: MatSort;
-  
+
   constructor(private clientsService: ClientsService,
     private _matDialog: MatDialog,
     private _matSnackBar: MatSnackBar,
-    private translateService: TranslateService) { }
+    private translateService: TranslateService) { 
+  }
 
   ngOnInit() {
     this.dataSource = new FilesDataSource(this.clientsService, this.paginator, this.sort);
@@ -171,6 +173,10 @@ export class ClientsComponent implements OnInit {
       duration: 2000
     });
   }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
 }
 
 export class FilesDataSource extends DataSource<any> {
@@ -223,7 +229,12 @@ export class FilesDataSource extends DataSource<any> {
   }
 
   filterData(data): any {
-    return data;
+    
+    if (!this.filter) {
+      return data;
+    }
+    
+    return FuseUtils.filterArrayByString(data, this.filter);
   }
 
   sortData(data): any[] {

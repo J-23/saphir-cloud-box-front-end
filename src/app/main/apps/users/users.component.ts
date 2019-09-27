@@ -9,6 +9,7 @@ import { DataSource } from '@angular/cdk/collections';
 import { UsersService } from './users.service';
 import { ConfirmFormComponent } from '../../confirm-form/confirm-form.component';
 import { UserFormComponent } from './user-form/user-form.component';
+import { FuseUtils } from '@fuse/utils';
 
 @Component({
   selector: 'app-users',
@@ -179,6 +180,10 @@ export class UsersComponent implements OnInit {
       duration: 2000
     });
   }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
 }
 
 export class FilesDataSource extends DataSource<any> {
@@ -231,7 +236,11 @@ export class FilesDataSource extends DataSource<any> {
   }
 
   filterData(data): any {
-    return data;
+    if (!this.filter) {
+      return data;
+    }
+    
+    return FuseUtils.filterArrayByString(data, this.filter);
   }
 
   sortData(data): any[] {

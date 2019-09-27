@@ -91,6 +91,14 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
                                 this.isAvailableToView = true;
                             }
                             
+                            if (user.id != undefined && user.id == this.selected.createBy.id
+                                || this.selected.owner && this.selected.owner.id == user.id) { 
+                                this.isAvailableToView = false;
+                            }
+                            else {
+                                this.isAvailableToView = true;
+                            }
+
                             var permission = this.selected.permissions.find(permission => {
                                 return permission.recipient.id == user.id
                             });

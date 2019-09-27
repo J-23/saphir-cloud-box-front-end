@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable, Subject, BehaviorSubject, merge } from 'rxjs';
+import { takeUntil, map } from 'rxjs/operators';
 
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
@@ -9,7 +9,7 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { FileManagerService } from 'app/main/file-manager/file-manager.service';
 import { AuthenticationService } from 'app/main/authentication/authentication.service';
 import { Router } from '@angular/router';
-import { MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
+import { MatDialog, MatDialogRef, MatSnackBar, MatSort } from '@angular/material';
 import { FolderFormComponent } from '../folder-form/folder-form.component';
 import { FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
@@ -23,6 +23,7 @@ import { Client } from 'app/main/models/client.model';
 import { Group } from 'app/main/models/group.model';
 import { saveAs } from 'file-saver';
 import { FolderNavigationService } from 'app/navigation/folder-navigation.service';
+import { FuseUtils } from '@fuse/utils';
 
 @Component({
     selector     : 'file-list',
@@ -33,8 +34,12 @@ import { FolderNavigationService } from 'app/navigation/folder-navigation.servic
 })
 export class FileManagerFileListComponent implements OnInit, OnDestroy {
     
+    dataSource: FilesDataSource | null;
+    @ViewChild(MatSort) sort: MatSort;
+    
     currentUser: AppUser;
     storages: Storage[] = [];
+    resultStorages: Storage[] = [];
     selected: Storage;
 
     private fileStorage: FileStorage;
@@ -65,11 +70,14 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
 
+        
+
         this._fileManagerService.onFileStorageChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(fileStorage => {
                 this.fileStorage = fileStorage;
-                this.storages = fileStorage.storages;
+                
+                
 
                 if (!fileStorage.client && !fileStorage.owner || (fileStorage.client && !fileStorage.owner)) {
                     this.displayedColumns = this.commonColumns;
@@ -85,7 +93,8 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
                     .subscribe(user => {
                         
                         this.currentUser = user;
-                        this.storages.forEach(storage => {
+
+                        fileStorage.storages.forEach(storage => {
                             
                             var isAvailable = (user.id != undefined && !storage.client && !storage.owner && user.role.type == RoleType.SuperAdmin)
                                 || (storage.client && !storage.owner && user.role.type == RoleType.ClientAdmin)
@@ -95,10 +104,16 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
 
                             if (isAvailable) {
                                 storage.isAvailableToUpdate = true;
-                                storage.isAvailableToView = false;
                             }
                             else {
                                 storage.isAvailableToUpdate = false;
+                            }
+
+                            if (user.id != undefined && user.id == storage.createBy.id
+                                || storage.owner && storage.owner.id == user.id) { 
+                                storage.isAvailableToView = false;
+                            }
+                            else {
                                 storage.isAvailableToView = true;
                             }
 
@@ -113,6 +128,8 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
                                 storage.isAvailableToAddPermision = false;
                             }
                         });
+                        
+                        this.dataSource = new FilesDataSource(fileStorage.storages, this._fileManagerService, this.sort);
                     });
             });
 
@@ -121,6 +138,8 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
             .subscribe(selected => {
                 this.selected = selected;
             });
+
+        
     }
 
     getChildStorages(storage){
@@ -455,3 +474,93 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
               });
     }
 }
+
+export class FilesDataSource extends DataSource<any> {
+
+    private _filterChange = new BehaviorSubject('');
+    private _filteredDataChange = new BehaviorSubject('');
+  
+    constructor(private storages: Storage[],
+        private fileManagerService: FileManagerService,
+        private _matSort: MatSort) {
+      super();
+      
+      this.filteredData = storages;
+
+      fileManagerService.onFilterChanged
+        .subscribe(filter => {
+            this.filter = filter;
+        })
+    }
+  
+    connect(): Observable<any[]> {
+      const displayDataChanges = [
+        this.fileManagerService.onFileStorageChanged,
+        this._filterChange,
+        this._matSort.sortChange
+      ];
+  
+      return merge(...displayDataChanges)
+      .pipe(map(() => {
+        let data = this.storages.slice();
+        data = this.filterData(data);
+        this.filteredData = [...data];
+        data = this.sortData(data);
+  
+        return data;
+      }
+      ));
+    }
+  
+    get filteredData(): any {
+      return this._filteredDataChange.value;
+    }
+  
+    set filteredData(value: any) {
+      this._filteredDataChange.next(value);
+    }
+  
+    get filter(): string {
+      return this._filterChange.value;
+    }
+  
+    set filter(filter: string) {
+      this._filterChange.next(filter);
+    }
+  
+    filterData(data): any {
+      if (!this.filter) {
+        return data;
+      }
+      
+      return FuseUtils.filterArrayByString(data, this.filter);
+    }
+  
+    sortData(data): any[] {
+      if (!this._matSort.active || this._matSort.direction === '') {
+        return data;
+      }
+  
+      return data.sort((a, b) => {
+        let propertyA: number | string = '';
+        let propertyB: number | string = '';
+  
+        switch ( this._matSort.active ) {
+          case 'name':
+            [propertyA, propertyB] = [a.name, b.name];
+            break;
+          case 'modified':
+            [propertyA, propertyB] = [a.updateDate, b.updateDate];
+            break;
+        }
+  
+        const valueA = isNaN(+propertyA) ? propertyA : +propertyA;
+        const valueB = isNaN(+propertyB) ? propertyB : +propertyB;
+  
+        return (valueA < valueB ? -1 : 1) * (this._matSort.direction === 'asc' ? 1 : -1);
+      });
+    }
+  
+    disconnect(): void {
+    }
+  }

@@ -1,4 +1,4 @@
-<mat-table #table [dataSource]="storages" [@animateStagger]="{value:'50'}">
+<mat-table #table [dataSource]="dataSource" matSort [@animateStagger]="{value:'50'}">
 
     <ng-container matColumnDef="icon">
         <mat-header-cell *matHeaderCellDef fxFlex="64px"></mat-header-cell>
@@ -8,12 +8,12 @@
     </ng-container>
 
     <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef>{{ 'PAGES.APPS.FILEMANAGER.NAME' | translate }}</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'PAGES.APPS.FILEMANAGER.NAME' | translate }}</mat-header-cell>
         <mat-cell *matCellDef="let row"> {{row.name}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="modified">
-        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>{{ 'PAGES.APPS.FILEMANAGER.MODIFIEDDATE' | translate }}</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md >{{ 'PAGES.APPS.FILEMANAGER.MODIFIEDDATE' | translate }}</mat-header-cell>
         <mat-cell *matCellDef="let row" fxHide fxShow.gt-md>
             <div *ngIf="row.updateDate">
                 {{row.updateDate | date: 'dd/MM/yyyy HH:mm O'}}

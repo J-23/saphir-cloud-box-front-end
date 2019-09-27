@@ -17,6 +17,11 @@
   <div class="content">
     <div class="center p-24 pb-56 pr-sm-92" fusePerfectScrollbar>
       <div class="content">
+
+        <mat-form-field class="ml-16">
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="{{ 'COMMONACTIONS.FILTER' | translate }}...">
+        </mat-form-field>
+        
         <mat-table #table [dataSource]="dataSource" matSort [@animateStagger]="{value:'50'}" fusePerfectScrollbar>
 
           <ng-container matColumnDef="userName">

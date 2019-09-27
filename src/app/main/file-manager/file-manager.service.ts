@@ -16,7 +16,11 @@ export class FileManagerService implements Resolve<any> {
 
     onNavigationChanged: BehaviorSubject<any[]>;
 
+    onFilterChanged: BehaviorSubject<any>;
+
     private baseURL: string;
+
+    storages: Storage[] = [];
 
     constructor (private _httpClient: HttpClient,
         private appConfig: AppConfig) {
@@ -24,7 +28,8 @@ export class FileManagerService implements Resolve<any> {
         this.onFileStorageChanged = new BehaviorSubject(null);
         this.onStorageSelected = new BehaviorSubject(null);
         this.onNavigationChanged = new BehaviorSubject([]);
-
+        this.onFilterChanged = new BehaviorSubject(null);
+        
         this.baseURL = this.appConfig['config']['URL'];
     }
 
@@ -76,6 +81,9 @@ export class FileManagerService implements Resolve<any> {
 
                         this.onFileStorageChanged.next(fileStorage);
                         this.onStorageSelected.next(fileStorage.storages[0]);
+
+                        this.storages = fileStorage.storages;
+
                         resolve(fileStorage);
                     }, reject);
             }
@@ -97,6 +105,8 @@ export class FileManagerService implements Resolve<any> {
 
                         this.onFileStorageChanged.next(fileStorage);
                         this.onStorageSelected.next(fileStorage.storages[0]);
+
+                        this.storages = fileStorage.storages;
                         resolve(fileStorage);
                     }, reject);
             }

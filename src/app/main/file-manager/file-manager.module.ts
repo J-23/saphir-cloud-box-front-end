@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MatButtonModule, MatIconModule, MatRippleModule, MatSlideToggleModule, MatTableModule, MatToolbarModule, MatFormFieldModule, MatDialogModule, MatInputModule, MatMenuModule, MatSnackBarModule, MatTabsModule, MatOptionModule, MatSelectModule, MatDividerModule, MatListModule, MatAutocompleteModule } from '@angular/material';
+import { MatButtonModule, MatIconModule, MatRippleModule, MatSlideToggleModule, MatTableModule, MatToolbarModule, MatFormFieldModule, MatDialogModule, MatInputModule, MatMenuModule, MatSnackBarModule, MatTabsModule, MatOptionModule, MatSelectModule, MatDividerModule, MatListModule, MatAutocompleteModule, MatDatepickerModule, MatSortModule } from '@angular/material';
 
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseSidebarModule } from '@fuse/components';
@@ -15,8 +15,15 @@ import { FileFormComponent } from './file-form/file-form.component';
 import { AuthorizedUserGuard } from '../guards/authorized-user.guard';
 import { PermissionFormComponent } from './permission-form/permission-form.component';
 import { EditPermissionFormComponent } from './edit-permission-form/edit-permission-form.component';
+import { AdvancedSearchComponent } from './advanced-search/advanced-search.component';
+import { AuthorizedAndAdminUserGuard } from '../guards/authorized-and-admin-user.guard';
 
 const routes: Routes = [
+    {
+        path: 'advanced-search',
+        component: AdvancedSearchComponent,
+        canActivate: [AuthorizedAndAdminUserGuard]
+    },
     {
         path     : ':id',
         component: FileManagerComponent,
@@ -34,7 +41,8 @@ const routes: Routes = [
         FileManagerDetailsSidebarComponent,
         FileFormComponent,
         PermissionFormComponent,
-        EditPermissionFormComponent
+        EditPermissionFormComponent,
+        AdvancedSearchComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -56,6 +64,8 @@ const routes: Routes = [
         MatDividerModule,
         MatListModule,
         MatAutocompleteModule,
+        MatDatepickerModule,
+        MatSortModule,
         
         FuseSharedModule,
         FuseSidebarModule,
