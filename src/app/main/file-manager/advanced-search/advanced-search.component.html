@@ -83,7 +83,7 @@
         </div>
 
         <div fxLayout="column" fxLayoutAlign="end" fxLayout.gt-sm="row">
-          <button mat-raised-button class="add-car-button teal-300 mt-24 mt-md-0">
+          <button mat-raised-button class="add-car-button teal-300 mt-24 mt-md-0" (click)="search()">
             <span>{{ 'PAGES.APPS.ADVANCEDSEARCH.SEARCH' | translate }}</span>
             <mat-icon>search</mat-icon>
           </button>
@@ -91,42 +91,51 @@
       </div>
       
       <div class="content mt-24">
-        <mat-table #table [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
+        <mat-table #table [dataSource]="dataSource" matSort [@animateStagger]="{value:'50'}">
 
           <ng-container matColumnDef="icon">
             <mat-header-cell *matHeaderCellDef></mat-header-cell>
             <mat-cell *matCellDef="let row">
-              <mat-icon class="type-icon"></mat-icon>
+                <mat-icon class="type-icon">{{row.storageType}}</mat-icon>
             </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="name">
             <mat-header-cell *matHeaderCellDef>{{ 'PAGES.APPS.ADVANCEDSEARCH.NAME' | translate }}</mat-header-cell>
             <mat-cell *matCellDef="let row">
+              {{row.name}}
             </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="extension">
             <mat-header-cell *matHeaderCellDef>{{ 'PAGES.APPS.ADVANCEDSEARCH.EXTENSION' | translate }}</mat-header-cell>
             <mat-cell *matCellDef="let row">
+              <span *ngIf="!row.isDirectory && row.file"> {{row.file.extension}}</span>
             </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="updateDate">
             <mat-header-cell *matHeaderCellDef>{{ 'PAGES.APPS.ADVANCEDSEARCH.UPDATEDATE' | translate }}</mat-header-cell>
             <mat-cell *matCellDef="let row">
+              <span *ngIf="row.updateDate">{{row.updateDate | date: 'dd/MM/yyyy HH:mm O'}}</span>
+              <span *ngIf="!row.updateDate">{{row.createDate | date: 'dd/MM/yyyy HH:mm O'}}</span>
             </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="updateBy">
             <mat-header-cell *matHeaderCellDef>{{ 'PAGES.APPS.ADVANCEDSEARCH.UPDATEBY' | translate }}</mat-header-cell>
             <mat-cell *matCellDef="let row">
+              <span *ngIf="row.updateBy">{{ row.updateBy.userName }}</span>
+              <span *ngIf="!row.updateBy">{{ row.createBy.userName }}</span>
             </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="size">
             <mat-header-cell *matHeaderCellDef>{{ 'PAGES.APPS.ADVANCEDSEARCH.SIZE' | translate }}</mat-header-cell>
             <mat-cell *matCellDef="let row">
+              <span *ngIf="!row.isDirectory && row.file">
+                  {{row.file.size}} {{row.file.sizeType}}
+              </span>
             </mat-cell>
           </ng-container>
                     
@@ -142,6 +151,10 @@
           </mat-row>
 
         </mat-table>
+
+        <mat-paginator #paginator [length]="dataSource.filteredData.length"
+          [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+        </mat-paginator>
       </div>
     </div>
   </div>
