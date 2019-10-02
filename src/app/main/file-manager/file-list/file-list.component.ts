@@ -142,6 +142,8 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
         
     }
 
+    isSecondClick: boolean = false;
+
     getChildStorages(storage){
 
         if (storage.isDirectory) {
@@ -149,12 +151,31 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
             this.router.navigate([`/file-manager/${storage.id}`]);
         }
         else {
-            this._fileManagerService.downloadFile(storage.id)
-                .subscribe(blob => {
-                            
-                    var FileSaver = require('file-saver');
-                    FileSaver.saveAs(blob, storage.name + storage.file.extension);
-                });
+
+            if (window.innerWidth <= 800) {
+                this._fileManagerService.downloadFile(storage.id)
+                    .subscribe(blob => {
+                                
+                        var FileSaver = require('file-saver');
+                        FileSaver.saveAs(blob, storage.name + storage.file.extension);
+                    });    
+            }
+            else {
+                if (this.isSecondClick) {
+                    this._fileManagerService.downloadFile(storage.id)
+                        .subscribe(blob => {
+                                    
+                            var FileSaver = require('file-saver');
+                            FileSaver.saveAs(blob, storage.name + storage.file.extension);
+                        });
+                }
+
+                this.isSecondClick = true;
+
+                setTimeout(() => {
+                    this.isSecondClick = false;
+                }, 250);
+            }
         }
     }
 
