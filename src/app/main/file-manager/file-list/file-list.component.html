@@ -9,18 +9,33 @@
 
     <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'PAGES.APPS.FILEMANAGER.NAME' | translate }}</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.name}}</mat-cell>
+        <mat-cell *matCellDef="let row"> 
+            <strong *ngIf="!row.isDirectory && !row.isViewed; else simpleName"><em>{{row.name}}</em></strong>
+            <ng-template #simpleName>
+                <span>{{row.name}}</span>
+            </ng-template>
+        </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="modified">
         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md >{{ 'PAGES.APPS.FILEMANAGER.MODIFIEDDATE' | translate }}</mat-header-cell>
         <mat-cell *matCellDef="let row" fxHide fxShow.gt-md>
-            <div *ngIf="row.updateDate">
-                {{row.updateDate | date: 'dd/MM/yyyy HH:mm O'}}
-            </div>
-            <div *ngIf="!row.updateDate">
-                {{row.createDate | date: 'dd/MM/yyyy HH:mm O'}}
-            </div>
+            <strong *ngIf="!row.isDirectory && !row.isViewed; else simpleDate"><em>
+                <div *ngIf="row.updateDate">
+                    {{row.updateDate | date: 'dd/MM/yyyy HH:mm O'}}
+                </div>
+                <div *ngIf="!row.updateDate">
+                    {{row.createDate | date: 'dd/MM/yyyy HH:mm O'}}
+                </div>
+            </em></strong>
+            <ng-template #simpleDate>
+                <div *ngIf="row.updateDate">
+                    {{row.updateDate | date: 'dd/MM/yyyy HH:mm O'}}
+                </div>
+                <div *ngIf="!row.updateDate">
+                    {{row.createDate | date: 'dd/MM/yyyy HH:mm O'}}
+                </div>
+            </ng-template>
         </mat-cell>
     </ng-container>
 

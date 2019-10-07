@@ -70,15 +70,11 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
 
-        
-
         this._fileManagerService.onFileStorageChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(fileStorage => {
                 this.fileStorage = fileStorage;
                 
-                
-
                 if (!fileStorage.client && !fileStorage.owner || (fileStorage.client && !fileStorage.owner)) {
                     this.displayedColumns = this.commonColumns;
                 }

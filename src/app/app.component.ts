@@ -188,42 +188,24 @@ export class AppComponent implements OnInit, OnDestroy
                     this.navigation.push(userNavigation);
 
                     this.folderNavigationService.onNavigationChanged
-                        .subscribe(fileStorage => {
+                        .subscribe(folders => {
 
-                            if (fileStorage) {
-                                var children: FuseNavigationItem[] = fileStorage.storages.map(folder => {
-                                    if (folder.isDirectory) {
-                                        var child: FuseNavigationItem = { 
-                                            id: folder.id.toString(),
-                                            title: folder.name,
-                                            type: 'item',
-                                            url: `/file-manager/${folder.id}`
-                                        };
+                            if (folders && folders.length > 0) {
 
-                                        if (folder.newFileCount > 0) {
-                                            child.badge = {
-                                                title: folder.newFileCount.toString(),
-                                                bg: '#4DB6AC',
-                                                fg: '#FFFFFF'
-                                            }
-                                        }
-
-                                        return child;
+                                if (!folders.find(fold => fold.id == 'advanced-search')) {
+                                    if (user.role.type == RoleType.SuperAdmin) {
+                                        folders.unshift(advancedSearchNavigation);
                                     }
-                                });   
+                                    else {
+                                        folders = folders.filter(child => child.id != 'advanced-search');
+                                    }    
+                                }
                                 
-                                if (user.role.type == RoleType.SuperAdmin) {
-                                    children.unshift(advancedSearchNavigation);
-                                }
-                                else {
-                                    children = children.filter(child => child.id != 'advanced-search');
-                                }
-
                                 var fileManagerNavigation: FuseNavigation = {
                                     id: 'file-manager',
                                     title: 'File Manager',
                                     type: 'group',
-                                    children: children
+                                    children: folders
                                 };
 
                                 if (user && user.role && (user.role.type == RoleType.SuperAdmin || user.role.type == RoleType.ClientAdmin)) {
@@ -257,8 +239,7 @@ export class AppComponent implements OnInit, OnDestroy
                         }, () => { });    
                 }
                 else {
-                    this.navigation = this.navigation.filter(nav => !(nav.id == 'applications'));
-                    this.navigation = this.navigation.filter(nav => !(nav.id == 'user-menu'));
+                    this.navigation = [];
 
                     this._fuseNavigationService.unregister('main');
                     this._fuseNavigationService.register('main', this.navigation);

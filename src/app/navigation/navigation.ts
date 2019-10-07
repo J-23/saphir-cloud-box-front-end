@@ -121,5 +121,6 @@ export const advancedSearchNavigation: FuseNavigationItem = {
     translate: 'NAV.ADVANCEDSEARCH',
     type: 'item',
     url: '/file-manager/advanced-search',
-    icon: 'search'
+    icon: 'search',
+    children: []
 }
