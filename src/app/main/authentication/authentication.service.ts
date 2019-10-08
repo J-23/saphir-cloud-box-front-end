@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AppUser } from '../models/app-user.model';
 import { AppConfig } from 'app/app.config';
+import { FolderNavigationService } from 'app/navigation/folder-navigation.service';
 
 export const ANONYMOUS_USER: AppUser = {
     id: undefined,
@@ -28,7 +29,8 @@ export class AuthenticationService {
     private baseURL: string;
 
     constructor(private _httpClient: HttpClient,
-        private appConfig: AppConfig) { 
+        private appConfig: AppConfig,
+        private folderNavigationService: FolderNavigationService) { 
             
         this.baseURL = this.appConfig['config']['URL'];
 
@@ -126,6 +128,15 @@ export class AuthenticationService {
                         var user = new AppUser(response);
 
                         this.userSubject.next(user);
+
+                        this.folderNavigationService.getFolder()
+                            .then()
+                            .catch();
+
+                        this.folderNavigationService.getGroups()
+                            .then()
+                            .catch();
+                            
                         resolve(user);
                     }
                     else {
@@ -133,7 +144,7 @@ export class AuthenticationService {
                     }
                 }, err => {
                     this.userSubject.next(ANONYMOUS_USER);
-                    reject
+                    reject;
                 })
         });
         

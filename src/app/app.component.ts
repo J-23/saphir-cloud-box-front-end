@@ -22,7 +22,8 @@ import { FormGroup } from '@angular/forms';
 import { AuthenticationService } from './main/authentication/authentication.service';
 import { FuseNavigationItem, FuseNavigation } from '@fuse/types';
 import { RoleType } from './main/models/role.model';
-import { appNavigation, helpNavigation, userNavigation, advancedSearchNavigation } from './navigation/navigation';
+import { navigation } from './navigation/navigation';
+import { Router } from '@angular/router';
 
 @Component({
     selector   : 'app',
@@ -32,6 +33,7 @@ import { appNavigation, helpNavigation, userNavigation, advancedSearchNavigation
 export class AppComponent implements OnInit, OnDestroy
 {
     fuseConfig: any;
+    
     navigation: any[];
 
     // Private
@@ -61,13 +63,10 @@ export class AppComponent implements OnInit, OnDestroy
         private folderNavigationService: FolderNavigationService,
         private _matDialog: MatDialog,
         private _fileManagerService: FileManagerService,
-        private authenticationService: AuthenticationService
+        private authenticationService: AuthenticationService,
+        private router: Router
     )
     {
-
-        this.navigation = [];
-        this._fuseNavigationService.register('main', this.navigation);
-        this._fuseNavigationService.setCurrentNavigation('main');
         this.setNavigation();
 
         // Get default navigation
@@ -172,80 +171,82 @@ export class AppComponent implements OnInit, OnDestroy
     }
 
     setNavigation() {
-
+ 
+        this._fuseNavigationService.register('main', navigation);
+        this._fuseNavigationService.setCurrentNavigation('main');
+       
         this.authenticationService.user$
             .subscribe(user => {
 
-                if (user.id != undefined) {
-     
-                    if (user.role.type == RoleType.SuperAdmin) {
-                        this.navigation.push(appNavigation);
-                    }
-                    else {
-                        this.navigation = this.navigation.filter(nav => !(nav.id == 'applications'));
-                    }
+                this._fuseNavigationService.updateNavigationItem('applications', { hidden : true });
+                this._fuseNavigationService.updateNavigationItem('advanced-search', { hidden : true });
 
-                    this.navigation.push(userNavigation);
+                var itemChildren = this._fuseNavigationService.getNavigationItem('file-manager').children.filter(child => child.id == 'advanced-search');
+                this._fuseNavigationService.updateNavigationItem('file-manager', { hidden : true, children: itemChildren });
+
+                this._fuseNavigationService.updateNavigationItem('user-menu', { hidden : true, children: null });
+                this._fuseNavigationService.updateNavigationItem('help', { hidden : true });
+
+                if (user.id != undefined) {
+                    
+                    this._fuseNavigationService.updateNavigationItem('help', { hidden : false });
+
+                    if (user.role.type == RoleType.SuperAdmin) {
+                        this._fuseNavigationService.updateNavigationItem('applications', { hidden : false });
+                    }
 
                     this.folderNavigationService.onNavigationChanged
                         .subscribe(folders => {
 
+                            if (user.role.type == RoleType.SuperAdmin) {
+                                this._fuseNavigationService.updateNavigationItem('advanced-search', { hidden : false });
+                                this._fuseNavigationService.updateNavigationItem('file-manager', { hidden : false });
+                            } 
+                            else {
+                                this._fuseNavigationService.updateNavigationItem('advanced-search', { hidden : true });
+                                this._fuseNavigationService.updateNavigationItem('file-manager', { hidden : true });
+                            }
+
+                            if (user && user.role && (user.role.type == RoleType.SuperAdmin || user.role.type == RoleType.ClientAdmin)) {
+                                    
+                                this._fuseNavigationService.updateNavigationItem('file-manager', { button : {
+                                    id: 'add-folder',
+                                    title: 'Add Folder',
+                                    icon: 'add'
+                                }});
+                            }
+
                             if (folders && folders.length > 0) {
 
-                                if (!folders.find(fold => fold.id == 'advanced-search')) {
-                                    if (user.role.type == RoleType.SuperAdmin) {
-                                        folders.unshift(advancedSearchNavigation);
-                                    }
-                                    else {
-                                        folders = folders.filter(child => child.id != 'advanced-search');
-                                    }    
-                                }
-                                
-                                var fileManagerNavigation: FuseNavigation = {
-                                    id: 'file-manager',
-                                    title: 'File Manager',
-                                    type: 'group',
-                                    children: folders
-                                };
+                                var itemChildren = this._fuseNavigationService.getNavigationItem('file-manager').children.filter(child => child.id == 'advanced-search');
 
-                                if (user && user.role && (user.role.type == RoleType.SuperAdmin || user.role.type == RoleType.ClientAdmin)) {
-                                    fileManagerNavigation['button'] = {
-                                        id: 'add-folder',
-                                        title: 'Add Folder',
-                                        icon: 'add'
-                                    }
-                                }
+                                folders.forEach(fold => {
+                                    itemChildren.push(fold);
+                                });
 
-                                this.navigation = this.navigation.filter(nav => !(nav.id == 'file-manager'));
-                                this.navigation.push(fileManagerNavigation);
-                                
-                                this.navigation = this.navigation.filter(nav => !(nav.id == 'help'));
-                                this.navigation.push(helpNavigation);
-
-                                this._fuseNavigationService.unregister('main');
-                                this._fuseNavigationService.register('main', this.navigation);
-                                this._fuseNavigationService.setCurrentNavigation('main');
+                                this._fuseNavigationService.updateNavigationItem('file-manager', { hidden: false, children: itemChildren });
                             }
-                            else {
-
-                                this.folderNavigationService.getFolder();
-                                
-                                this.navigation = this.navigation.filter(nav => !(nav.id == 'file-manager'));
-
-                                this._fuseNavigationService.unregister('main');
-                                this._fuseNavigationService.register('main', this.navigation);
-                                this._fuseNavigationService.setCurrentNavigation('main');
-                            }
-                        }, () => { });    
-                }
-                else {
-                    this.navigation = [];
-
-                    this._fuseNavigationService.unregister('main');
-                    this._fuseNavigationService.register('main', this.navigation);
-                    this._fuseNavigationService.setCurrentNavigation('main');
+                        }, () => { });
                 }
             }, () => { });
+            
+            this.folderNavigationService.onUserGroupsChanged
+                .subscribe(groups => {
+            
+                    var children = groups.map(group => {
+
+                        var item: FuseNavigationItem = {
+                            id: group.id.toString(),
+                            title: group.name,
+                            type: 'item',
+                            url: `/user-group/${group.id}`
+                        };
+
+                        return item;
+                    });
+
+                    this._fuseNavigationService.updateNavigationItem('user-menu', { hidden : false, children : children});
+                }, () => { });
     }
     
     // -----------------------------------------------------------------------------------------------------

@@ -54,11 +54,6 @@ export class LoginComponent implements OnInit
                 this.loginForm.controls['password'].value)
                 .then(() => {
                     this.isLogin = false;
-
-                    this.folderNavigationService.getFolder()
-                        .then()
-                        .catch();
-
                     this.router.navigate(['/']);
                 })
                 .catch(res => {

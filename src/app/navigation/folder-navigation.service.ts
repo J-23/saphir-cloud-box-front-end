@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { FileStorage } from 'app/main/models/file-storage.model';
 import { FuseNavigationItem } from '@fuse/types';
+import { Group } from 'app/main/models/group.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,13 +16,17 @@ export class FolderNavigationService {
   private rootId = 1;
 
   folders: FuseNavigationItem[] = [];
+  groups: Group[] = [];
+
   onNavigationChanged: BehaviorSubject<FuseNavigationItem[]>;
+  onUserGroupsChanged: BehaviorSubject<Group[]>;
 
   constructor(private _httpClient: HttpClient,
     private appConfig: AppConfig) { 
     this.baseURL = this.appConfig['config']['URL'];
 
     this.onNavigationChanged = new BehaviorSubject([]);
+    this.onUserGroupsChanged = new BehaviorSubject([]);
   }
 
   getFolder(): Promise<any> {
@@ -76,33 +81,17 @@ export class FolderNavigationService {
     return result;
   }
 
-  setFolders(folders: FuseNavigationItem[], children: any[], parentId): boolean {
+  getGroups(): Promise<Group[]> {
     
-    var isSetChildren = false;
+    return new Promise((resolve, reject) => {
+      this._httpClient.get(this.baseURL + '/api/user-group/list')
+        .subscribe((response: any) => {
+          this.groups = response;
 
-    for (let folder of folders) {
-      
-      if (folder.id == parentId && !isSetChildren) {
-        folder.children = children.map(fold => { 
-          var item: FuseNavigationItem = {
-            id: fold.id.toString(),
-            title: fold.name,
-            type: fold.isOpened ? 'collapsable' : 'item',
-            url: `/file-manager/${fold.id}`,
-            children: []
-          };
+          this.onUserGroupsChanged.next(this.groups);
 
-          return item;
-        });
-
-        isSetChildren = true;
-      }
-
-      if (!isSetChildren) {
-        isSetChildren = this.setFolders(folder.children, children, parentId);
-      }
-    }
-
-    return isSetChildren;
+          resolve(this.groups);
+        }, reject);
+    });
   }
 }

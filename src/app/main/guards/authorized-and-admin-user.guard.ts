@@ -5,6 +5,7 @@ import { AuthenticationService } from '../authentication/authentication.service'
 import {tap, first, map} from 'rxjs/operators';
 import { RoleType } from '../models/role.model';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
+import { FolderNavigationService } from 'app/navigation/folder-navigation.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class AuthorizedAndAdminUserGuard implements CanActivate {
 
   constructor(private authenticationService: AuthenticationService,
     private router: Router,
-    private _fuseNavigationService: FuseNavigationService) {
+    private folderNavigationService: FolderNavigationService) {
 
   } 
   
@@ -25,28 +26,24 @@ export class AuthorizedAndAdminUserGuard implements CanActivate {
         map(user => user && user.id != undefined && user.role.type == RoleType.SuperAdmin),
         tap(isInRole => {
 
-          this._fuseNavigationService.onNavigationChanged
-            .subscribe(() => {
-              if (!isInRole) { 
-                
-                var navigation = this._fuseNavigationService.getCurrentNavigation();
-                
-                if (navigation) {
-                  var currentNav = navigation.find(nav => nav.id == 'file-manager');
-    
-                  if (currentNav) {
-                    var child = currentNav.children.find(ch => ch.title == 'My Folder');
-                    this.router.navigate([child.url]);
-                  }
-                  else {
-                    this.router.navigate(['/auth/login']);
-                  }
+          if (!isInRole) {
+            this.folderNavigationService.onNavigationChanged
+              .subscribe((folders) => {
+
+                var folder = folders.find(fold => fold.title == "My Folder");
+
+                if (folder) {
+                  this.router.navigate([folder.url]);
                 }
                 else {
-                  this.router.navigate(['/auth/login']);
+                  folder = folders[0];
+
+                  if (folder) {
+                    this.router.navigate([folder.url]);
+                  }
                 }
-              }
-            });
+              });  
+          }
         }
       ));
   }
