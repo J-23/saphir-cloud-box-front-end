@@ -64,12 +64,8 @@ const appRoutes: Routes = [
     },
     {
         path      : '',
-        pathMatch: 'full',
-        redirectTo: 'apps/clients'
-    },
-    {
-        path      : '**',
-        redirectTo: 'apps/clients'
+        redirectTo: '/apps/clients',
+        pathMatch: 'full'
     }
 ];
 
