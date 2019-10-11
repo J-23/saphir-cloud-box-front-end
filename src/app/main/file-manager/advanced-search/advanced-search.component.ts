@@ -17,6 +17,7 @@ import { MatPaginator, MatSort } from '@angular/material';
 import { FuseUtils } from '@fuse/utils';
 import { FileManagerService } from '../file-manager.service';
 import { Storage } from 'app/main/models/file-storage.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-advanced-search',
@@ -51,7 +52,9 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
     private usersService: UsersService,
     private userGroupsService: GroupsService,
     private foldersService: FileManagerService,
-    private advancedSearchService: AdvancedSearchService) { 
+    private advancedSearchService: AdvancedSearchService,
+    private fileManagerService: FileManagerService,
+    private router: Router) { 
     this._unsubscribeAll = new Subject();
   }
 
@@ -163,6 +166,16 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
     this.advancedSearchService.search(search)
       .then()
       .catch();
+  }
+
+  seeInFolder(fileStorage) {
+
+    this.fileManagerService.getFileStorage(fileStorage.parentStorageId)
+      .then(() => {
+        this.router.navigate([`/file-manager/${fileStorage.parentStorageId}`]);
+      }).catch(() => {
+        this.router.navigate(['/file-manager/shared-with-me']);
+      });
   }
 
   ngOnDestroy(): void {

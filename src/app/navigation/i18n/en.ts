@@ -216,7 +216,8 @@ export const locale = {
             'OOPS': 'Oops! Something went wrong. Please contact support and we will try to fix it soon',
             'VIEW': 'View',
             'CANCELVIEW': 'Cancel view',
-            'FILTER': 'Filter'
+            'FILTER': 'Filter',
+            'SEEINFOLDER': 'See in folder'
         }
     }
 };

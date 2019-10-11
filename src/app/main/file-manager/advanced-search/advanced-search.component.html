@@ -149,8 +149,14 @@
           </ng-container>
                     
           <ng-container matColumnDef="button">
-            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-header-cell *matHeaderCellDef>
+            </mat-header-cell>
             <mat-cell *matCellDef="let row">
+              <div fxLayoutAlign="end center"> 
+                <button mat-menu-item aria-label="info" (click)="seeInFolder(row)">
+                  <mat-icon>search</mat-icon>
+                </button>
+              </div> 
             </mat-cell>
           </ng-container>
 

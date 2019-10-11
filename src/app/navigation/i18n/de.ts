@@ -217,7 +217,8 @@
             'OOPS': 'Es ist ein Fehler aufgetretten. Anmeldung ist nicht möglich',
             'VIEW': 'View',
             'CANCELVIEW': 'Cancel view',
-            'FILTER': 'Filter'
+            'FILTER': 'Filter',
+            'SEEINFOLDER': 'See in folder'
         }
     }
 };
