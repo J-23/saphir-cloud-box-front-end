@@ -1,12 +1,15 @@
 @import "src/@fuse/scss/fuse";
 
-.mat-select-panel mat-option.mat-option {
-    height: unset;
-  }
+::ng-deep .mat-select-panel {
+    @include media-breakpoint('gt-sm') { 
+        max-height: calc(100vh - 200px) !important;
+    }
+}
   
-  .mat-option-text.mat-option-text {
+.mat-option-text.mat-option-text {
     white-space: normal;
-  }
+}
+
 ::ng-deep .mat-form-field-flex {
 
     @include media-breakpoint('gt-sm') {

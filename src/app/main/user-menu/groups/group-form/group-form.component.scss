@@ -7,6 +7,12 @@
     }
 }
 
+::ng-deep .mat-select-panel {
+    @include media-breakpoint('gt-sm') { 
+        max-height: calc(100vh - 400px) !important;
+    }
+}
+
 .ul-object {
     list-style-type: none;
     padding-inline-start: 0px !important;
