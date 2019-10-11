@@ -42,7 +42,7 @@ export class RolesComponent implements OnInit {
   addRole() {
 
     this.roleDialogRef = this._matDialog.open(RoleFormComponent, {
-      panelClass: 'form-dialog',
+      panelClass: 'role-form-dialog',
       data: {
         dialogTitle: 'PAGES.APPS.ROLES.ADD'
       }
@@ -83,7 +83,7 @@ export class RolesComponent implements OnInit {
 
   editRole(role) {
     this.roleDialogRef = this._matDialog.open(RoleFormComponent, {
-      panelClass: 'form-dialog',
+      panelClass: 'role-form-dialog',
       data: {
         dialogTitle: 'PAGES.APPS.ROLES.EDIT',
         object: role

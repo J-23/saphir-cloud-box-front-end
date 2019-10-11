@@ -14,7 +14,11 @@ export class AdvancedSearchService implements Resolve<any>  {
     ClientIds: [],
     DepartmentIds: [],
     UserIds: [],
-    UserGroupIds: []
+    UserGroupIds: [],
+    FolderIds: [],
+    StartDate: null,
+    EndDate: null,
+    SearchString: null
   };
 
   private baseURL: string;
@@ -22,18 +26,33 @@ export class AdvancedSearchService implements Resolve<any>  {
   storages: Storage[] = [];
   onStoragesChange: BehaviorSubject<Storage[]>;
   
+  onSearchChanged: BehaviorSubject<any>;
+  
   constructor(private _httpClient: HttpClient,
     private appConfig: AppConfig) { 
 
     this.baseURL = this.appConfig['config']['URL'];
 
     this.onStoragesChange = new BehaviorSubject([]);
+
+    this.onSearchChanged = new BehaviorSubject(this.EMPTY_SEARCH);
   }
   
   resolve(route: import("@angular/router").ActivatedRouteSnapshot, state: import("@angular/router").RouterStateSnapshot) {
     
+    var search = {
+      ClientIds: this.onSearchChanged.value.clients ? this.onSearchChanged.value.clients.map(client => client.id) : [],
+      DepartmentIds: this.onSearchChanged.value.departments ? this.onSearchChanged.value.departments.map(department => department.id): [],
+      UserIds: this.onSearchChanged.value.users ? this.onSearchChanged.value.users.map(user => user.id): [],
+      UserGroupIds: this.onSearchChanged.value.userGroups ? this.onSearchChanged.value.userGroups.map(group => group.id): [],
+      FolderIds: this.onSearchChanged.value.folders ? this.onSearchChanged.value.folders.map(folder => folder.id): [],
+      StartDate: this.onSearchChanged.value.startDate,
+      EndDate: this.onSearchChanged.value.endDate,
+      SearchString: this.onSearchChanged.value.searchString
+    };
+
     return new Promise((resolve, reject) => {
-      Promise.all([this.search(this.EMPTY_SEARCH)])
+      Promise.all([this.search(search)])
         .then(() => {
           resolve();
         },

@@ -256,4 +256,7 @@ export class FuseNavVerticalCollapsableComponent implements OnInit, OnDestroy
         return false;
     }
 
+    addGroup() {
+        this._fuseNavigationService.onButtonAddGroup.next(true);
+    }
 }

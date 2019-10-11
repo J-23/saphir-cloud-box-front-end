@@ -1,14 +1,12 @@
 <ng-container *ngIf="!item.hidden">
 
     <!-- normal collapsable -->
-    <a class="nav-link" [ngClass]="item.classes" *ngIf="!item.url && !item.function"
-       (click)="toggleOpen($event)">
+    <a class="nav-link" [ngClass]="item.classes" *ngIf="!item.url && !item.function">
         <ng-container *ngTemplateOutlet="itemContent"></ng-container>
     </a>
 
     <!-- item.url -->
     <a class="nav-link" [ngClass]="item.classes" *ngIf="item.url && !item.externalUrl && !item.function"
-       (click)="toggleOpen($event)"
        [routerLink]="[item.url]" [routerLinkActive]="['active', 'accent']"
        [routerLinkActiveOptions]="{exact: item.exactMatch || false}"
        [target]="item.openInNewTab ? '_blank' : '_self'">
@@ -17,20 +15,17 @@
 
     <!-- item.externalUrl -->
     <a class="nav-link" [ngClass]="item.classes" *ngIf="item.url && item.externalUrl && !item.function"
-       (click)="toggleOpen($event)"
        [href]="item.url" [target]="item.openInNewTab ? '_blank' : '_self'">
         <ng-container *ngTemplateOutlet="itemContent"></ng-container>
     </a>
 
     <!-- item.function -->
-    <span class="nav-link" [ngClass]="item.classes" *ngIf="!item.url && item.function"
-          (click)="toggleOpen($event);item.function()">
+    <span class="nav-link" [ngClass]="item.classes" *ngIf="!item.url && item.function">
         <ng-container *ngTemplateOutlet="itemContent"></ng-container>
     </span>
 
     <!-- item.url && item.function -->
     <a class="nav-link" [ngClass]="item.classes" *ngIf="item.url && !item.externalUrl && item.function"
-       (click)="toggleOpen($event);item.function()"
        [routerLink]="[item.url]" [routerLinkActive]="['active', 'accent']"
        [routerLinkActiveOptions]="{exact: item.exactMatch || false}">
         <ng-container *ngTemplateOutlet="itemContent"></ng-container>
@@ -38,7 +33,6 @@
 
     <!-- item.externalUrl && item.function -->
     <a class="nav-link" [ngClass]="item.classes" *ngIf="item.url && item.externalUrl && item.function"
-       (click)="toggleOpen($event);item.function()"
        [href]="item.url" [target]="item.openInNewTab ? '_blank' : '_self'">
         <ng-container *ngTemplateOutlet="itemContent"></ng-container>
     </a>
@@ -46,11 +40,16 @@
     <ng-template #itemContent>
         <mat-icon class="nav-link-icon" *ngIf="item.icon">{{item.icon}}</mat-icon>
         <span class="nav-link-title" [translate]="item.translate">{{item.title}}</span>
+        <button mat-mini-fab *ngIf="item.button" class="teal-300 button-add-group" (click)="addGroup()">
+            <span class="fa fa-plus" aria-hidden="true"></span>
+        </button>
+        
         <span class="nav-link-badge" *ngIf="item.badge" [translate]="item.badge.translate"
               [ngStyle]="{'background-color': item.badge.bg,'color': item.badge.fg}">
             {{item.badge.title}}
         </span>
-        <mat-icon class="collapsable-arrow">keyboard_arrow_right</mat-icon>
+        
+        <mat-icon class="collapsable-arrow" (click)="toggleOpen($event)">keyboard_arrow_right</mat-icon>
     </ng-template>
 
     <div class="children" [@slideInOut]="isOpen">

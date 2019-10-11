@@ -21,7 +21,7 @@ import { AdvancedSearchService } from './advanced-search/advanced-search.service
 
 const routes: Routes = [
     {
-        path: 'advanced-search',
+        path: 'advanced/search',
         component: AdvancedSearchComponent,
         canActivate: [AuthorizedAndAdminUserGuard],
         resolve  : {

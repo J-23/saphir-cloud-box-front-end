@@ -24,6 +24,8 @@ export class FuseNavigationService
     private _registry: { [key: string]: any } = {};
 
     onButtonAddFolder: BehaviorSubject<boolean>;
+    onButtonAddGroup: BehaviorSubject<boolean>;
+    onGroupRemoveChanged: BehaviorSubject<boolean>;
 
     /**
      * Constructor
@@ -44,6 +46,8 @@ export class FuseNavigationService
         this._onNavigationItemRemoved = new BehaviorSubject(null);
 
         this.onButtonAddFolder = new BehaviorSubject(false);
+        this.onButtonAddGroup = new BehaviorSubject(false);
+        this.onGroupRemoveChanged = new BehaviorSubject(false);
     }
 
     // -----------------------------------------------------------------------------------------------------

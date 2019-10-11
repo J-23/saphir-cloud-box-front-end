@@ -159,7 +159,8 @@ export const locale = {
                     'EXTENSION': 'Расширение',
                     'UPDATEDATE': 'Дата изменения',
                     'UPDATEBY': 'Кем изменен',
-                    'SIZE': 'Размер'
+                    'SIZE': 'Размер',
+                    'FOLDERS': 'Папки'
                 }
             },
             'AUTH': {

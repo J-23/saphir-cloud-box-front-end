@@ -41,7 +41,6 @@ export class GroupFormComponent implements OnInit {
 
   createForm(): FormGroup {
     return this._formBuilder.group({
-      id: [ this.group.id ],
       name: [ this.group.name, Validators.required ],
       users: [ this.group.users ]
     });

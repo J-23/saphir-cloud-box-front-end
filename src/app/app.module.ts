@@ -4,7 +4,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
-import { MatButtonModule, MatIconModule, MatDialogModule, MatToolbarModule, MatInputModule } from '@angular/material';
+import { MatButtonModule, MatIconModule, MatDialogModule, MatToolbarModule, MatInputModule, MatSnackBarModule, MatSelectModule } from '@angular/material';
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { TranslateModule } from '@ngx-translate/core';
 import 'hammerjs';
@@ -30,6 +30,7 @@ import { FileManagerService } from './main/file-manager/file-manager.service';
 import { FolderFormComponent } from './main/file-manager/folder-form/folder-form.component';
 import { ConfirmFormComponent } from './main/confirm-form/confirm-form.component';
 import { AuthorizedAndAdminUserGuard } from './main/guards/authorized-and-admin-user.guard';
+import { GroupFormComponent } from './main/user-menu/groups/group-form/group-form.component';
 
 const appRoutes: Routes = [
     {
@@ -76,7 +77,8 @@ const appRoutes: Routes = [
     declarations: [
         AppComponent,
         FolderFormComponent,
-        ConfirmFormComponent
+        ConfirmFormComponent,
+        GroupFormComponent
     ],
     imports     : [
         BrowserModule,
@@ -96,7 +98,9 @@ const appRoutes: Routes = [
         MatDialogModule,
         MatToolbarModule,
         MatInputModule,
-
+        MatSnackBarModule,
+        MatSelectModule,
+        
         // Fuse modules
         FuseModule.forRoot(fuseConfig),
         FuseProgressBarModule,
@@ -136,6 +140,7 @@ const appRoutes: Routes = [
     ],
     entryComponents: [
         FolderFormComponent,
+        GroupFormComponent,
         ConfirmFormComponent
     ]
 })

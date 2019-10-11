@@ -6,6 +6,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { AppUser } from '../models/app-user.model';
 import { AppConfig } from 'app/app.config';
 import { FolderNavigationService } from 'app/navigation/folder-navigation.service';
+import { GroupsService } from '../user-menu/groups/groups.service';
 
 export const ANONYMOUS_USER: AppUser = {
     id: undefined,
@@ -30,7 +31,8 @@ export class AuthenticationService {
 
     constructor(private _httpClient: HttpClient,
         private appConfig: AppConfig,
-        private folderNavigationService: FolderNavigationService) { 
+        private folderNavigationService: FolderNavigationService,
+        private groupsService: GroupsService) { 
             
         this.baseURL = this.appConfig['config']['URL'];
 
@@ -133,7 +135,7 @@ export class AuthenticationService {
                             .then()
                             .catch();
 
-                        this.folderNavigationService.getGroups()
+                        this.groupsService.getGroups()
                             .then()
                             .catch();
                             

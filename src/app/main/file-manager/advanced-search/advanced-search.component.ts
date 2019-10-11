@@ -15,6 +15,8 @@ import { Subject, BehaviorSubject, Observable, merge } from 'rxjs';
 import { DataSource } from '@angular/cdk/table';
 import { MatPaginator, MatSort } from '@angular/material';
 import { FuseUtils } from '@fuse/utils';
+import { FileManagerService } from '../file-manager.service';
+import { Storage } from 'app/main/models/file-storage.model';
 
 @Component({
   selector: 'app-advanced-search',
@@ -31,6 +33,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
   departments: Department[] = [];
   users: AppUser[] = [];
   userGroups: Group[] = [];
+  folders: Storage[] = [];
 
   displayedColumns = ['icon', 'name', 'extension', 'updateDate', 'updateBy', 'size', 'button'];
 
@@ -47,6 +50,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
     private departmentsService: DepartmentsService,
     private usersService: UsersService,
     private userGroupsService: GroupsService,
+    private foldersService: FileManagerService,
     private advancedSearchService: AdvancedSearchService) { 
     this._unsubscribeAll = new Subject();
   }
@@ -59,6 +63,22 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
     this.getDepartments();
     this.getUsers();
     this.getGroups();
+    this.getFolders();
+
+    this.advancedSearchService.onSearchChanged.subscribe(value => {
+      if (value) {
+        this.advancedSearchForm.patchValue({
+          clients: value.clients, 
+          departments: value.departments, 
+          users: value.users, 
+          userGroups: value.userGroups, 
+          folders: value.folders,
+          startDate: value.startDate,
+          endDate: value.endDate,
+          searchString: value.searchString
+        });
+      }
+    });
 
     this.dataSource = new FilesDataSource(this.advancedSearchService, this.paginator, this.sort);
   }
@@ -69,6 +89,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
       departments: [],
       users: [],
       userGroups: [],
+      folders: [],
       startDate: [],
       endDate: [],
       searchString: []
@@ -106,15 +127,34 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
       })
   }
 
+  getFolders() {
+    this.foldersService.getFileStorage(1)
+      .then(fileStorage => {
+        this.folders = fileStorage.storages.filter(fold => fold.isDirectory);
+      });
+  }
+
   search() {
-    
-    var value = this.advancedSearchForm.value;
+
+    var value = {
+      clients: this.advancedSearchForm.value.clients ? this.advancedSearchForm.value.clients : [],
+      departments: this.advancedSearchForm.value.departments ? this.advancedSearchForm.value.departments : [],
+      users: this.advancedSearchForm.value.users ? this.advancedSearchForm.value.users : [],
+      userGroups: this.advancedSearchForm.value.userGroups ? this.advancedSearchForm.value.userGroups : [],
+      folders: this.advancedSearchForm.value.folders ? this.advancedSearchForm.value.folders : [],
+      startDate: this.advancedSearchForm.value.startDate,
+      endDate: this.advancedSearchForm.value.endDate,
+      searchString: this.advancedSearchForm.value.searchString
+    }
+
+    this.advancedSearchService.onSearchChanged.next(value);
 
     var search = {
-      ClientIds: value.clients ? value.clients.map(client => client.id) : [],
-      DepartmentIds: value.departments ? value.departments.map(department => department.id) : [],
-      UserIds: value.users ? value.users.map(user => user.id) : [],
-      UserGroupIds: value.userGroups ? value.userGroups.map(group => group.id) : [],
+      ClientIds: value.clients.map(client => client.id),
+      DepartmentIds: value.departments.map(department => department.id),
+      UserIds: value.users.map(user => user.id),
+      UserGroupIds: value.userGroups.map(group => group.id),
+      FolderIds: value.folders.map(folder => folder.id),
       StartDate: value.startDate,
       EndDate: value.endDate,
       SearchString: value.searchString
@@ -129,6 +169,26 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
         
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
+  }
+
+  clientCompare(client1: Client, client2: Client) {
+    return client1 && client2 && client1.id == client2.id;
+  }
+
+  departmentCompare(department1: Department, department2: Department) {
+    return department1 && department2 && department1.id == department2.id;
+  }
+
+  userCompare(user1: AppUser, user2: AppUser) {
+    return user1 && user2 && user1.id == user2.id;
+  }
+
+  groupCompare(group1: Group, group2: Group) {
+    return group1 && group2 && group1.id == group2.id;
+  }
+
+  folderCompare(folder1: Storage, folder2: Storage) {
+    return folder1 && folder2 && folder1.id == folder2.id;
   }
 }
 
@@ -201,13 +261,19 @@ export class FilesDataSource extends DataSource<any> {
 
       switch ( this._matSort.active ) {
         case 'name':
-          [propertyA, propertyB] = [a.name, b.name];
+          [propertyA, propertyB] = [a.name.toLowerCase(), b.name.toLowerCase()];
           break;
-        case 'createDate':
-          [propertyA, propertyB] = [a.createDate, b.createDate];
+        case 'extension':
+          [propertyA, propertyB] = [ a.file ? a.file.extension.toLowerCase() : null, b.file ?  b.file.extension.toLowerCase() : null];
           break;
         case 'updateDate':
-          [propertyA, propertyB] = [a.updateDate, b.updateDate];
+          [propertyA, propertyB] = [a.updateDate ? a.updateDate : a.createDate, b.updateDate ? b.updateDate : b.createDate];
+          break;
+        case 'updateBy':
+          [propertyA, propertyB] = [a.updateBy ? a.updateBy.userName.toLowerCase() : a.createBy.userName.toLowerCase(), b.updateBy ? b.updateBy.userName.toLowerCase() : b.createBy.userName.toLowerCase()];
+          break;
+        case 'size':
+          [propertyA, propertyB] = [a.file ? a.file.size : "",  b.file ?  b.file.size : ""];
           break;
       }
 

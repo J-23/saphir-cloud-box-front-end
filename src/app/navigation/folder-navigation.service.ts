@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { AppConfig } from '../app.config';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
-import { FileStorage } from 'app/main/models/file-storage.model';
 import { FuseNavigationItem } from '@fuse/types';
 import { Group } from 'app/main/models/group.model';
 
@@ -79,19 +78,5 @@ export class FolderNavigationService {
     }
 
     return result;
-  }
-
-  getGroups(): Promise<Group[]> {
-    
-    return new Promise((resolve, reject) => {
-      this._httpClient.get(this.baseURL + '/api/user-group/list')
-        .subscribe((response: any) => {
-          this.groups = response;
-
-          this.onUserGroupsChanged.next(this.groups);
-
-          resolve(this.groups);
-        }, reject);
-    });
   }
 }

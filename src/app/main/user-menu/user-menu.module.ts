@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { GroupsComponent } from './groups/groups.component';
+import { GroupComponent } from './groups/group.component';
 import { AuthorizedUserGuard } from '../guards/authorized-user.guard';
 import { RouterModule } from '@angular/router';
 import { FuseSharedModule } from '@fuse/shared.module';
@@ -8,16 +8,15 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AgmCoreModule } from '@agm/core';
 import { FuseConfirmDialogModule, FuseWidgetModule, FuseSidebarModule } from '@fuse/components';
 import { TranslateModule } from '@ngx-translate/core';
-import { GroupsService } from './groups/groups.service';
-import { GroupFormComponent } from './groups/group-form/group-form.component';
+import { GroupService } from '../user-menu/groups/group.service';
 
 const routes = [
   {
-      path: 'groups',
-      component: GroupsComponent,
+      path: 'group/:id',
+      component: GroupComponent,
       canActivate: [AuthorizedUserGuard],
       resolve: {
-        data: GroupsService
+        data: GroupService
       }
   }
 ];
@@ -57,14 +56,10 @@ const routes = [
     TranslateModule
   ],
   declarations: [
-    GroupsComponent,
-    GroupFormComponent
+    GroupComponent
   ],
   providers: [
-    GroupsService
-  ],
-  entryComponents: [
-    GroupFormComponent
+    GroupService
   ]
 })
 export class UserMenuModule { }

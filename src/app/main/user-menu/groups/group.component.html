@@ -1,0 +1,41 @@
+<div id="groups" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+    <div class="header teal-300 p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start"
+        fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+    
+        <div fxLayout="row" fxLayoutAlign="start center">
+        
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{ group.name }} 
+                </span>
+            </div>
+        </div>
+
+        <div>
+            <button mat-raised-button class="fuse-white mt-24 mt-md-0" (click)="update()">
+                <span>{{ 'COMMONACTIONS.EDIT' | translate }}</span>
+            </button>   
+            <button mat-raised-button class="fuse-white mt-24 mt-md-0 ml-16" (click)="remove()">
+                <span>{{ 'COMMONACTIONS.REMOVE' | translate }}</span>
+            </button>   
+        </div>
+        
+    </div>
+
+    <div class="content">
+
+        <div class="center p-24 pb-56 pr-sm-92" fusePerfectScrollbar>
+
+            <div class="content">
+                <div class="p-24">
+                    <span class="logo-text h2">{{ 'PAGES.APPS.USERGROUPS.USERS' | translate }}:</span>
+                
+                    <ul class="li-without-point">
+                        <li *ngFor="let user of group.users">{{user.userName}} ({{user.email}})</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

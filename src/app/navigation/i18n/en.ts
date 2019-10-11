@@ -159,7 +159,8 @@ export const locale = {
                     'EXTENSION': 'Extension',
                     'UPDATEDATE': 'Update date',
                     'UPDATEBY': 'Update by',
-                    'SIZE': 'Size'
+                    'SIZE': 'Size',
+                    'FOLDERS': 'Folders'
                 }
             },
             'AUTH': {

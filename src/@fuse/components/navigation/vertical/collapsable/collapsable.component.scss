@@ -40,3 +40,15 @@
         }
     }
 }
+
+.button-add-group {
+    align-items: center;
+    min-width: 35px;
+    height: 35px;
+    padding: 0 7px;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 20px;
+    transition: opacity 0.2s ease-in-out 0.1s;
+    border-color: #4db6ac !important;
+}

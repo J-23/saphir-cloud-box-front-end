@@ -41,7 +41,7 @@ export class DepartmentsComponent implements OnInit {
   addDepartment() {
 
     this.departmentDialogRef = this._matDialog.open(DepartmentFormComponent, {
-      panelClass: 'form-dialog',
+      panelClass: 'department-form-dialog',
       data: {
         dialogTitle: 'PAGES.APPS.DEPARTMENTS.ADD'
       }
@@ -83,7 +83,7 @@ export class DepartmentsComponent implements OnInit {
 
   editDepartment(department) {
     this.departmentDialogRef = this._matDialog.open(DepartmentFormComponent, {
-      panelClass: 'form-dialog',
+      panelClass: 'department-form-dialog',
       data: {
         dialogTitle: 'PAGES.APPS.DEPARTMENTS.EDIT',
         object: department

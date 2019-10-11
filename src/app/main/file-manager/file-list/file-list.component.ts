@@ -207,7 +207,7 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
             .subscribe(message => {
 
                 this.folderDialogRef = this._matDialog.open(FolderFormComponent, {
-                    panelClass: 'form-dialog',
+                    panelClass: 'file-form-dialog',
                     data: {
                         parentId: this.fileStorage.id,
                         name: folder.name,
@@ -253,7 +253,7 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
             .subscribe(message => {
 
                 this.fileDialogRef = this._matDialog.open(FileFormComponent, {
-                    panelClass: 'form-dialog',
+                    panelClass: 'file-form-dialog',
                     data: {
                         parentId: this.fileStorage.id,
                         name: file.name + file.file.extension,

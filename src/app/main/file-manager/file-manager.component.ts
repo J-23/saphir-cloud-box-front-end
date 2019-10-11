@@ -127,7 +127,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
         this.translateService.get('PAGES.APPS.FILEMANAGER.ADDFOLDER')
             .subscribe(message => {
                 this.folderDialogRef = this._matDialog.open(FolderFormComponent, {
-                    panelClass: 'form-dialog',
+                    panelClass: 'file-form-dialog',
                     data: {
                         parentId: this.fileStorage.id,
                         title: message
@@ -168,7 +168,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
         this.translateService.get('PAGES.APPS.FILEMANAGER.ADDFILE')
             .subscribe(message => { 
                 this.fileDialogRef = this._matDialog.open(FileFormComponent, {
-                    panelClass: 'form-dialog',
+                    panelClass: 'file-form-dialog',
                     data: {
                         parentId: this.fileStorage.id,
                         title: message
@@ -210,7 +210,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
         this.translateService.get('PAGES.APPS.FILEMANAGER.UPDATEFOLDER')
         .subscribe(message => {
             this.folderDialogRef = this._matDialog.open(FolderFormComponent, {
-                panelClass: 'form-dialog',
+                panelClass: 'file-form-dialog',
                 data: {
                     parentId: this.fileStorage.id,
                     title: message,

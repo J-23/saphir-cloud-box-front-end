@@ -1,0 +1,32 @@
+@import "src/@fuse/scss/fuse";
+
+groups {
+
+    #groups {
+
+        .top-bg {
+
+            @include media-breakpoint('lt-md') {
+                height: 256px;
+            }
+        }
+
+        > .center {
+
+            > .header {
+
+                @include media-breakpoint('lt-md') {
+                    padding: 8px 0;
+                    height: 192px !important;
+                    min-height: 192px !important;
+                    max-height: 192px !important;
+                }
+            }
+        }
+    }
+}
+
+.li-without-point {
+    list-style-type: none;
+    padding-inline-start: 0px !important;
+}

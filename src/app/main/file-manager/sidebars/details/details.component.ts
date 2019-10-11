@@ -272,7 +272,7 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
             .subscribe(message => {
 
                 this.fileDialogRef = this._matDialog.open(FileFormComponent, {
-                    panelClass: 'form-dialog',
+                    panelClass: 'file-form-dialog',
                     data: {
                         parentId: this.fileStorageId,
                         name: this.selected.name + this.selected.file.extension,
@@ -320,7 +320,7 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
             .subscribe(message => {
 
                 this.folderDialogRef = this._matDialog.open(FolderFormComponent, {
-                    panelClass: 'form-dialog',
+                    panelClass: 'file-form-dialog',
                     data: {
                         parentId: this.fileStorageId,
                         name: this.selected.name,

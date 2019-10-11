@@ -16,7 +16,7 @@ import { locale as german } from 'app/navigation/i18n/de';
 import { locale as russian } from 'app/navigation/i18n/ru';
 import { FileManagerService } from './main/file-manager/file-manager.service';
 import { FolderNavigationService } from './navigation/folder-navigation.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { FolderFormComponent } from './main/file-manager/folder-form/folder-form.component';
 import { FormGroup } from '@angular/forms';
 import { AuthenticationService } from './main/authentication/authentication.service';
@@ -24,6 +24,10 @@ import { FuseNavigationItem, FuseNavigation } from '@fuse/types';
 import { RoleType } from './main/models/role.model';
 import { navigation } from './navigation/navigation';
 import { Router } from '@angular/router';
+import { GroupService } from './main/user-menu/groups/group.service';
+import { GroupsService } from './main/user-menu/groups/groups.service';
+import { GroupFormComponent } from './main/user-menu/groups/group-form/group-form.component';
+import { GroupComponent } from './main/user-menu/groups/group.component';
 
 @Component({
     selector   : 'app',
@@ -64,6 +68,10 @@ export class AppComponent implements OnInit, OnDestroy
         private _matDialog: MatDialog,
         private _fileManagerService: FileManagerService,
         private authenticationService: AuthenticationService,
+        private groupsService: GroupsService,
+        private groupService: GroupService,
+        private translateService: TranslateService,
+        private _matSnackBar: MatSnackBar,
         private router: Router
     )
     {
@@ -138,36 +146,97 @@ export class AppComponent implements OnInit, OnDestroy
                     this.addFolder(1);
                 }
             });
+
+        this._fuseNavigationService.onButtonAddGroup
+            .subscribe(isAddGroup => {
+                if (isAddGroup) {
+                    this.addGroup();
+                }
+            });
     }
 
     addFolder(parentId: number) {
-        var folderDialogRef = this._matDialog.open(FolderFormComponent, {
-            panelClass: 'form-dialog',
-            data: {
-                parentId: parentId
-            }
-        });
+        this.translateService.get('PAGES.APPS.FILEMANAGER.ADDFOLDER')
+        .subscribe(message => {
+            var folderDialogRef = this._matDialog.open(FolderFormComponent, {
+                panelClass: 'file-form-dialog',
+                data: {
+                    parentId: parentId,
+                    title: message
+                }
+            });
 
-        folderDialogRef.afterClosed()
-            .subscribe((form: FormGroup) => {
-            
+            folderDialogRef.afterClosed()
+                .subscribe((form: FormGroup) => {
+                
+                if (form && form.valid) {
+        
+                var folder = {
+                    parentId: form.controls['parentId'].value,
+                    name: form.controls['name'].value
+                };
+        
+                this._fileManagerService.addFolder(folder)
+                    .then(() => { 
+                        
+                        this.folderNavigationService.getFolder()
+                            .then()
+                            .catch();
+                    })
+                    .catch(res => { });
+                }
+            });    
+        });
+        
+    }
+
+    addGroup() {
+        var groupDialogRef = this._matDialog.open(GroupFormComponent, {
+          panelClass: 'group-form-dialog',
+          data: {
+            dialogTitle: 'PAGES.APPS.USERGROUPS.ADD'
+          }
+        });
+    
+        groupDialogRef.afterClosed()
+          .subscribe((form: FormGroup) => {
             if (form && form.valid) {
     
-              var folder = {
-                parentId: form.controls['parentId'].value,
-                name: form.controls['name'].value
+              var group = {
+                Name: form.controls['name'].value,
+                UserIds: form.controls['users'].value.map(user => user.id)
               };
     
-              this._fileManagerService.addFolder(folder)
-                .then(() => { 
-                    
-                    this.folderNavigationService.getFolder()
-                        .then()
-                        .catch();
+              this.groupService.add(group)
+                .then(() => {
+                  
+                  this.translateService.get('PAGES.APPS.USERGROUPS.ADDSUCCESS').subscribe(message => {
+                    this.createSnackBar(message);
+                  });
+                  
                 })
-                .catch(res => { });
+                .catch(res => {
+                  if (res && res.status && res.status == 403) {
+                    this.translateService.get('PAGES.APPS.USERGROUPS.' + res.error).subscribe(message => {
+                      this.createSnackBar(message);
+                    });
+                  }
+                  else if (res && res.status && res.status == 500) {
+                    this.translateService.get('COMMONACTIONS.OOPS').subscribe(message => {
+                      this.createSnackBar(message);
+                    });
+                  }
+                });
             }
           });
+    }
+
+    
+    createSnackBar(message: string) {
+        this._matSnackBar.open(message, 'OK', {
+          verticalPosition: 'top',
+          duration: 2000
+        });
     }
 
     setNavigation() {
@@ -184,7 +253,8 @@ export class AppComponent implements OnInit, OnDestroy
                 var itemChildren = this._fuseNavigationService.getNavigationItem('file-manager').children.filter(child => child.id == 'advanced-search');
                 this._fuseNavigationService.updateNavigationItem('file-manager', { hidden : true, children: itemChildren });
 
-                this._fuseNavigationService.updateNavigationItem('user-menu', { hidden : true, children: null });
+                this._fuseNavigationService.updateNavigationItem('user-menu', { hidden : true });
+                this._fuseNavigationService.updateNavigationItem('user-group', { children: null });
                 this._fuseNavigationService.updateNavigationItem('help', { hidden : true });
 
                 if (user.id != undefined) {
@@ -229,24 +299,6 @@ export class AppComponent implements OnInit, OnDestroy
                         }, () => { });
                 }
             }, () => { });
-            
-            this.folderNavigationService.onUserGroupsChanged
-                .subscribe(groups => {
-            
-                    var children = groups.map(group => {
-
-                        var item: FuseNavigationItem = {
-                            id: group.id.toString(),
-                            title: group.name,
-                            type: 'item',
-                            url: `/user-group/${group.id}`
-                        };
-
-                        return item;
-                    });
-
-                    this._fuseNavigationService.updateNavigationItem('user-menu', { hidden : false, children : children});
-                }, () => { });
     }
     
     // -----------------------------------------------------------------------------------------------------
@@ -258,6 +310,41 @@ export class AppComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
+        this.groupsService.onGroupsChanged.subscribe(groups => {
+            this._fuseNavigationService.updateNavigationItem('user-group', { children : null });
+
+            var children = groups.map(group => {
+
+                var item: FuseNavigationItem = {
+                    id: group.id.toString(),
+                    title: group.name,
+                    type: 'item',
+                    url: `/user-menu/group/${group.id}`
+                };
+
+                return item;
+            });
+
+            this._fuseNavigationService.updateNavigationItem('user-menu', { hidden: false });
+            this._fuseNavigationService.updateNavigationItem('user-group', { children : children });
+        });
+        
+        this._fuseNavigationService.onGroupRemoveChanged
+            .subscribe(isRemoved => {
+
+                if (isRemoved) {
+                    var item = this._fuseNavigationService.getNavigationItem('user-group');
+
+                    if (item.children.length > 1) {
+                        var child = item.children[0];
+                        this.router.navigate([child.url]);
+                    }
+                    else {
+                        this.router.navigate(['/info/faq']);
+                    }
+                }
+            });
+
         // Subscribe to config changes
         this._fuseConfigService.config
             .pipe(takeUntil(this._unsubscribeAll))

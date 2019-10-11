@@ -23,14 +23,14 @@
             
           <mat-form-field appearance="outline" fxFlex="47">
               <mat-label>{{ 'NAV.CLIENTS' | translate }}</mat-label>
-              <mat-select matNativeControl formControlName="clients" multiple (selectionChange)="search()">
+              <mat-select matNativeControl formControlName="clients" multiple (selectionChange)="search()" [compareWith]="clientCompare">
                 <mat-option *ngFor="let client of clients" [value]="client">{{client.name}}</mat-option>
               </mat-select>
             </mat-form-field>
 
             <mat-form-field appearance="outline" fxFlex="47">
               <mat-label>{{ 'NAV.DEPARTMENTS' | translate }}</mat-label>
-              <mat-select matNativeControl formControlName="departments" multiple (selectionChange)="search()">
+              <mat-select matNativeControl formControlName="departments" multiple (selectionChange)="search()" [compareWith]="departmentCompare">
                 <mat-option *ngFor="let department of departments" [value]="department">{{department.name}} (Client: {{department.client.name}})</mat-option>
               </mat-select>
             </mat-form-field>
@@ -41,7 +41,7 @@
             
             <mat-form-field appearance="outline" fxFlex="47">
               <mat-label>{{ 'NAV.USERS' | translate }}</mat-label>
-              <mat-select matNativeControl formControlName="users" multiple (selectionChange)="search()">
+              <mat-select matNativeControl formControlName="users" multiple (selectionChange)="search()" [compareWith]="userCompare">
                 <mat-option *ngFor="let user of users" [value]="user">{{user.userName}} (Client: {{user.client.name}}
                   <span *ngIf="user.department">, Department: {{user.department.name}}</span>)
                 </mat-option>
@@ -50,11 +50,20 @@
 
             <mat-form-field appearance="outline" fxFlex="47">
               <mat-label>{{ 'NAV.USERGROUPS' | translate }}</mat-label>
-              <mat-select matNativeControl formControlName="userGroups" multiple (selectionChange)="search()">
+              <mat-select matNativeControl formControlName="userGroups" multiple (selectionChange)="search()" [compareWith]="groupCompare">
                 <mat-option *ngFor="let userGroup of userGroups" [value]="userGroup">{{userGroup.name}}</mat-option>
               </mat-select>
             </mat-form-field>
 
+        </div>
+
+        <div fxLayout="column" fxLayoutAlign="start" fxLayout.gt-sm="row">
+          <mat-form-field appearance="outline" fxFlex="47">
+            <mat-label>{{ 'PAGES.APPS.ADVANCEDSEARCH.FOLDERS' | translate }}</mat-label>
+            <mat-select matNativeControl formControlName="folders" multiple (selectionChange)="search()" [compareWith]="folderCompare">
+              <mat-option *ngFor="let folder of folders" [value]="folder">{{folder.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
 
         <div fxLayout="column" fxLayoutAlign="start" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
@@ -101,21 +110,21 @@
           </ng-container>
 
           <ng-container matColumnDef="name">
-            <mat-header-cell *matHeaderCellDef>{{ 'PAGES.APPS.ADVANCEDSEARCH.NAME' | translate }}</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'PAGES.APPS.ADVANCEDSEARCH.NAME' | translate }}</mat-header-cell>
             <mat-cell *matCellDef="let row">
               {{row.name}}
             </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="extension">
-            <mat-header-cell *matHeaderCellDef>{{ 'PAGES.APPS.ADVANCEDSEARCH.EXTENSION' | translate }}</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'PAGES.APPS.ADVANCEDSEARCH.EXTENSION' | translate }}</mat-header-cell>
             <mat-cell *matCellDef="let row">
               <span *ngIf="!row.isDirectory && row.file"> {{row.file.extension}}</span>
             </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="updateDate">
-            <mat-header-cell *matHeaderCellDef>{{ 'PAGES.APPS.ADVANCEDSEARCH.UPDATEDATE' | translate }}</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'PAGES.APPS.ADVANCEDSEARCH.UPDATEDATE' | translate }}</mat-header-cell>
             <mat-cell *matCellDef="let row">
               <span *ngIf="row.updateDate">{{row.updateDate | date: 'dd/MM/yyyy HH:mm O'}}</span>
               <span *ngIf="!row.updateDate">{{row.createDate | date: 'dd/MM/yyyy HH:mm O'}}</span>
@@ -123,7 +132,7 @@
           </ng-container>
 
           <ng-container matColumnDef="updateBy">
-            <mat-header-cell *matHeaderCellDef>{{ 'PAGES.APPS.ADVANCEDSEARCH.UPDATEBY' | translate }}</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'PAGES.APPS.ADVANCEDSEARCH.UPDATEBY' | translate }}</mat-header-cell>
             <mat-cell *matCellDef="let row">
               <span *ngIf="row.updateBy">{{ row.updateBy.userName }}</span>
               <span *ngIf="!row.updateBy">{{ row.createBy.userName }}</span>
@@ -131,7 +140,7 @@
           </ng-container>
 
           <ng-container matColumnDef="size">
-            <mat-header-cell *matHeaderCellDef>{{ 'PAGES.APPS.ADVANCEDSEARCH.SIZE' | translate }}</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'PAGES.APPS.ADVANCEDSEARCH.SIZE' | translate }}</mat-header-cell>
             <mat-cell *matCellDef="let row">
               <span *ngIf="!row.isDirectory && row.file">
                   {{row.file.size}} {{row.file.sizeType}}

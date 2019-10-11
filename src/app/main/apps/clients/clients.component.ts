@@ -43,7 +43,7 @@ export class ClientsComponent implements OnInit {
   addClient() {
 
     this.clientDialogRef = this._matDialog.open(ClientFormComponent, {
-      panelClass: 'form-dialog',
+      panelClass: 'client-form-dialog',
       data: {
         dialogTitle: 'PAGES.APPS.CLIENTS.ADD'
       }
@@ -84,7 +84,7 @@ export class ClientsComponent implements OnInit {
 
   editClient(client) {
     this.clientDialogRef = this._matDialog.open(ClientFormComponent, {
-      panelClass: 'form-dialog',
+      panelClass: 'client-form-dialog',
       data: {
         dialogTitle: 'PAGES.APPS.CLIENTS.EDIT',
         object: client

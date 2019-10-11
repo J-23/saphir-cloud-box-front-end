@@ -44,7 +44,20 @@ export const navigation: FuseNavigation[] = [
         translate: 'NAV.USERMENU',
         type     : 'group',
         hidden   :  true,
-        children : []
+        children : [
+            {
+                id: 'user-group',
+                title: 'User Groups',
+                translate: 'NAV.USERGROUPS',
+                type: 'collapsable',
+                button: {
+                    id: 'add-group',
+                    title: 'Add Group',
+                    icon: 'add'
+                },
+                children: []
+            }
+        ]
     },
     {
         id: 'file-manager',
@@ -57,7 +70,7 @@ export const navigation: FuseNavigation[] = [
                 title: 'Advansed Search',
                 translate: 'NAV.ADVANCEDSEARCH',
                 type: 'item',
-                url: '/file-manager/advanced-search',
+                url: '/file-manager/advanced/search',
                 icon: 'search' 
             }
         ]

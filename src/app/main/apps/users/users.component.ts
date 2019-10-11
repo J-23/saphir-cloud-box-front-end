@@ -42,7 +42,7 @@ export class UsersComponent implements OnInit {
   addUser() {
 
     this.userDialogRef = this._matDialog.open(UserFormComponent, {
-      panelClass: 'form-dialog',
+      panelClass: 'user-form-dialog',
       data: {
         dialogTitle: 'PAGES.APPS.USERS.ADD'
       }
@@ -87,7 +87,7 @@ export class UsersComponent implements OnInit {
 
   editUser(user) {
     this.userDialogRef = this._matDialog.open(UserFormComponent, {
-      panelClass: 'form-dialog',
+      panelClass: 'user-form-dialog',
       data: {
         dialogTitle: 'PAGES.APPS.USERS.EDIT',
         object: user
