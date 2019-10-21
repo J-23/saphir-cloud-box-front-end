@@ -40,14 +40,14 @@ export const navigation: FuseNavigation[] = [
     },
     {
         id       : 'user-menu',
-        title    : 'User Menu',
+        title    : 'Benutzer Menü',
         translate: 'NAV.USERMENU',
         type     : 'group',
         hidden   :  true,
         children : [
             {
                 id: 'user-group',
-                title: 'User Groups',
+                title: 'Groups',
                 translate: 'NAV.USERGROUPS',
                 type: 'collapsable',
                 button: {
@@ -67,7 +67,7 @@ export const navigation: FuseNavigation[] = [
         children: [
             {
                 id: 'advanced-search',
-                title: 'Advansed Search',
+                title: 'Erweiterte Suche',
                 translate: 'NAV.ADVANCEDSEARCH',
                 type: 'item',
                 url: '/file-manager/advanced/search',

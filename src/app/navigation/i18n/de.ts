@@ -10,9 +10,9 @@
             'HELP': 'Help',
             'FAQ': 'Faq',
             'FEEDBACK': 'Kontakt',
-            'USERMENU': 'User menu',
+            'USERMENU': 'Benutzer Menü',
             'USERGROUPS': 'Groups',
-            'ADVANCEDSEARCH': 'Advanced Search'
+            'ADVANCEDSEARCH': 'Erweiterte Suche'
         },
         'PAGES': {
             'APPS': {
@@ -80,11 +80,11 @@
                     'ERROR': 'Es ist ein Fehler aufgetretten. Kontaktieren Sie bitte unseren Support'
                 },
                 'FILEMANAGER': {
-                    'ADDFOLDER': 'Verzeichnis hinzufügen',
+                    'ADDFOLDER': 'Ordner hinzufügen',
                     'EDITED': 'Geändert',
                     'INFO': 'Info',
                     'TYPE': 'Typ',
-                    'OWNER': 'Owner',
+                    'OWNER': 'Besitzer',
                     'MODIFIEDBY': 'Geändert von',
                     'MODIFIEDDATE': 'Geändert am',
                     'CREATEBY': 'Erstellt von',
@@ -92,20 +92,20 @@
                     'SIZE': 'Dateigröße',
                     'NAME': 'Name',
                     'VIEWRIGHT': 'View right',
-                    'FOLDERREMOVEQUESTION': 'Wollen Sie diesen Verzeichnis wirklich löschen?',
-                    'FOLDERREMOVESUCCESS': 'Verzeichnis wurde gelöscht',
-                    'FOLDER_NOT_FOUND': 'Verzeichnis wurde nicht gefunden',
-                    'FOLDERSERVER_ERROR': 'Fehler in der Verzeichnisverwaltung. Kontaktieren Sie bitte unseren Support',
-                    'FOLDER_SAME_OBJECT': 'Ein Verzeichnis mit gleichem Namen existiert bereits',
-                    'FOLDER_NO_ACCESS': "Sie haben keine Berechtigung für dieses Verzeichnis",
-                    'UPDATEFOLDER': 'Verzeichnis ändern',
+                    'FOLDERREMOVEQUESTION': 'Wollen Sie diesen Ordner wirklich löschen?',
+                    'FOLDERREMOVESUCCESS': 'Ordner wurde gelöscht',
+                    'FOLDER_NOT_FOUND': 'Ordner wurde nicht gefunden',
+                    'FOLDERSERVER_ERROR': 'Fehler in der Ordnerverwaltung. Kontaktieren Sie bitte unseren Support',
+                    'FOLDER_SAME_OBJECT': 'Ordner mit gleichem Namen existiert bereits',
+                    'FOLDER_NO_ACCESS': "Sie haben keine Berechtigung für diese Ordner",
+                    'UPDATEFOLDER': 'Ordner ändern',
                     'ADDFILE': 'Datei hinzufügen',
                     'UPDATEFILE': 'Datei ändern',
                     'FILE_NOT_FOUND': 'Datei nicht gefunden',
                     'FILE_SAME_OBJECT': 'Eine Datei mit gleichem Namen existiert bereits',
                     'FILE_NOT_FOUND_DEPENDENCY_OBJECT': 'Datei nicht gefunden',
                     'FILE': 'Datei',
-                    'FILE_NO_ACCESS': "You don't have permissions to this file",
+                    'FILE_NO_ACCESS': "Sie haben keine Berechtigung für dieses Datei",
                     'FILEREMOVEQUESTION': 'Wollen Sie diese Datei wirklich löschen?',
                     'FILEREMOVESUCCESS': 'Datei wurde gelöscht',
                     'REMOVECURRENTFOLDER': 'Ausgewählte verzeichnis löschen',
@@ -127,7 +127,7 @@
                     'PICK': 'Auswahl',
                     'ALLCLIENTS': 'Alle',
                     'ALLUSERS': 'Alle Benutzern',
-                    'ALLGROUPS': 'All groups'
+                    'ALLGROUPS': 'Alle Gruppen'
                 },
                 'FEEDBACK': {
                     'USEREMAIL': 'Ihre E-Mail',
@@ -141,27 +141,27 @@
                 },
                 'USERGROUPS': {
                     'NAME': 'Name',
-                    'USERS': 'Users',
-                    'ADD': 'Add group',
-                    'ADDSUCCESS': 'Group added',
-                    'SAME_OBJECT': 'Group with the same name is already exists',
-                    'EDIT': 'Update group',
-                    'UPDATESUCCESS': 'Group updated',
-                    'NOT_FOUND': 'Group not found',
-                    'REMOVEQUESTION': 'Are you sure you want to remove this group?',
-                    'REMOVESUCCESS': 'Group removed'
+                    'USERS': 'Benutzern',
+                    'ADD': 'Gruppe hinzufügen',
+                    'ADDSUCCESS': 'Gruppe wurde hinzugefügt',
+                    'SAME_OBJECT': 'Gruppe mit gleichem Namen existiert bereits',
+                    'EDIT': 'Gruppe ändern',
+                    'UPDATESUCCESS': 'Gruppe wurde geändert',
+                    'NOT_FOUND': 'Gruppe wurde nicht gefunden',
+                    'REMOVEQUESTION': 'Wollen Sie diese Gruppe wirklich entfernen?',
+                    'REMOVESUCCESS': 'Gruppe wurde entfernt'
                 },
                 'ADVANCEDSEARCH': {
-                    'STARTDATE': 'Start date',
-                    'ENDDATE': 'End date',
-                    'SEARCHBYTEXT': 'Search by text',
-                    'SEARCH': 'Search',
+                    'STARTDATE': 'Datum von:',
+                    'ENDDATE': 'Datum bis:',
+                    'SEARCHBYTEXT': 'Suche nach Text',
+                    'SEARCH': 'Suche',
                     'NAME': 'Name',
-                    'EXTENSION': 'Extension',
-                    'UPDATEDATE': 'Update date',
-                    'UPDATEBY': 'Update by',
-                    'SIZE': 'Size',
-                    'FOLDERS': 'Folders'
+                    'EXTENSION': 'Datentyp',
+                    'UPDATEDATE': 'Geändert von',
+                    'UPDATEBY': 'Geändert am',
+                    'SIZE': 'Größe',
+                    'FOLDERS': 'Ordnern'
                 }
             },
             'AUTH': {
@@ -215,10 +215,10 @@
             'INFO': 'Info',
             'DOWNLOAD': 'Download',
             'OOPS': 'Es ist ein Fehler aufgetretten. Anmeldung ist nicht möglich',
-            'VIEW': 'View',
-            'CANCELVIEW': 'Cancel view',
+            'VIEW': 'Anzeigen',
+            'CANCELVIEW': 'Anzeige abbrechen',
             'FILTER': 'Filter',
-            'SEEINFOLDER': 'See in folder'
+            'SEEINFOLDER': 'Anzeigen im Ordner'
         }
     }
 };
