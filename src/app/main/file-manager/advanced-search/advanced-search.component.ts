@@ -170,12 +170,16 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
 
   seeInFolder(fileStorage) {
 
-    this.fileManagerService.getFileStorage(fileStorage.parentStorageId)
-      .then(() => {
-        this.router.navigate([`/file-manager/${fileStorage.parentStorageId}`]);
-      }).catch(() => {
-        this.router.navigate(['/file-manager/shared-with-me']);
-      });
+    this.fileManagerService.getParent(fileStorage.id)
+      .then(res => {
+        if (res) {
+          this.router.navigate([`/file-manager/${res.id}`]);
+        }
+        else {
+          this.router.navigate(['/file-manager/shared-with-me']);
+        }
+      })
+      .catch();
   }
 
   ngOnDestroy(): void {

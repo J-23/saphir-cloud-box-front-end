@@ -43,7 +43,7 @@ export class FolderNavigationService {
                   id: 'shared-with-me',
                   name: 'Shared with me',
                   parentId: 1,
-                  newFileCount: 0,
+                  newFileCount: response.newFileCount,
                   children: []
                 });
               }

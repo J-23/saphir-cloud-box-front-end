@@ -245,4 +245,15 @@ export class FileManagerService implements Resolve<any> {
                 }, reject);
         });
     }
+
+    getParent(childId) : Promise<any> {
+
+        return new Promise((resolve, reject) => {
+
+            this._httpClient.get(this.baseURL + `/api/hierarchy/by-child/${childId}`)
+                .subscribe((response: any) => {
+                    resolve(response);
+                }, reject);
+        });
+    }
 }
