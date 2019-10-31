@@ -19,16 +19,17 @@
       
       <div class="content p-24" [formGroup]="advancedSearchForm">
         
-        <div fxLayout="column" fxLayoutAlign="start" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+        <div fxLayout="column" fxLayoutAlign="start" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center"
+          *ngIf="clients.length > 0 || departments.length > 0">
             
-          <mat-form-field appearance="outline" fxFlex="47">
+          <mat-form-field appearance="outline" fxFlex="47" *ngIf="clients.length > 0">
               <mat-label>{{ 'NAV.CLIENTS' | translate }}</mat-label>
               <mat-select matNativeControl formControlName="clients" multiple (selectionChange)="search()" [compareWith]="clientCompare">
                 <mat-option *ngFor="let client of clients" [value]="client">{{client.name}}</mat-option>
               </mat-select>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" fxFlex="47">
+            <mat-form-field appearance="outline" fxFlex="47" *ngIf="departments.length > 0">
               <mat-label>{{ 'NAV.DEPARTMENTS' | translate }}</mat-label>
               <mat-select matNativeControl formControlName="departments" multiple (selectionChange)="search()" [compareWith]="departmentCompare">
                 <mat-option *ngFor="let department of departments" [value]="department">{{department.name}} (Client: {{department.client.name}})</mat-option>
@@ -37,9 +38,10 @@
 
         </div>
 
-        <div fxLayout="column" fxLayoutAlign="start" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+        <div fxLayout="column" fxLayoutAlign="start" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center"
+          *ngIf="users.length > 0 || userGroups.length > 0">
             
-            <mat-form-field appearance="outline" fxFlex="47">
+            <mat-form-field appearance="outline" fxFlex="47" *ngIf="users.length > 0">
               <mat-label>{{ 'NAV.USERS' | translate }}</mat-label>
               <mat-select matNativeControl formControlName="users" multiple (selectionChange)="search()" [compareWith]="userCompare">
                 <mat-option *ngFor="let user of users" [value]="user">{{user.userName}} (Client: {{user.client.name}}
@@ -48,7 +50,7 @@
               </mat-select>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" fxFlex="47">
+            <mat-form-field appearance="outline" fxFlex="47" *ngIf="userGroups.length > 0">
               <mat-label>{{ 'NAV.USERGROUPS' | translate }}</mat-label>
               <mat-select matNativeControl formControlName="userGroups" multiple (selectionChange)="search()" [compareWith]="groupCompare">
                 <mat-option *ngFor="let userGroup of userGroups" [value]="userGroup">{{userGroup.name}}</mat-option>
@@ -57,8 +59,8 @@
 
         </div>
 
-        <div fxLayout="column" fxLayoutAlign="start" fxLayout.gt-sm="row">
-          <mat-form-field appearance="outline" fxFlex="47">
+        <div fxLayout="column" fxLayoutAlign="start" fxLayout.gt-sm="row" *ngIf="folders.length > 0">
+          <mat-form-field appearance="outline" fxFlex="47" *ngIf="folders.length > 0">
             <mat-label>{{ 'PAGES.APPS.ADVANCEDSEARCH.FOLDERS' | translate }}</mat-label>
             <mat-select matNativeControl formControlName="folders" multiple (selectionChange)="search()" [compareWith]="folderCompare">
               <mat-option *ngFor="let folder of folders" [value]="folder">{{folder.name}}</mat-option>

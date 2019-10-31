@@ -39,13 +39,20 @@ export class FolderNavigationService {
 
               if (response.storages.length > 0) {
 
-                folders.push({
-                  id: 'shared-with-me',
-                  name: 'Shared with me',
-                  parentId: 1,
-                  newFileCount: response.newFileCount,
-                  children: []
-                });
+                var sharedWithMeFolder = folders.find(fold => fold.id == 'shared-with-me');
+
+                if (sharedWithMeFolder == null) {
+                  folders.push({
+                    id: 'shared-with-me',
+                    name: 'Shared with me',
+                    parentId: 1,
+                    newFileCount: response.newFileCount,
+                    children: []
+                  });
+                }
+                else {
+                  sharedWithMeFolder.newFileCount = response.newFileCount;
+                }
               }
 
               this.folders = this.map(folders);

@@ -268,14 +268,8 @@ export class AppComponent implements OnInit, OnDestroy
                     this.folderNavigationService.onNavigationChanged
                         .subscribe(folders => {
 
-                            if (user.role.type == RoleType.SuperAdmin) {
-                                this._fuseNavigationService.updateNavigationItem('advanced-search', { hidden : false });
-                                this._fuseNavigationService.updateNavigationItem('file-manager', { hidden : false });
-                            } 
-                            else {
-                                this._fuseNavigationService.updateNavigationItem('advanced-search', { hidden : true });
-                                this._fuseNavigationService.updateNavigationItem('file-manager', { hidden : true });
-                            }
+                            this._fuseNavigationService.updateNavigationItem('advanced-search', { hidden : false });
+                            this._fuseNavigationService.updateNavigationItem('file-manager', { hidden : false });
 
                             if (user && user.role && (user.role.type == RoleType.SuperAdmin || user.role.type == RoleType.ClientAdmin)) {
                                     
@@ -294,7 +288,7 @@ export class AppComponent implements OnInit, OnDestroy
                                     itemChildren.push(fold);
                                 });
 
-                                this._fuseNavigationService.updateNavigationItem('file-manager', { hidden: false, children: itemChildren });
+                                this._fuseNavigationService.updateNavigationItem('file-manager', { children: itemChildren });
                             }
                         }, () => { });
                 }

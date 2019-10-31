@@ -63,19 +63,18 @@ export class FileManagerService implements Resolve<any> {
                             id: 'shared-with-me',
                             name: 'Shared with me',
                             permissions: [],
+                            permissionInfo: null,
                             storages: response.storages
                         };
 
-                        var nav = this.navigations.pop();
+                        var nav = this.navigations.find(nav => nav.id == 'shared-with-me');
 
-                        if (nav && nav.id != 'shared-with-me') {
-                            this.navigations.push(nav);
+                        if (nav== null) {
+                            this.navigations.push({
+                                id: 'shared-with-me',
+                                name: 'Shared with me'
+                            });
                         }
-
-                        this.navigations.push({
-                            id: 'shared-with-me',
-                            name: 'Shared with me'
-                        });
 
                         this.onNavigationChanged.next(this.navigations);
 

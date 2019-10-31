@@ -377,7 +377,7 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
 
     addPermission(fileStorage) {
         var fileStorageId = fileStorage.id;
-        var permissions = fileStorage.permissions;
+        var permissionInfo = fileStorage.permissionInfo;
         
         this.translateService.get('PAGES.APPS.FILEMANAGER.ADDPERMISSION')
             .subscribe(message => {
@@ -386,7 +386,7 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
                     panelClass: 'permission-form-dialog',
                     data: {
                         fileStorageId: fileStorageId,
-                        permissions: permissions,
+                        permissionInfo: permissionInfo,
                         title: message,
                         currentUserId: this.currentUser.id
                     }

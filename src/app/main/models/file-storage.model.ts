@@ -2,6 +2,7 @@ import { AppUser } from "./app-user.model";
 import { Client } from "./client.model";
 import * as moment from 'moment';
 import { create } from 'domain';
+import { Group } from "./group.model";
 
 export class FileStorage {
     owner: AppUser;
@@ -10,7 +11,7 @@ export class FileStorage {
     id: any;
     name: string;
     permissions: Permission[] = [];
-
+    permissionInfo: PermissionInfo;
     storages: Storage[] = [];
 
     constructor(fileStorage?) {
@@ -25,6 +26,7 @@ export class FileStorage {
 
         this.storages = fileStorage.storages ? fileStorage.storages.map(storage => new Storage(storage)) : [];
         this.permissions = fileStorage.permissions ? fileStorage.permissions.map(permission => new Permission(permission)) : [];
+        this.permissionInfo = fileStorage.permissionInfo ? new PermissionInfo(fileStorage.permissionInfo) : null;
     }
 }
 
@@ -44,7 +46,7 @@ export class Storage {
     isAvailableToUpdate: boolean = false;
     isAvailableToAddPermision: boolean = false;
     isAvailableToView: boolean = false;
-    newFileCount: number;
+    permissionInfo: PermissionInfo;
 
     constructor(storage?) {
         var storage = storage || {};
@@ -63,7 +65,7 @@ export class Storage {
 
         this.file = storage.file ? new File(storage.file) : null;
         this.permissions = storage.permissions ? storage.permissions.map(permission => new Permission(permission)) : [];
-        this.newFileCount = storage.newFileCount ? storage.newFileCount : 0;
+        this.permissionInfo = storage.permissionInfo ? new PermissionInfo(storage.permissionInfo) : null;
     }
 }
 
@@ -99,4 +101,20 @@ export class Permission {
 export enum PermissionType {
     readOnly = 0,
     readAndWrite = 1
+}
+
+export class PermissionInfo {
+    recipients: AppUser[] = [];
+    clients: Client[] = [];
+    groups: Group[] = [];
+    type: PermissionType;
+
+    constructor(permissionInfo?) {
+
+        var permissionInfo = permissionInfo || {};
+
+        this.recipients = permissionInfo.recipients ? permissionInfo.recipients.map(res => new AppUser(res)) : [];
+        this.clients = permissionInfo.clients ? permissionInfo.clients.map(cl => new Client(cl)) : [];
+        this.groups = permissionInfo.groups ? permissionInfo.groups.map(gr => new Group(gr)) : [];
+    }
 }

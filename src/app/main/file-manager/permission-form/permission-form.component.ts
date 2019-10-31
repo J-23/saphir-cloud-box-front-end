@@ -1,15 +1,11 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { PermissionType, Permission } from 'app/main/models/file-storage.model';
+import { PermissionInfo } from 'app/main/models/file-storage.model';
 import { UsersService } from 'app/main/apps/users/users.service';
 import { AppUser } from 'app/main/models/app-user.model';
-import { startWith, map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 import { ClientsService } from 'app/main/apps/clients/clients.service';
 import { Client } from 'app/main/models/client.model';
-import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
-import { AuthenticationService } from 'app/main/authentication/authentication.service';
 import { GroupsService } from 'app/main/user-menu/groups/groups.service';
 import { Group } from 'app/main/models/group.model';
 
@@ -24,7 +20,7 @@ export class PermissionFormComponent implements OnInit {
   title: string;
   permissionForm: FormGroup;
 
-  permissions: Permission[] = [];
+  permissionInfo: PermissionInfo;
   fileStorageId: number;
   type;
   
@@ -36,10 +32,6 @@ export class PermissionFormComponent implements OnInit {
   allClients: Client = new Client();
   allGroups: Group = new Group();
 
-  selectedUsers: AppUser[] = [];
-  selectedClients: Client[] = [];
-  selectedGroups: Group[] = [];
-
   constructor(public matDialogRef: MatDialogRef<PermissionFormComponent>,
     @Inject(MAT_DIALOG_DATA) private _data: any,
     private _formBuilder: FormBuilder,
@@ -49,7 +41,7 @@ export class PermissionFormComponent implements OnInit {
     
     this.title = this._data.title;
 
-    this.permissions = this._data.permissions;
+    this.permissionInfo = this._data.permissionInfo;
     this.fileStorageId = this._data.fileStorageId;
     this.type = this._data.type || 0;
     this.currentUserId = this._data.currentUserId;
@@ -63,130 +55,46 @@ export class PermissionFormComponent implements OnInit {
 
     this.permissionForm = this.createForm();
 
-    this.clientsService.getClients()
-      .then(clients => {
-        this.clients = clients;
-            
-        this.groupsService.getGroups()
-          .then(groups => {
-            this.groups = groups.map(group => new Group(group));
-            
-            this.usersService.getUsers()
-              .then(users => {
-
-                this.users = users.filter(user => user.id != this.currentUserId);
-                this.setSelected();
-              })
-              .catch();
-          })
-          .catch();
-      })
-      .catch();
+    this.clientsService.getClients().then(clients => this.clients = clients).catch();
+      
+    this.groupsService.getGroups().then(groups => this.groups = groups.map(group => new Group(group))).catch();
+      
+    this.usersService.getUsers().then(users => this.users = users.filter(user => user.id != this.currentUserId)).catch();
   }
 
   createForm(): FormGroup {
 
+    var objects = [];
+
+    if (this.permissionInfo) {
+
+      this.permissionInfo.recipients.forEach(us => {
+        objects.push(new AppUser(us));
+      });
+
+      this.permissionInfo.clients.forEach(cl => {
+        objects.push(new Client(cl));
+      });
+
+      this.permissionInfo.groups.forEach(gr => {
+        objects.push(new Group(gr));
+      });
+    }
+
     return this._formBuilder.group({
-      objects: new FormControl(),
+      objects: [objects],
       fileStorageId    : [this.fileStorageId, Validators.required],
       type    : [this.type, Validators.required],
-      userIds: [],
-      clientIds: [],
-      groupIds: []
+      userIds: [this.permissionInfo ? this.permissionInfo.recipients.map(rec => rec.id) : []],
+      clientIds: [this.permissionInfo ? this.permissionInfo.clients.map(cl => cl.id) : []],
+      groupIds: [this.permissionInfo ? this.permissionInfo.groups.map(gr => gr.id) : []]
     });
-  }
-
-  setSelected() {
-
-    var result = [];
-
-    var selectedUsers = this.permissions.map(perm => perm.recipient);
-    selectedUsers = this.getUniqueUsers(selectedUsers);
-
-    if (selectedUsers.length == this.users.length && selectedUsers.length > 1) {
-      result.push(this.allUsers);
-    }
-    else {
-      selectedUsers.forEach(user => {
-        result.push(new AppUser(user));
-      });
-    }
-
-    var selectedClients = selectedUsers.map(user => user.client);
-    selectedClients = this.getUniqueClients(selectedClients);
-
-    if (selectedClients.length == this.clients.length && selectedClients.length > 1) {
-      result.push(this.allClients);
-    }
-    else {
-      selectedClients.forEach(client => {
-        result.push(new Client(client));
-      });
-    }
-
-    var selectedGroups: Group[] = [];
-
-    this.groups.forEach(group => {
-
-      var isSelected = selectedUsers.length > 0 ? true : false;
-
-      for (var selectedUser of selectedUsers) {
-        if (!group.users.find(user => user.id == selectedUser.id)) {
-          isSelected = false;
-        }
-
-        if (!isSelected) {
-          break;
-        }
-      }
-
-      if (isSelected) {
-        selectedGroups.push(group);
-      }
-    });
-
-    if (selectedGroups.length == this.groups.length && selectedGroups.length > 1) {
-      result.push(this.allGroups);
-    }
-    else {
-      selectedGroups.forEach(group => {
-        result.push(new Group(group));
-      });
-    }
-
-    this.permissionForm.patchValue({
-      'objects': result
-    });
-  }
-
-  getUniqueClients(clients: Client[]): Client[] {
-    let result: Client[] = [];
-
-    for (var client of clients) {
-      if (!result.find(cl => cl.id == client.id)) {
-        result.push(client);
-      }
-    }
-
-    return result;
-  }
-
-  getUniqueUsers(users: AppUser[]) : AppUser[] {
-    let result: AppUser[] = [];
-
-    for (var user of users) {
-      if (!result.find(cl => cl.id == user.id)) {
-        result.push(user);
-      }
-    }
-
-    return result;
   }
 
   compare(object1: any, object2: any) {
+
     var result = false;
 
-    
     if (object1 instanceof AppUser && object2 instanceof AppUser) {
       result = object1 && object2 ? object1.id == object2.id : object1 == object2;
     }

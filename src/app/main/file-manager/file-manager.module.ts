@@ -23,7 +23,7 @@ const routes: Routes = [
     {
         path: 'advanced/search',
         component: AdvancedSearchComponent,
-        canActivate: [AuthorizedAndAdminUserGuard],
+        canActivate: [AuthorizedUserGuard],
         resolve  : {
             files: AdvancedSearchService
         }

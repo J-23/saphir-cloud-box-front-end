@@ -331,7 +331,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
                         panelClass: 'permission-form-dialog',
                         data: {
                             fileStorageId: this.fileStorage.id,
-                            permissions: this.fileStorage.permissions,
+                            permissionInfo: this.fileStorage.permissionInfo,
                             title: message,
                             currentUserId: this.currentUser.id
                         }

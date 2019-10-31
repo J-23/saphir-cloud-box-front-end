@@ -17,9 +17,7 @@ import { FormGroup } from '@angular/forms';
 import { FileFormComponent } from '../../file-form/file-form.component';
 import { FolderFormComponent } from '../../folder-form/folder-form.component';
 import { AppUser } from 'app/main/models/app-user.model';
-import { Client } from 'app/main/models/client.model';
 import { EditPermissionFormComponent } from '../../edit-permission-form/edit-permission-form.component';
-import { Group } from 'app/main/models/group.model';
 import { FolderNavigationService } from 'app/navigation/folder-navigation.service';
 
 @Component({
@@ -434,8 +432,8 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
     }
 
     addPermission() {
-        var fileStorageId = this.selected.id;
         
+        console.log(this.selected.permissionInfo)
         this.translateService.get('PAGES.APPS.FILEMANAGER.ADDPERMISSION')
             .subscribe(message => {
 
@@ -443,7 +441,7 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
                     panelClass: 'permission-form-dialog',
                     data: {
                         fileStorageId: this.selected.id,
-                        permissions: this.selected.permissions,
+                        permissionInfo: this.selected.permissionInfo,
                         title: message,
                         currentUserId: this.currentUser.id
                     }
