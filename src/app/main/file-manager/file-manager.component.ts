@@ -87,31 +87,37 @@ export class FileManagerComponent implements OnInit, OnDestroy {
 
                 this.authenticationService.user$
                     .subscribe(user => {
-
+                        
                         this.currentUser = user;
-                        var isAvailable = (user.id != undefined && !this.fileStorage.client && !this.fileStorage.owner && (user.role.type == RoleType.SuperAdmin))
-                            || (this.fileStorage.client && !this.fileStorage.owner && user.role.type == RoleType.ClientAdmin)
-                            || (!this.fileStorage.client && this.fileStorage.owner && (user.role.type == RoleType.SuperAdmin || user.role.type == RoleType.Employee
-                            || user.id == this.fileStorage.owner.id));
 
-                        if (isAvailable) {
-
-                            this.isAvailableToUpdate = true;
-                        }
-                        else {
+                        if (user.id == undefined) {
                             this.isAvailableToUpdate = false;
-                        }
-
-                        var permission = this.fileStorage.permissions.find(perm => {
-                            return perm.recipient.id == user.id && perm.type == PermissionType.readAndWrite;
-                        });
-
-                        if ((isAvailable || permission) && this.fileStorage.parentStorageId 
-                            && this.fileStorage.parentStorageId != 1) {
-                            this.isAvailableToUpdatePermission = true;
+                            this.isAvailableToUpdatePermission = false;
                         }
                         else {
-                            this.isAvailableToUpdatePermission = false;
+                            var isAvailable = (!this.fileStorage.client && !this.fileStorage.owner && (user.role.type == RoleType.SuperAdmin))
+                                || (this.fileStorage.client && !this.fileStorage.owner && user.role.type == RoleType.ClientAdmin)
+                                || (!this.fileStorage.client && this.fileStorage.owner && (user.role.type == RoleType.SuperAdmin || user.role.type == RoleType.Employee
+                                || user.id == this.fileStorage.owner.id));
+
+                                if (isAvailable) {
+                                    this.isAvailableToUpdate = true;
+                                }
+                                else {
+                                    this.isAvailableToUpdate = false;
+                                }
+
+                            var permission = this.fileStorage.permissions.find(perm => {
+                                return perm.recipient.id == user.id && perm.type == PermissionType.readAndWrite;
+                            });
+
+                            if ((isAvailable || permission) && this.fileStorage.parentStorageId 
+                                && this.fileStorage.parentStorageId != 1) {
+                                this.isAvailableToUpdatePermission = true;
+                            }
+                            else {
+                                this.isAvailableToUpdatePermission = false;
+                            }
                         }
                     })
             });

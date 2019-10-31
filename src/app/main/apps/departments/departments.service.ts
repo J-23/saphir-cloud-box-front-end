@@ -46,6 +46,16 @@ export class DepartmentsService implements Resolve<any> {
         });
   }
 
+  getDepartmentsForAdvancedSearch(): Promise<Department[]> {
+
+    return new Promise((resolve, reject) => {
+      this._httpClient.get(this.baseURL + '/api/advanced-search/departments')
+          .subscribe((response: any[]) => {
+            resolve(response.map(res => new Department(res)));
+          }, reject);
+        });
+  }
+
   getDepartmentsByClientId(clientId): Promise<Department[]> {
 
     return new Promise((resolve, reject) => {

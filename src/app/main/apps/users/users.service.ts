@@ -46,6 +46,16 @@ export class UsersService implements Resolve<any> {
         });
   }
 
+  getUsersForAdvancedSearch(): Promise<AppUser[]> {
+
+    return new Promise((resolve, reject) => {
+      this._httpClient.get(this.baseURL + '/api/advanced-search/users')
+          .subscribe((response: any[]) => {
+            resolve(response.map(res => new AppUser(res)));
+          }, reject);
+        });
+  }
+
   addUser(user): Promise<any> {
     return new Promise((resolve, reject) => {
       this._httpClient.post(this.baseURL + '/api/user/add', user)

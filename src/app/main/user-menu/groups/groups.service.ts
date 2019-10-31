@@ -29,4 +29,13 @@ export class GroupsService {
             }, reject);
         });
     }
+
+    getGroupsForAdvancedSearch(): Promise<Group[]> {
+        return new Promise((resolve, reject) => {
+        this._httpClient.get(this.baseURL + '/api/advanced-search/groups')
+            .subscribe((response: any) => {
+                resolve(response);
+            }, reject);
+        });
+    }
 }

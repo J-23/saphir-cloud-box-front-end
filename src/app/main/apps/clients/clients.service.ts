@@ -46,6 +46,16 @@ export class ClientsService implements Resolve<any> {
         });
   }
 
+  getClientsForAdvancedSearch(): Promise<Client[]> {
+
+    return new Promise((resolve, reject) => {
+      this._httpClient.get(this.baseURL + '/api/advanced-search/clients')
+          .subscribe((response: any[]) => {
+            resolve(response.map(res => new Client(res)));
+          }, reject);
+        });
+  }
+
   addClient(client): Promise<any> {
     return new Promise((resolve, reject) => {
       this._httpClient.post(this.baseURL + '/api/client/add', client)

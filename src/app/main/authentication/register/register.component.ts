@@ -89,7 +89,7 @@ export class RegisterComponent implements OnInit, OnDestroy
     }
 
     register(){
-        if (this.registerForm.valid) {
+        /*if (this.registerForm.valid) {
             this.authenticationService.register(this.registerForm.controls['userName'].value,
                 this.registerForm.controls['email'].value,
                 this.registerForm.controls['client'].value.id,
@@ -117,7 +117,7 @@ export class RegisterComponent implements OnInit, OnDestroy
                         });
                     }
                 });
-        }
+        }*/
     }
 
     createSnackBar(message: string) {

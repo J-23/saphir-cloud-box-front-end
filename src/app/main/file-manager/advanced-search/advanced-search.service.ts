@@ -63,12 +63,23 @@ export class AdvancedSearchService implements Resolve<any>  {
 
   search(search): Promise<Storage[]> {
     return new Promise((resolve, reject) => {
-      this._httpClient.post(this.baseURL + '/api/file-storage/advanced-search', search)
+      this._httpClient.post(this.baseURL + '/api/advanced-search/get', search)
         .subscribe((response: any) => {
           this.storages = response;
           this.onStoragesChange.next(this.storages);
           resolve(this.storages);
         }, reject);
+    });
+  }
+
+  getParentByChildId(childId) : Promise<any> {
+
+    return new Promise((resolve, reject) => {
+
+        this._httpClient.get(this.baseURL + `/api/advanced-search/storage/${childId}`)
+            .subscribe((response: any) => {
+                resolve(response);
+            }, reject);
     });
   }
 }

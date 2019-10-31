@@ -63,7 +63,7 @@ export class AuthenticationService {
         });
     }
 
-    register(userName: string, email: string, clientId: number, password: string, passwordConfirm: string,
+    /*register(userName: string, email: string, clientId: number, password: string, passwordConfirm: string,
         departmentId?: number): Promise<any> {
         
         var body = {
@@ -89,7 +89,7 @@ export class AuthenticationService {
                 }, reject);
         });
     }
-
+*/
     forgotPassword(email: string): Promise<any> {
         var body = {
             Email: email

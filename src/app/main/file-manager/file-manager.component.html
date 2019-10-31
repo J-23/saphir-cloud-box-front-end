@@ -13,7 +13,7 @@
             </div>
 
             <div>
-                <button *ngIf="isAvailableToUpdate || isAvailableToUpdatePermission" mat-icon-button matTooltip="More" [matMenuTriggerFor]="moreMenu">
+                <button *ngIf="(isAvailableToUpdate || isAvailableToUpdatePermission) && fileStorage.id != 'shared-with-me'" mat-icon-button matTooltip="More" [matMenuTriggerFor]="moreMenu">
                     <mat-icon>more_vert</mat-icon>
                 </button>
                 

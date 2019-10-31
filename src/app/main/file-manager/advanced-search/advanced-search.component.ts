@@ -10,7 +10,7 @@ import { Department } from 'app/main/models/department.model';
 import { AppUser } from 'app/main/models/app-user.model';
 import { Group } from 'app/main/models/group.model';
 import { AdvancedSearchService } from './advanced-search.service';
-import { takeUntil, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Subject, BehaviorSubject, Observable, merge } from 'rxjs';
 import { DataSource } from '@angular/cdk/table';
 import { MatPaginator, MatSort } from '@angular/material';
@@ -18,6 +18,7 @@ import { FuseUtils } from '@fuse/utils';
 import { FileManagerService } from '../file-manager.service';
 import { Storage } from 'app/main/models/file-storage.model';
 import { Router } from '@angular/router';
+import { AuthenticationService } from 'app/main/authentication/authentication.service';
 
 @Component({
   selector: 'app-advanced-search',
@@ -36,6 +37,8 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
   userGroups: Group[] = [];
   folders: Storage[] = [];
 
+  currentUser: AppUser = null;
+
   displayedColumns = ['icon', 'name', 'extension', 'updateDate', 'updateBy', 'size', 'button'];
 
   dataSource: FilesDataSource | null;
@@ -53,12 +56,19 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
     private userGroupsService: GroupsService,
     private foldersService: FileManagerService,
     private advancedSearchService: AdvancedSearchService,
-    private fileManagerService: FileManagerService,
-    private router: Router) { 
+    private router: Router,
+    private authenticationService: AuthenticationService) { 
     this._unsubscribeAll = new Subject();
   }
 
   ngOnInit() {
+
+    this.authenticationService.user$
+      .subscribe(user => {
+        if (user.id != undefined) {
+          this.currentUser = user;
+        }
+      });
 
     this.advancedSearchForm = this.createForm();
 
@@ -100,7 +110,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
   }
 
   getClients() {
-    this.clientsService.getClients()
+    this.clientsService.getClientsForAdvancedSearch()
       .then(clients => {
         this.clients = clients;
       })
@@ -108,7 +118,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
   }
 
   getDepartments() {
-    this.departmentsService.getDepartments()
+    this.departmentsService.getDepartmentsForAdvancedSearch()
       .then(departments => {
         this.departments = departments;
       })
@@ -116,7 +126,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
   }
 
   getUsers() {
-    this.usersService.getUsers()
+    this.usersService.getUsersForAdvancedSearch()
       .then(users => {
         this.users = users;
       })
@@ -124,7 +134,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
   }
 
   getGroups() {
-    this.userGroupsService.getGroups()
+    this.userGroupsService.getGroupsForAdvancedSearch()
       .then(groups => {
         this.userGroups = groups;
       })
@@ -170,7 +180,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
 
   seeInFolder(fileStorage) {
 
-    this.fileManagerService.getParent(fileStorage.id)
+    this.advancedSearchService.getParentByChildId(fileStorage.id)
       .then(res => {
         if (res) {
           this.router.navigate([`/file-manager/${res.id}`]);

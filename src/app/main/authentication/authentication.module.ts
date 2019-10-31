@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
+//import { RegisterComponent } from './register/register.component';
 import { MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSelectModule, MatSnackBarModule } from '@angular/material';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { RouterModule } from '@angular/router';
@@ -18,10 +18,10 @@ const routes = [
       path: 'login',
       component: LoginComponent
   },
-  {
+  /*{
     path: 'register',
     component: RegisterComponent
-  },
+  },*/
   {
     path: 'forgot-password',
     component: ForgotPasswordComponent
@@ -56,7 +56,7 @@ const routes = [
   ],
   declarations: [
     LoginComponent,
-    RegisterComponent,
+    //RegisterComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
     MailConfirmComponent
