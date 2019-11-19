@@ -8,7 +8,8 @@
                     <mat-icon>arrow_back</mat-icon>
                 </button>
                 <div *ngIf="fileStorage" class="breadcrumb text-truncate h1 pl-10" [@animate]="{value:'*',params:{x:'50px'}}">
-                    <span>{{fileStorage.name}}</span>
+                    <span *ngIf="fileStorage.name == 'My Folder'">{{ 'NAV.MYFILEMANAGER' | translate }}</span>
+                    <span *ngIf="fileStorage.name != 'My Folder'">{{ fileStorage.name }}</span>
                 </div>
             </div>
 
