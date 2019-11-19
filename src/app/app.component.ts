@@ -96,7 +96,8 @@ export class AppComponent implements OnInit, OnDestroy
         this._fuseTranslationLoaderService.loadTranslations(english, german, russian);
 
         // Use a language
-        this._translateService.use('de');
+        const broserLang = navigator.language != null ? navigator.language : 'en';
+        this._translateService.use(broserLang);  
 
         /**
          * ----------------------------------------------------------------------------------------------------
@@ -251,7 +252,7 @@ export class AppComponent implements OnInit, OnDestroy
                 this._fuseNavigationService.updateNavigationItem('advanced-search', { hidden : true });
 
                 var itemChildren = this._fuseNavigationService.getNavigationItem('file-manager').children.filter(child => child.id == 'advanced-search');
-                this._fuseNavigationService.updateNavigationItem('file-manager', { hidden : true, children: itemChildren });
+                this._fuseNavigationService.updateNavigationItem('file-manager', { hidden : true, children: itemChildren });                
 
                 this._fuseNavigationService.updateNavigationItem('user-menu', { hidden : true });
                 this._fuseNavigationService.updateNavigationItem('user-group', { children: null });
@@ -282,6 +283,9 @@ export class AppComponent implements OnInit, OnDestroy
 
                             if (folders && folders.length > 0) {
 
+                                const myFolder = folders.filter(item => item.title === 'My Folder');
+                                folders = folders.filter(item => item.title !== 'My Folder');
+
                                 var itemChildren = this._fuseNavigationService.getNavigationItem('file-manager').children.filter(child => child.id == 'advanced-search');
 
                                 folders.forEach(fold => {
@@ -289,6 +293,14 @@ export class AppComponent implements OnInit, OnDestroy
                                 });
 
                                 this._fuseNavigationService.updateNavigationItem('file-manager', { children: itemChildren });
+
+                                if (myFolder != null && myFolder.length === 1) {
+                                    this._fileManagerService.getFileStorage(myFolder[0].id)
+                                    .then(fileStorage => {
+                                        // That doesn´t work. We need the folder structure from 'My Folder' under the navigation menu item 'my-file-manager'
+                                        this._fuseNavigationService.updateNavigationItem('my-file-manager', { children: fileStorage.storages });
+                                      });
+                                }
                             }
                         }, () => { });
                 }

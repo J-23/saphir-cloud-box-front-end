@@ -1,17 +1,50 @@
 <ng-container *ngIf="!item.hidden">
+    <div class="marginGroup" *ngIf="(item.id != 'advanced-search') && (item.id != 'my-file-manager')"
+        id="horizontal-container">
+        <div id="inner-container">
+            <div class="menuItem group-title" [ngClass]="item.classes">
+                <span class="hint-text" [translate]="item.translate">{{ item.title }}</span>
+            </div>
+            <div class="menuIcon">
+                <button style="margin-right: 15px; padding-right: 8px;" mat-mini-fab *ngIf="item.button"
+                    class="teal-300 button-add-folder" (click)="addGroupOrFolder(item)">
+                    <span class="fa fa-plus" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+    </div>
 
-    <div class="group-title" [ngClass]="item.classes">
-        <span class="hint-text" [translate]="item.translate">{{ item.title }}</span>
-        <button mat-mini-fab *ngIf="item.button" class="teal-300 button-add-folder" (click)="addFolder()">
-            <span class="fa fa-plus" aria-hidden="true"></span>
-        </button>
+    <div class="marginGroup" *ngIf="item.id == 'my-file-manager'" id="horizontal-container">
+        <div id="inner-container">
+            <div class="menuItem group-title" [ngClass]="item.classes">
+                <a class="nav-link" style="padding-left: 0px" [ngClass]="item.classes"
+                    [routerLinkActive]="['active', 'teal']" (click)="showMyFolder()"
+                    [target]="item.openInNewTab ? '_blank' : '_self'">
+                    <span class="hint-text" [translate]="item.translate">{{ item.title }}</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="marginGroup" *ngIf="item.id == 'advanced-search'" id="horizontal-container">
+        <div id="inner-container">
+            <div class="menuItem group-title" [ngClass]="item.classes">
+                <a class="nav-link" style="padding-left: 0px" [ngClass]="item.classes"
+                    *ngIf="item.url && !item.externalUrl && !item.function" [routerLink]="[item.url]"
+                    [routerLinkActive]="['active', 'teal']"
+                    [routerLinkActiveOptions]="{exact: item.exactMatch || false}"
+                    [target]="item.openInNewTab ? '_blank' : '_self'">
+                    <span class="hint-text" [translate]="item.translate">{{ item.title }}</span>
+                </a>
+            </div>
+        </div>
     </div>
 
     <div class="group-items">
         <ng-container *ngFor="let item of item.children">
             <fuse-nav-vertical-group *ngIf="item.type=='group'" [item]="item"></fuse-nav-vertical-group>
-            <fuse-nav-vertical-collapsable *ngIf="item.type=='collapsable'"
-                                           [item]="item"></fuse-nav-vertical-collapsable>
+            <fuse-nav-vertical-collapsable *ngIf="item.type=='collapsable'" [item]="item">
+            </fuse-nav-vertical-collapsable>
             <fuse-nav-vertical-item *ngIf="item.type=='item'" [item]="item"></fuse-nav-vertical-item>
         </ng-container>
     </div>

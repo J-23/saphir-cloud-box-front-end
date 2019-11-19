@@ -33,4 +33,28 @@
         margin-left: 8px;
         border-color: #4db6ac !important;
     }
+
+    #horizontal-container {
+        overflow: hidden;
+        width: 90%;
+    }
+    
+    #inner-container {
+        overflow: hidden;
+        display:flex;
+        align-items:center;
+    }
+    
+    .menuItem {
+        width: 70%; 
+        margin-left: 10px;    
+        margin-top: 10px;    
+        white-space: nowrap;  
+    }
+    
+    .menuIcon {
+        margin-right: 20px;    
+        width: 20%;
+        text-align: right;
+    }
 }

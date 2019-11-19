@@ -2,39 +2,6 @@
 
     <div *ngIf="selected">
         <div class="toolbar" fxLayout="row" fxLayoutAlign="end center">
-
-            <button *ngIf="!selected.isDirectory || isAvailableToUpdate || isAvailableToAddPermission" 
-                mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More" (click)="$event.stopPropagation();">
-                <mat-icon class="secondary-text">more_vert</mat-icon>
-            </button>
-                
-            <mat-menu #moreMenu="matMenu">
-                <button *ngIf="!selected.isDirectory" mat-menu-item aria-label="download" (click)="downloadFile()">
-                    <mat-icon>cloud_download</mat-icon>
-                    <span>{{ 'COMMONACTIONS.DOWNLOAD' | translate }}</span>
-                </button>
-                <button *ngIf="!selected.isDirectory && isAvailableToView && !selected.isViewed" mat-menu-item aria-label="view" (click)="viewFile()">
-                    <mat-icon>visibility</mat-icon>
-                    <span>{{ 'COMMONACTIONS.VIEW' | translate }}</span>
-                </button>
-                <button *ngIf="!selected.isDirectory && isAvailableToView && selected.isViewed" mat-menu-item aria-label="cancel view" (click)="cancelFileView()">
-                    <mat-icon>visibility_off</mat-icon>
-                    <span>{{ 'COMMONACTIONS.CANCELVIEW' | translate }}</span>
-                </button>
-                <button *ngIf="isAvailableToUpdate" mat-menu-item aria-label="edit" (click)="update()">
-                    <mat-icon>edit</mat-icon>
-                    <span>{{ 'COMMONACTIONS.EDIT' | translate }}</span>
-                </button>
-                <button *ngIf="isAvailableToUpdate" mat-menu-item aria-label="remove" (click)="remove()">
-                    <mat-icon>delete</mat-icon>
-                    <span>{{ 'COMMONACTIONS.REMOVE' | translate }}</span>
-                </button>
-                <button *ngIf="isAvailableToAddPermission" mat-menu-item aria-label="add permission" (click)="addPermission()">
-                    <mat-icon>person_add</mat-icon>
-                    <span>{{ 'PAGES.APPS.FILEMANAGER.ADDPERMISSION' | translate }}</span>
-                </button>
-            </mat-menu>
-
             <button mat-icon-button (click)="close()">
                 <mat-icon>close</mat-icon>
             </button>
@@ -57,18 +24,12 @@
         <mat-tab-group animationDuration="1000ms">
             <mat-tab label="Info">
                 <div class="file-details" [@animate]="{value:'*',params:{delay:'200ms'}}">
-
-                    <div *ngIf="selected" class="preview file-icon" fxLayout="row" fxLayoutAlign="center center" fxHide fxShow.gt-sm>
-                        <mat-icon class="type-icon s-48">{{selected.storageType}}</mat-icon>
-                    </div>
-
-                    <div class="title">{{ 'PAGES.APPS.FILEMANAGER.INFO' | translate }}</div>
-
+                   
                     <table>
 
                         <tr>
                             <th>{{ 'PAGES.APPS.FILEMANAGER.TYPE' | translate }}</th>
-                            <td *ngIf="selected.isDirectory">folder</td>
+                            <td *ngIf="selected.isDirectory">{{ 'PAGES.APPS.FILEMANAGER.FOLDER' | translate }}</td>
                             <td *ngIf="!selected.isDirectory && selected.file"> {{selected.file.extension}}</td>
                         </tr>
 
@@ -106,7 +67,7 @@
             </mat-tab>
 
             <div *ngIf="isAvailableToOpenPermission">
-                <mat-tab label="Permissions">
+                <mat-tab label="{{ 'PAGES.APPS.FILEMANAGER.PERMISSIONS' | translate }}">
                     <div class="file-details" [@animate]="{value:'*',params:{delay:'200ms'}}">
 
                         <div *ngFor="let permission of selected.permissions; let i = index" class="mt-16">
@@ -134,6 +95,6 @@
         </mat-tab-group>    
     </div>
     <div *ngIf="!selected">
-        <span>Select folder or file</span>
+        <span>{{ 'PAGES.APPS.FILEMANAGER.NOTHINGSELECTED' | translate }}</span>
     </div>  
 </div>

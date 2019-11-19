@@ -37,12 +37,20 @@
     </a>
 
     <ng-template #itemContent>
-        <mat-icon class="nav-link-icon" *ngIf="item.icon">{{item.icon}}</mat-icon>
-        <span class="nav-link-title" [translate]="item.translate">{{item.title}}</span>
-        <span class="nav-link-badge" *ngIf="item.badge" [translate]="item.badge.translate"
-              [ngStyle]="{'background-color': item.badge.bg,'color': item.badge.fg}">
-            {{item.badge.title}}
-        </span>
+            <div id="horizontal-container">
+                    <div id="inner-container">
+                        <div [ngClass]="item.id === 'feedback' ? 'menuItemFeedback' : 'menuItem'" style="margin-left: 10px;">
+                            <mat-icon class="nav-link-icon" *ngIf="item.icon">{{item.icon}}</mat-icon>
+                            <span class="nav-link-title" [translate]="item.translate">{{item.title}}</span>
+                        </div>
+                        <div class="menuIcon">
+                            <span class="nav-link-badge" *ngIf="item.badge" [translate]="item.badge.translate"
+                                [ngStyle]="{'background-color': item.badge.bg,'color': item.badge.fg}">
+                                {{item.badge.title}}
+                            </span>
+                        </div>
+                    </div>
+            </div>
     </ng-template>
 
 </ng-container>

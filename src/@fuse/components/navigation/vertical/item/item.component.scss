@@ -12,3 +12,30 @@
         }
     }
 }
+
+#horizontal-container {    
+    overflow: hidden;
+    width: 100%;    
+}
+  
+#inner-container {
+    overflow: hidden;    
+    display:flex;    
+}
+
+.menuItem {
+    width: 70%; 
+    padding-left: 0px;  
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;  
+}
+
+.menuItemFeedback {
+    width: 80%;     
+}
+
+.menuIcon { 
+    width: 10%; 
+    text-align: right;
+} 

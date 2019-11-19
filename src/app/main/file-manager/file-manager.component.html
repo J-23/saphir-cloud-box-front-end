@@ -26,6 +26,10 @@
                         <mat-icon>add</mat-icon>
                         <span>{{ 'PAGES.APPS.FILEMANAGER.ADDFILE' | translate }}</span>
                     </button>
+                    <button *ngIf="isAvailableToUpdatePermission" mat-menu-item aria-label="add permission" (click)="addPermission()">
+                        <mat-icon>person_add</mat-icon>
+                        <span>{{ 'PAGES.APPS.FILEMANAGER.ADDPERMISSION' | translate }}</span>
+                    </button>
                     <button *ngIf="isAvailableToUpdate" mat-menu-item aria-label="update" (click)="updateFolder()">
                         <mat-icon>edit</mat-icon>
                         <span>{{ 'PAGES.APPS.FILEMANAGER.UPDATECURRENTFOLDER' | translate }}</span>
@@ -33,11 +37,7 @@
                     <button *ngIf="isAvailableToUpdate" mat-menu-item aria-label="remove" (click)="removeFolder()">
                         <mat-icon>delete</mat-icon>
                         <span>{{ 'PAGES.APPS.FILEMANAGER.REMOVECURRENTFOLDER' | translate }}</span>
-                    </button>
-                    <button *ngIf="isAvailableToUpdatePermission" mat-menu-item aria-label="add permission" (click)="addPermission()">
-                        <mat-icon>person_add</mat-icon>
-                        <span>{{ 'PAGES.APPS.FILEMANAGER.ADDPERMISSION' | translate }}</span>
-                    </button>
+                    </button>                    
                 </mat-menu>
             </div>
         </div>
