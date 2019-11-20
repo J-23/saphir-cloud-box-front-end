@@ -80,17 +80,17 @@ export class ToolbarComponent implements OnInit, OnDestroy
 
         this.languages = [
             {
-                id   : 'en',
+                ids   : ['en', "en-GB", "end-US"],
                 title: 'English',
                 flag : 'us'
             },
             {
-                id   : 'de',
+                ids   : ['de'],
                 title: 'German',
                 flag : 'de'
             },
             {
-                id: 'ru',
+                ids: ['ru', 'ru-RU'],
                 title: 'Russian',
                 flag: 'ru'
             }
@@ -121,7 +121,7 @@ export class ToolbarComponent implements OnInit, OnDestroy
             });
 
         // Set the selected language from default languages
-        this.selectedLanguage = _.find(this.languages, {'id': this._translateService.currentLang});
+        this.selectedLanguage = this.languages.find(lang => lang.ids.includes(this._translateService.currentLang));
 
         this.authenticationService.user$
             .subscribe(user => {
