@@ -136,8 +136,8 @@ navbar {
 
                 .logo-text {
                     margin-left: 12px;
-                    font-size: 16px;
-                    font-weight: 300;
+                    font-size: 24px;
+                    font-weight: bold;  
                     letter-spacing: 0.4px;
                     line-height: normal;
                 }
@@ -166,13 +166,13 @@ navbar {
             .user {
                 position: relative;
                 display: flex;
-                align-items: center;
+                align-items: left;
                 justify-content: flex-start;
                 width: 100%;
-                height: 136px;
-                min-height: 136px;
-                max-height: 136px;
-                padding: 24px 0 64px 0;
+                height: 50px;
+                min-height: 50px;
+                max-height: 136px;                
+                padding: 14px 0 64px 33px;
 
                 .avatar-container {
                     position: absolute;

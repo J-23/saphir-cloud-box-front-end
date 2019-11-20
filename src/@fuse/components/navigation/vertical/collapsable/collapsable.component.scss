@@ -52,3 +52,26 @@
     transition: opacity 0.2s ease-in-out 0.1s;
     border-color: #4db6ac !important;
 }
+
+#horizontal-container {    
+    overflow: hidden;
+    width: 90%;    
+}
+  
+#inner-container {
+    overflow: hidden;    
+    display:flex;    
+}
+
+.menuItem {
+    width: 70%; 
+    padding-left: 0px;  
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;  
+}
+
+.menuIcon {        
+    width: 10%; 
+    text-align: right;
+} 

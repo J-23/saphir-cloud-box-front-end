@@ -2,17 +2,19 @@ export const locale = {
     lang: 'en',
     data: {
         'NAV': {
-            'APPLICATIONS': 'Saphir Cloud Box',
+            'APPLICATIONS': 'SaphirBox',
             'CLIENTS': 'Clients',
             'DEPARTMENTS': 'Departments',
             'USERS': 'Users',
             'ROLES': 'Roles',
             'HELP': 'Help',
-            'FAQ': 'Faq',
+            'FAQ': 'FAQ',
             'FEEDBACK': 'Feedback',
             'USERMENU': 'User menu',
             'USERGROUPS': 'Groups',
-            'ADVANCEDSEARCH': 'Advanced Search'
+            'ADVANCEDSEARCH': 'Search',
+            'FILEMANAGER': 'Folders',
+            'MYFILEMANAGER': 'My folders',
         },
         'PAGES': {
             'APPS': {
@@ -79,7 +81,7 @@ export const locale = {
                     'ERROR': 'Oops! Something went wrong. Please contact support, and we will try to fix it soon'
                 },
                 'FILEMANAGER': {
-                    'ADDFOLDER': 'Add folder',
+                    'ADDFOLDER': 'New folder',
                     'EDITED': 'Edited',
                     'INFO': 'Info',
                     'TYPE': 'Type',
@@ -90,14 +92,14 @@ export const locale = {
                     'CREATEDATE': 'Create date',
                     'SIZE': 'Size',
                     'NAME': 'Name',
-                    'VIEWRIGHT': 'View right',
+                    'VIEWRIGHT': 'Permission',
                     'FOLDERREMOVEQUESTION': 'Are you sure you want to remove this folder?',
                     'FOLDERREMOVESUCCESS': 'Folder removed',
                     'FOLDER_NOT_FOUND': 'Folder not found',
                     'FOLDER_SAME_OBJECT': 'Folder with the same name already exists',
                     'FOLDER_NO_ACCESS': "You don't have permissions to this folder",
                     'UPDATEFOLDER': 'Update folder',
-                    'ADDFILE': 'Add file',
+                    'ADDFILE': 'New file',
                     'UPDATEFILE': 'Update file',
                     'FILE_NOT_FOUND': 'File not found',
                     'FILE_SAME_OBJECT': 'File with the same name already exists',
@@ -106,7 +108,7 @@ export const locale = {
                     'FILE_NO_ACCESS': "You don't have permissions to this file",
                     'FILEREMOVEQUESTION': 'Are you sure you want to remove this file?',
                     'FILEREMOVESUCCESS': 'File removed',
-                    'REMOVECURRENTFOLDER': 'Remove current folder',
+                    'REMOVECURRENTFOLDER': 'Remove folder',
                     'ADDPERMISSION': 'Add permission',
                     'PERMISSIONADDSUCCESS': 'Permission added',
                     'PERMISSIONADD_ERROR': "You can't give permission to another user",
@@ -114,19 +116,22 @@ export const locale = {
                     'PERMISSIONSERVER_ERROR': 'Oops! Something went wrong. Please contact support, and we will try to fix it soon',
                     'READONLYPERMISSION': 'Read only',
                     'READANDWRITEPERMISSION': 'Read and write',
-                    'UPDATECURRENTFOLDER': 'Update current folder',
+                    'UPDATECURRENTFOLDER': 'Update folder',
                     'PERMISSION_SAME_OBJECT': 'User already has permission',
                     'EDITPERMISSION': 'Edit permission',
                     'PERMISSIONEDITSUCCESS': 'Permission updated',
                     'PERMISSIONREMOVEQUESTION': 'Are you sure you want to remove this permission?',
-                    'PERMISSIONREMOVESUCCESS' : 'Permission removed',
+                    'PERMISSIONREMOVESUCCESS': 'Permission removed',
                     'PERMISSION_NO_ACCESS': "You can't update permissions",
                     'PERMISSION_NOT_FOUND_USER': 'User not found',
                     'PERMISSION_NOT_FOUND': 'Permission not found',
                     'PICK': 'Pick',
                     'ALLCLIENTS': 'All clients',
                     'ALLUSERS': 'All users',
-                    'ALLGROUPS': 'All groups'
+                    'ALLGROUPS': 'All groups',
+                    'PERMISSIONS': 'Permissions',
+                    'NOTHINGSELECTED': 'Select folder or file',
+                    'FOLDER': 'Folder',
                 },
                 'FEEDBACK': {
                     'USEREMAIL': 'Yoer email',
@@ -197,7 +202,7 @@ export const locale = {
                 'NOT_FOUND_USER': 'User not found',
                 'ERROR': 'Oops! Something went wrong. Please contact support and we will try to fix it soon',
                 'SAME_USER': 'User with the same email already exists',
-                'NOT_FOUND_ROLE': 'Role not found'
+                'NOT_FOUND_ROLE': 'Role not found',
             }
         },
         'COMMONACTIONS': {
@@ -214,7 +219,7 @@ export const locale = {
             'INFO': 'Info',
             'DOWNLOAD': 'Download',
             'OOPS': 'Oops! Something went wrong. Please contact support and we will try to fix it soon',
-            'VIEW': 'View',
+            'VIEW': 'Open',
             'CANCELVIEW': 'Cancel view',
             'FILTER': 'Filter',
             'SEEINFOLDER': 'See in folder'

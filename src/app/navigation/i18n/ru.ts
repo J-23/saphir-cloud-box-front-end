@@ -2,18 +2,19 @@ export const locale = {
     lang: 'ru',
     data: {
         'NAV': {
-            'APPLICATIONS': 'Saphir Cloud Box',
+            'APPLICATIONS': 'SaphirBox',
             'CLIENTS': 'Клиенты',
             'DEPARTMENTS': 'Отделы',
             'USERS': 'Пользователи',
-            'ROLES': 'Роли',
-            'FILEMANAGER': 'Проводник',
+            'ROLES': 'Роли',            
             'HELP': 'Помощь',
-            'FAQ': 'Faq',
+            'FAQ': 'FAQ',
             'FEEDBACK': 'Обратная связь',
             'USERMENU': 'Меню пользователя',
             'USERGROUPS': 'Группы',
-            'ADVANCEDSEARCH': 'Полный поиск'
+            'ADVANCEDSEARCH': 'Полный поиск',
+            'FILEMANAGER': '',
+            'MYFILEMANAGER': '',
         },
         'PAGES': {
             'APPS': {
@@ -80,7 +81,7 @@ export const locale = {
                     'ERROR': 'Упс! Что-то пошло не так. Пожалуйста, свяжитесь со службой поддержки, и мы постараемся исправить это в ближайшее время'
                 },
                 'FILEMANAGER': {
-                    'ADDFOLDER': 'Добавить папку',
+                    'ADDFOLDER': 'Добавить директорию',
                     'EDITED': 'Редактор',
                     'INFO': 'Информация',
                     'TYPE': 'Тип',
@@ -119,14 +120,17 @@ export const locale = {
                     'EDITPERMISSION': 'Изменить доступ',
                     'PERMISSIONEDITSUCCESS': 'Доступ успешно изменен',
                     'PERMISSIONREMOVEQUESTION': 'Вы уверены, что хотите удалить данный доступ?',
-                    'PERMISSIONREMOVESUCCESS' : 'Доступ успешно удален',
+                    'PERMISSIONREMOVESUCCESS': 'Доступ успешно удален',
                     'PERMISSION_NO_ACCESS': 'Вы не можете изменять доступы',
                     'PERMISSION_NOT_FOUND_USER': 'Не найден пользователь',
                     'PERMISSION_NOT_FOUND': 'Не найден доступ',
                     'PICK': 'Выберите',
                     'ALLCLIENTS': 'Все клиенты',
                     'ALLUSERS': 'Все пользователи',
-                    'ALLGROUPS': 'Все группы'
+                    'ALLGROUPS': 'Все группы',
+                    'PERMISSIONS': 'Права',
+                    'NOTHINGSELECTED': '',
+                    'FOLDER': '',
                 },
                 'FEEDBACK': {
                     'USEREMAIL': 'Ваша почта',
