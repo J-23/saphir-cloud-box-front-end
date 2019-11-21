@@ -14,7 +14,7 @@ export const locale = {
             'USERGROUPS': 'Группы',
             'ADVANCEDSEARCH': 'Полный поиск',
             'FILEMANAGER': '',
-            'MYFILEMANAGER': '',
+            'MYFILEMANAGER': 'Моя папка',
         },
         'PAGES': {
             'APPS': {

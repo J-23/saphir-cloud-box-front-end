@@ -40,6 +40,10 @@ export class AppComponent implements OnInit, OnDestroy
     
     navigation: any[];
 
+    enCodes = [ 'en', 'en-GB', 'en-US' ];
+    ruCodes = [ 'ru', 'ru-RU' ];
+    deCodes = [ 'de' ];
+
     // Private
     private _unsubscribeAll: Subject<any>;
 
@@ -86,17 +90,19 @@ export class AppComponent implements OnInit, OnDestroy
         // Set the main navigation as our current navigation
         //this._fuseNavigationService.setCurrentNavigation('main');
 
+        // Use a language
+        const broserLang = navigator.language != null ? navigator.language : 'en';
+
+        var defaultLang = this.enCodes.includes(broserLang) ? this.enCodes[0]
+                            : (this.deCodes.includes(broserLang) ? this.deCodes[0]
+                                : (this.ruCodes.includes(broserLang) ? this.ruCodes[0] : 'en')); 
         // Add languages
         this._translateService.addLangs(['en', 'de', 'ru']);
-
-        // Set the default language
-        this._translateService.setDefaultLang('de');
-
         // Set the navigation translations
         this._fuseTranslationLoaderService.loadTranslations(english, german, russian);
 
-        // Use a language
-        const broserLang = navigator.language != null ? navigator.language : 'en';
+        // Set the default language
+        this._translateService.setDefaultLang(defaultLang);
         this._translateService.use(broserLang);  
 
         /**
@@ -295,11 +301,7 @@ export class AppComponent implements OnInit, OnDestroy
                                 this._fuseNavigationService.updateNavigationItem('file-manager', { children: itemChildren });
 
                                 if (myFolder != null && myFolder.length === 1) {
-                                    this._fileManagerService.getFileStorage(myFolder[0].id)
-                                    .then(fileStorage => {
-                                        // That doesn´t work. We need the folder structure from 'My Folder' under the navigation menu item 'my-file-manager'
-                                        this._fuseNavigationService.updateNavigationItem('my-file-manager', { children: fileStorage.storages });
-                                      });
+                                    this._fuseNavigationService.updateNavigationItem('my-file-manager', { children: myFolder[0].children });
                                 }
                             }
                         }, () => { });

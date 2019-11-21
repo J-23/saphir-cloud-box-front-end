@@ -80,17 +80,17 @@ export class ToolbarComponent implements OnInit, OnDestroy
 
         this.languages = [
             {
-                ids   : ['en', "en-GB", "end-US"],
+                ids   : [ 'en', 'en-GB', 'en-US' ],
                 title: 'English',
                 flag : 'us'
             },
             {
-                ids   : ['de'],
+                ids   : [ 'de' ],
                 title: 'German',
                 flag : 'de'
             },
             {
-                ids: ['ru', 'ru-RU'],
+                ids: [ 'ru', 'ru-RU' ],
                 title: 'Russian',
                 flag: 'ru'
             }
@@ -175,7 +175,7 @@ export class ToolbarComponent implements OnInit, OnDestroy
         this.selectedLanguage = lang;
 
         // Use the selected language for translations
-        this._translateService.use(lang.id);
+        this._translateService.use(lang.ids[0]);
     }
 
     logout() {
