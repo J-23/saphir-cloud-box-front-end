@@ -226,7 +226,7 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
                         };
                 
                         this._fileManagerService.updateFolder(folder, this.fileStorage.id)
-                            .then(() => { })
+                            .then(() => { this.folderNavigationService.getFolders(); })
                             .catch(res => { 
                                 if (res && res.status && res.status == 403) {
                                     this.translateService.get('PAGES.APPS.FILEMANAGER.FOLDER_' + res.error).subscribe(message => {
@@ -320,6 +320,7 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
                                 
                                 this._fileManagerService.removeFolder(data, this.fileStorage.id)
                                     .then(() => {
+                                        this.folderNavigationService.getFolders();
                                         this.translateService.get('PAGES.APPS.FILEMANAGER.FOLDERREMOVESUCCESS').subscribe(message => {
                                         this.createSnackBar(message);
                                         });
@@ -340,6 +341,7 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
                             else {
                                 this._fileManagerService.removeFile(data, this.fileStorage.id)
                                     .then(() => {
+                                        this.folderNavigationService.getFolders();
                                         this.translateService.get('PAGES.APPS.FILEMANAGER.FILEREMOVESUCCESS').subscribe(message => {
                                         this.createSnackBar(message);
                                         });
@@ -448,9 +450,7 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
 
         this._fileManagerService.viewFile(file, this.fileStorage.id)
             .then(() => {
-                this.folderNavigationService.getFolder()
-                    .then()
-                    .catch();
+                this.folderNavigationService.getFolders();
             })
             .catch(res => {
                 if (res && res.status && res.status == 403) {
@@ -473,9 +473,7 @@ export class FileManagerFileListComponent implements OnInit, OnDestroy {
 
         this._fileManagerService.cancelFileView(file, this.fileStorage.id)
             .then(() => {
-                this.folderNavigationService.getFolder()
-                    .then()
-                    .catch();
+                this.folderNavigationService.getFolders();
             })
             .catch(res => {
                 if (res && res.status && res.status == 403) {

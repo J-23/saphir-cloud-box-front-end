@@ -28,38 +28,42 @@ export class FolderNavigationService {
     this.onUserGroupsChanged = new BehaviorSubject([]);
   }
 
-  getFolder(): Promise<any> {
+  getFolders(): Promise<any> {
     
     return new Promise((resolve, reject) => {
       this._httpClient.get(this.baseURL + `/api/hierarchy/${this.rootId}`)
         .subscribe((folders: any[]) => {
           
-          this._httpClient.get(this.baseURL + '/api/file-storage/shared-with-me')
-            .subscribe((response: any) => {
+          this.folders = this.map(folders);
+          this.getSharedFolder(this.folders);
+          resolve(this.onNavigationChanged.getValue());
 
-              if (response.storages.length > 0) {
-
-                var sharedWithMeFolder = folders.find(fold => fold.id == 'shared-with-me');
-
-                if (sharedWithMeFolder == null) {
-                  folders.push({
-                    id: 'shared-with-me',
-                    name: 'Shared with me',
-                    parentId: 1,
-                    newFileCount: response.newFileCount,
-                    children: []
-                  });
-                }
-                else {
-                  sharedWithMeFolder.newFileCount = response.newFileCount;
-                }
-              }
-
-              this.folders = this.map(folders);
-              this.onNavigationChanged.next(this.folders);
-              resolve(this.folders);
-            }, reject);
           }, reject);
+      });
+  }
+
+  getSharedFolder(folders: FuseNavigationItem[]) {
+    this._httpClient.get(this.baseURL + '/api/file-storage/shared-with-me')
+      .subscribe((response: any) => {
+
+        if (response.storages.length > 0) {
+
+          folders.push({
+            id: 'shared-with-me',
+            title: 'Shared with me',
+            type: 'item',
+            url: '/file-manager/shared-with-me',
+            children: [],
+            badge: 
+            {
+              title: response.newFileCount.toString(),
+              bg: '#4DB6AC',
+              fg: '#FFFFFF'
+            }
+          });
+        }
+        
+        this.onNavigationChanged.next(folders);
       });
   }
 

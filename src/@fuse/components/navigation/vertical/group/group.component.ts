@@ -101,13 +101,14 @@ export class FuseNavVerticalGroupComponent implements OnInit, OnDestroy
     }
 
     showMyFolder() {
-       this._folderNavigationService.getFolder()
-       .then(folders => {
-        const myFolder: FuseNavigationItem = folders.find(f => f.title === 'My Folder');
 
-        if (myFolder != null) {
-            this.router.navigateByUrl('file-manager/' + myFolder.id);
-        }
-       });
+        this._folderNavigationService.onNavigationChanged
+            .subscribe(folders =>  {
+                const myFolder: FuseNavigationItem = folders.find(f => f.title === 'My Folder');
+
+                if (myFolder != null) {
+                    this.router.navigateByUrl('file-manager/' + myFolder.id);
+                }
+            });
     }
 }

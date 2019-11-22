@@ -151,7 +151,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
                     };
             
                     this._fileManagerService.addFolder(folder)
-                        .then(() => { })
+                        .then(() => { this.folderNavigationService.getFolders(); })
                         .catch(res => { 
                             if (res && res.status && res.status == 403) {
                                 this.translateService.get('PAGES.APPS.FILEMANAGER.FOLDER_' + res.error).subscribe(message => {
@@ -236,14 +236,9 @@ export class FileManagerComponent implements OnInit, OnDestroy {
         
                 this._fileManagerService.updateFolder(folder, this.fileStorage.id)
                     .then(() => { 
+                        this.folderNavigationService.getFolders();
                         if (!this.fileStorage.parentStorageId || this.fileStorage.parentStorageId == 1) {
-                                        
-                            if (this.fileStorage.parentStorageId == 1) {
-                                this.folderNavigationService.getFolder()
-                                    .then()
-                                    .catch();
-                            }
-
+                                 
                             this.router.navigate(['/apps/clients']);
                         }
                         else {
@@ -290,14 +285,10 @@ export class FileManagerComponent implements OnInit, OnDestroy {
 
                             this._fileManagerService.removeFolder(data, this.fileStorage.parentStorageId)
                                 .then(() => {
-                                    if (!this.fileStorage.parentStorageId || this.fileStorage.parentStorageId == 1) {
-                                        
-                                        if (this.fileStorage.parentStorageId == 1) {
-                                            this.folderNavigationService.getFolder()
-                                                .then()
-                                                .catch();
-                                        }
 
+                                    this.folderNavigationService.getFolders();
+
+                                    if (!this.fileStorage.parentStorageId || this.fileStorage.parentStorageId == 1) {
                                         this.router.navigate(['/apps/clients']);
                                     }
                                     else {
@@ -393,7 +384,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
 
             this.navigations.pop();
             var previousNavigation = this.navigations.pop();
-
+            
             if (previousNavigation) {
                 this.router.navigate([`/file-manager/${previousNavigation.id}`]);
             }

@@ -154,12 +154,12 @@ export class AppComponent implements OnInit, OnDestroy
                 }
             });
 
-        this._fuseNavigationService.onButtonAddGroup
+        /*this._fuseNavigationService.onButtonAddGroup
             .subscribe(isAddGroup => {
                 if (isAddGroup) {
                     this.addGroup();
                 }
-            });
+            });*/
     }
 
     addFolder(parentId: number) {
@@ -186,9 +186,7 @@ export class AppComponent implements OnInit, OnDestroy
                 this._fileManagerService.addFolder(folder)
                     .then(() => { 
                         
-                        this.folderNavigationService.getFolder()
-                            .then()
-                            .catch();
+                        this.folderNavigationService.getFolders();
                     })
                     .catch(res => { });
                 }
@@ -197,7 +195,7 @@ export class AppComponent implements OnInit, OnDestroy
         
     }
 
-    addGroup() {
+    /*addGroup() {
         var groupDialogRef = this._matDialog.open(GroupFormComponent, {
           panelClass: 'group-form-dialog',
           data: {
@@ -237,7 +235,7 @@ export class AppComponent implements OnInit, OnDestroy
             }
           });
     }
-
+*/
     
     createSnackBar(message: string) {
         this._matSnackBar.open(message, 'OK', {
@@ -257,11 +255,11 @@ export class AppComponent implements OnInit, OnDestroy
                 this._fuseNavigationService.updateNavigationItem('applications', { hidden : true });
                 this._fuseNavigationService.updateNavigationItem('advanced-search', { hidden : true });
 
-                var itemChildren = this._fuseNavigationService.getNavigationItem('file-manager').children.filter(child => child.id == 'advanced-search');
-                this._fuseNavigationService.updateNavigationItem('file-manager', { hidden : true, children: itemChildren });                
+                this._fuseNavigationService.updateNavigationItem('file-manager', { hidden : true, children: [] });                
+                this._fuseNavigationService.updateNavigationItem('my-file-manager', { children: [] });
 
-                this._fuseNavigationService.updateNavigationItem('user-menu', { hidden : true });
-                this._fuseNavigationService.updateNavigationItem('user-group', { children: null });
+                //this._fuseNavigationService.updateNavigationItem('user-menu', { hidden : true });
+                //this._fuseNavigationService.updateNavigationItem('user-group', { children: null });
                 this._fuseNavigationService.updateNavigationItem('help', { hidden : true });
 
                 if (user.id != undefined) {
@@ -273,10 +271,11 @@ export class AppComponent implements OnInit, OnDestroy
                     }
 
                     this.folderNavigationService.onNavigationChanged
-                        .subscribe(folders => {
+                        .subscribe(folders => {    
 
                             this._fuseNavigationService.updateNavigationItem('advanced-search', { hidden : false });
-                            this._fuseNavigationService.updateNavigationItem('file-manager', { hidden : false });
+                            this._fuseNavigationService.updateNavigationItem('file-manager', { hidden : false, children: [] });
+                            this._fuseNavigationService.updateNavigationItem('my-file-manager', { children: [] });
 
                             if (user && user.role && (user.role.type == RoleType.SuperAdmin || user.role.type == RoleType.ClientAdmin)) {
                                     
@@ -287,18 +286,24 @@ export class AppComponent implements OnInit, OnDestroy
                                 }});
                             }
 
+                            var children = this._fuseNavigationService.getNavigationItem('file-manager').children;
+                            children.forEach(child => {
+                                this._fuseNavigationService.removeNavigationItem(child.id);
+                            });
+
+                            children = this._fuseNavigationService.getNavigationItem('my-file-manager').children;
+                            children.forEach(child => {
+                                this._fuseNavigationService.removeNavigationItem(child.id);
+                            });
+
                             if (folders && folders.length > 0) {
 
                                 const myFolder = folders.filter(item => item.title === 'My Folder');
                                 folders = folders.filter(item => item.title !== 'My Folder');
 
-                                var itemChildren = this._fuseNavigationService.getNavigationItem('file-manager').children.filter(child => child.id == 'advanced-search');
+                                this._fuseNavigationService.updateNavigationItem('file-manager', { children: folders });
 
-                                folders.forEach(fold => {
-                                    itemChildren.push(fold);
-                                });
 
-                                this._fuseNavigationService.updateNavigationItem('file-manager', { children: itemChildren });
 
                                 if (myFolder != null && myFolder.length === 1) {
                                     this._fuseNavigationService.updateNavigationItem('my-file-manager', { children: myFolder[0].children });
@@ -318,7 +323,7 @@ export class AppComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
-        this.groupsService.onGroupsChanged.subscribe(groups => {
+        /*this.groupsService.onGroupsChanged.subscribe(groups => {
             this._fuseNavigationService.updateNavigationItem('user-group', { children : null });
 
             var children = groups.map(group => {
@@ -352,6 +357,7 @@ export class AppComponent implements OnInit, OnDestroy
                     }
                 }
             });
+            */
 
         // Subscribe to config changes
         this._fuseConfigService.config

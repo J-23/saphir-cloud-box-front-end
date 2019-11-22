@@ -433,7 +433,6 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
 
     addPermission() {
         
-        console.log(this.selected.permissionInfo)
         this.translateService.get('PAGES.APPS.FILEMANAGER.ADDPERMISSION')
             .subscribe(message => {
 
@@ -510,9 +509,7 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
 
         this._fileManagerService.viewFile(file, this.fileStorageId)
             .then(() => {
-                this.folderNavigationService.getFolder()
-                    .then()
-                    .catch();
+                this.folderNavigationService.getFolders();
             })
             .catch(res => {
                 if (res && res.status && res.status == 403) {
@@ -535,9 +532,7 @@ export class FileManagerDetailsSidebarComponent implements OnInit, OnDestroy {
 
         this._fileManagerService.cancelFileView(file, this.fileStorageId)
             .then(() => {
-                this.folderNavigationService.getFolder()
-                    .then()
-                    .catch();
+                this.folderNavigationService.getFolders();
             })
             .catch(res => {
                 if (res && res.status && res.status == 403) {

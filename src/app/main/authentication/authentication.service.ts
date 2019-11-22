@@ -131,13 +131,9 @@ export class AuthenticationService {
 
                         this.userSubject.next(user);
 
-                        this.folderNavigationService.getFolder()
-                            .then()
-                            .catch();
+                        this.folderNavigationService.getFolders();
 
-                        this.groupsService.getGroups()
-                            .then()
-                            .catch();
+                        //this.groupsService.getGroups();
                             
                         resolve(user);
                     }
