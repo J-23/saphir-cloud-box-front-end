@@ -42,7 +42,7 @@ export class AppComponent implements OnInit, OnDestroy
 
     enCodes = [ 'en', 'en-GB', 'en-US' ];
     ruCodes = [ 'ru', 'ru-RU' ];
-    deCodes = [ 'de' ];
+    deCodes = [ 'de', 'de-AT', 'de-CH', 'de-DE', 'de-LI', 'de-LU' ];
 
     // Private
     private _unsubscribeAll: Subject<any>;
